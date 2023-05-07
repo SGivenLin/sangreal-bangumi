@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.25",
     "@types/react": "^18.2.5",
@@ -13,15 +10,18 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webpack-merge": "^5.8.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "nodemon": "nodemon",
+    "start:main": "webpack --config ./webpack/webpack.dev.js && electron ./dist/electron.js",
+    "start": "concurrently \"npm run start:html\" \"npm run nodemon\"",
+    "start:html": "react-scripts start",
+    "build": "react-scripts build && tsc electron/main --outDir build",
     "eject": "react-scripts eject"
   },
+  "main": "main.js",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -39,5 +39,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "concurrently": "^8.0.1",
+    "electron": "^24.2.0",
+    "nodemon": "^2.0.22",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "webpack-cli": "^5.0.2"
   }
 }
