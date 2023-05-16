@@ -11,6 +11,7 @@
     "@types/react": "^18.2.5",
     "@types/react-dom": "^18.2.3",
     "antd": "^5.4.7",
+    "axios": "^1.4.0",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",
@@ -68,12 +69,6 @@
     "build": "node scripts/build.js && tsc electron/main --outDir build"
   },
   "main": "main.js",
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",

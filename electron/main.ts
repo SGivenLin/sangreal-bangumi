@@ -1,6 +1,7 @@
 // const { app, BrowserWindow } = require('electron');
-import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu, ipcMain } from 'electron'
-
+import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu, shell } from 'electron'
+import { rewriteWindow } from './windowInterceptor'
+import axios from 'axios'
 const url = require('url');
 const path = require('path');
 
@@ -42,6 +43,9 @@ function setMenu(): void {
   const menu = Menu.buildFromTemplate([{
     label: '关于',
     role: 'about'
+  }, {
+    label: '重启',
+    role: 'reload'
   }])
   Menu.setApplicationMenu(menu)
 }
@@ -54,6 +58,7 @@ async function main() {
         if (process.platform !== 'darwin') app.quit()
     })
     createWindow()
+    rewriteWindow(win)
     app.on('activate', () => {
         console.log('activate')
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
