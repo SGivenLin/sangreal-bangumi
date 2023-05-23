@@ -9,8 +9,8 @@ const bangumiAxios = axios.create({
     baseURL: 'https://api.bgm.tv'
 })
 const api: Iapi = {
-    // getCollectionList: '/v0/users/:username/collections'
-    getCollectionList: '/v0/users/linwenkanh/collections'
+    getCollectionList: '/v0/users/:username/collections',
+    getProducer: '/v0/subjects/:subject_id/persons'
 }
 
 class Service {

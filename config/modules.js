@@ -62,7 +62,6 @@ function getWebpackAliases(options = {}) {
   }
 
   const baseUrlResolved = path.resolve(paths.appPath, baseUrl);
-
   if (path.relative(paths.appPath, baseUrlResolved) === '') {
     return {
       src: paths.appSrc,
@@ -117,7 +116,6 @@ function getModules() {
   } else if (hasJsConfig) {
     config = require(paths.appJsConfig);
   }
-
   config = config || {};
   const options = config.compilerOptions || {};
 

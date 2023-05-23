@@ -1,7 +1,7 @@
 import api from './index'
 import type { CollectionRes } from '../component/collection/type'
 
-async function getAllCollection(params: object) {
+async function getAllCollection(params: object, option: object) {
     const maxLength = 100 // todo
     let list: CollectionRes['data'] = []
     let total = Infinity
@@ -11,7 +11,7 @@ async function getAllCollection(params: object) {
         const res: CollectionRes = await api.getCollectionList({
             ...params,
             offset: curOffset
-        })
+        }, option)
         if (total === Infinity) {
             total = res.total
         }

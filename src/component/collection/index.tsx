@@ -11,7 +11,6 @@ type IGroupList = Array<{
 }>
 
 function Collection( { collectionList } : { collectionList: CollectionRes['data'] }) {
-    console.log(111111, collectionList)
     const [ groupList, dispatch ] = useReducer((state: IGroupList, group: IGroup )=> {
         let list: IGroupList = []
         for(const [rate, collectionList] of group) {
@@ -34,7 +33,7 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
             {
                 groupList.map(item => (
                     item.collectionList.length !== 0 &&
-                    <List>
+                    <List key={item.title}>
                         <div>
                             <span className="group-title">{ item.title }</span>
                             <span className="group-count">({ item.collectionList.length })</span>
