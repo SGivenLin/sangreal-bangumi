@@ -1,7 +1,6 @@
 // const { app, BrowserWindow } = require('electron');
 import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu, shell } from 'electron'
 import { rewriteWindow } from './windowInterceptor'
-import axios from 'axios'
 const url = require('url');
 const path = require('path');
 

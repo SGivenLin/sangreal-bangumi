@@ -1,23 +1,23 @@
 import axios, { type AxiosInstance, Method } from 'axios'
 import { setInterceptor } from './interceptor'
 
-interface Iapi {
+interface IApi {
     [key: string]: string | [string, Method]
 }
 
 const bangumiAxios = axios.create({
     baseURL: 'https://api.bgm.tv'
 })
-const api: Iapi = {
+const api: IApi = {
     getCollectionList: '/v0/users/:username/collections',
     getProducer: '/v0/subjects/:subject_id/persons'
 }
 
 class Service {
-    api: Iapi
+    api: IApi
     axios: AxiosInstance
     [props: string]: any
-    constructor(bangumiAxios: AxiosInstance, api: Iapi) {
+    constructor(bangumiAxios: AxiosInstance, api: IApi) {
         this.api = api
         this.axios = bangumiAxios
         this._genRequestMethod()
