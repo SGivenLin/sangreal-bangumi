@@ -1,6 +1,7 @@
 // const { app, BrowserWindow } = require('electron');
-import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu, shell } from 'electron'
+import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu } from 'electron'
 import { rewriteWindow } from './windowInterceptor'
+import setIpcMain from './ipcMain'
 const url = require('url');
 const path = require('path');
 
@@ -13,7 +14,7 @@ function createWindow() {
     height: 600,
     title: 'sangreal',
     webPreferences: {
-      // preload: path.join(__dirname, './preload.js'),
+      preload: path.join(__dirname, './preload.js'),
       nodeIntegration: true,
       contextIsolation: false,
     },
@@ -62,6 +63,7 @@ async function main() {
         console.log('activate')
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
+    setIpcMain()
 }
 
 main()

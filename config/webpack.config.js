@@ -231,6 +231,9 @@ module.exports = function (webpackEnv) {
         : isEnvDevelopment &&
           (info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
     },
+    externals: {
+      'electron': 'commonjs electron'
+    },
     cache: {
       type: 'filesystem',
       version: createEnvironmentHash(env.raw),

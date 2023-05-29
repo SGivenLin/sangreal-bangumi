@@ -1,6 +1,17 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const path = require('path')
 
 module.exports = {
+  entry: {
+    'electron': path.resolve(__dirname, '../electron/main.ts'),
+    'preload': path.resolve(__dirname, '../electron/preload.ts')
+  },
+  target: 'electron-main',
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, '../dist')
+  },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       // {
