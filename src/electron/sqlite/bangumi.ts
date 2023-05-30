@@ -33,7 +33,7 @@ function setBangumiAuthor(data: Array<BangumiAuthor>) {
     })
     const sql = `insert into bangumi_2_author (bangumi_id, author_id, author_name, relation) values ${str.slice(0, str.length - 1)}`
     return new Promise((resolve, reject) => {
-        db.all(sql, (err, rows: Array<BangumiAuthor>) => {
+        db.all<BangumiAuthor>(sql, (err, rows) => {
             if (err) {
                 return reject(err)
             }
