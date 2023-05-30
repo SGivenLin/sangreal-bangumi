@@ -10,7 +10,7 @@ const bangumiAxios = axios.create({
 })
 const api: IApi = {
     getCollectionList: '/v0/users/:username/collections',
-    getProducer: '/v0/subjects/:subject_id/persons'
+    getProducerList: '/v0/subjects/:subject_id/persons'
 }
 
 class Service {

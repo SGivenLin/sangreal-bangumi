@@ -26,14 +26,14 @@ function getItem(
       key,
       icon,
       children,
-      label: <Link to={href}>111</Link>,
+      label: <Link to={href}>{label}</Link>,
       type,
     } as MenuItem;
   }
   
   const items: MenuItem[] = [
-    getItem('Option 1', '1', '/', <AppstoreOutlined />),
-    getItem('Option 2', '2', '/author', <ContainerOutlined />),
+    getItem('收藏', '1', '/', <AppstoreOutlined />),
+    getItem('创作者', '2', '/author', <ContainerOutlined />),
   ];
 
 function AppSider() {

@@ -2,7 +2,7 @@ import { useAppSelector } from 'src/store'
 // import { re } from 'electron'
 import { useEffect } from 'react'
 import { ipcRenderer } from 'electron'
-import { getAuthorResult } from '../../../electron/ipcMain/const'
+import { getAuthorResult } from '../../electron/ipcMain/const'
 
 declare global {
     interface Window {

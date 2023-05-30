@@ -31,7 +31,8 @@ function replaceUrl(config: InternalAxiosRequestConfig<any>) {
 }
 
 function resetUserAgent(config: InternalAxiosRequestConfig<any>) {
-    if (!window) {
+    // if (!window) {
+    if (typeof window !== 'object') {
         config.headers = {
             ...config.headers,
             'User-Agent': 'lin.hayashi@foxmail.com/sangreal-bangumi 0.0.1'

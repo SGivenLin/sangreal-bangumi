@@ -1,10 +1,11 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const path = require('path')
+const modules = require('../config/modules')
 
 module.exports = {
   entry: {
-    'electron': path.resolve(__dirname, '../electron/main.ts'),
-    'preload': path.resolve(__dirname, '../electron/preload.ts')
+    'electron': path.resolve(__dirname, '../src/electron/main.ts'),
+    'preload': path.resolve(__dirname, '../src/electron/preload.ts')
   },
   target: 'electron-main',
   output: {
@@ -38,7 +39,13 @@ module.exports = {
     ]
   },
   plugins: [new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['**/*', '!electron.js'] })],
+  externals: {
+    'sqlite3': 'commonjs sqlite3'
+  },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+      ...modules.webpackAliases
+    },
   }
 }

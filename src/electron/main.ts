@@ -2,6 +2,7 @@
 import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu } from 'electron'
 import { rewriteWindow } from './windowInterceptor'
 import setIpcMain from './ipcMain'
+import db from './sqlite'
 const url = require('url');
 const path = require('path');
 
@@ -64,6 +65,7 @@ async function main() {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
     setIpcMain()
+    console.log(db)
 }
 
 main()
