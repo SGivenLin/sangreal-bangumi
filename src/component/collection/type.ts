@@ -59,5 +59,6 @@ export type {
     UserSubjectCollection,
     CollectionRes,
     IGroupRate,
-    IGroup
+    IGroup,
+    Images,
 }

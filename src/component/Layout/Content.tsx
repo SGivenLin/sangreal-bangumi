@@ -7,12 +7,10 @@ const { Content } = Layout
 function AppContent() {
     return (
         <Content>
-            {/* <BrowserRouter> */}
-                <Routes>
-                    <Route path='/' element={<CollectionView></CollectionView>}></Route>
-                    <Route path='/author' element={<AuthorView></AuthorView>}></Route>
-                </Routes>
-            {/* </BrowserRouter> */}
+            <Routes>
+                <Route path='/' element={<CollectionView></CollectionView>}></Route>
+                <Route path='/author' element={<AuthorView></AuthorView>}></Route>
+            </Routes>
         </Content>
     )
 }

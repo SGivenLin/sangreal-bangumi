@@ -32,8 +32,7 @@ db.serialize(function() {
 });
 
 function createTable(): void {
-    db.run("CREATE TABLE bangumi_2_author (id integer primary key AUTOINCREMENT, bangumi_id integer, author_id integer, author_name text), relation text");
-    console.log('createTable')
+    db.run("CREATE TABLE bangumi_2_author (id integer primary key AUTOINCREMENT, bangumi_id integer, author_id integer, author_name text, author_images text, relation text)");
 }
 
 

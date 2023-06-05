@@ -21,8 +21,9 @@ function once<T extends any[]>(fn: (...args: T) => Promise<any>) {
         }
         running = true
         // @ts-ignore
-        const res = await fn.apply(this, args) 
-        running = false
+        const res = await fn.apply(this, args).finally(() => {
+            running = false
+        })
         return res
     }
 }
