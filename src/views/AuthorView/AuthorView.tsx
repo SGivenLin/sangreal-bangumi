@@ -1,8 +1,10 @@
 import { useAppSelector } from 'src/store'
 // import { re } from 'electron'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
 import { getAuthorResult } from '../../electron/ipcMain/const'
+import type { AuthorData } from 'src/component/Author/type'
+import Author from 'src/component/Author'
 
 declare global {
     interface Window {
@@ -12,15 +14,17 @@ declare global {
 
 function AuthorView() {
     const collectionList = useAppSelector(state => state.collection.collectionList)
-    // const { ipcRenderer } = window.require('electron')
+    const [authorList, setAuthorList] = useState<AuthorData[][]>([])
     useEffect(() => {
-        ipcRenderer.invoke(getAuthorResult, collectionList).then(res => {
-            console.log(res)
+        ipcRenderer.invoke(getAuthorResult, collectionList).then((res: AuthorData[][]) => {
+            setAuthorList(res.slice(0, 100))
         })
-    }, [])
+    }, [ collectionList ])
     
     return (<div>
-       {collectionList.map(item => <div key={item.subject_id }>{ item.subject_id }</div>) }
+        <Author.List>
+            { authorList.map(item => <Author.Item authorData={item}></Author.Item>) }
+        </Author.List>
     </div>)
 }
 

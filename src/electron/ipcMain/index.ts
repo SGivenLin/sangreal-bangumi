@@ -1,12 +1,12 @@
 import { ipcMain } from 'electron'
 import { getAuthorResult } from './const'
-import getAuthorList from './getAuthorList'
+import getAuthorList, { formatAuthorList } from './getAuthorList'
 import type { CollectionRes } from '../../component/collection/type'
 
 function setIpcMain(): void {
     ipcMain.handle(getAuthorResult, once(async (e, data: CollectionRes['data']) => {
-        const list = data.map(item => item.subject_id)
-        const res = getAuthorList(list)
+        const { list } = await getAuthorList(data.map(item => item.subject_id))
+        const res = formatAuthorList(list, data)
         return res
     }))
 }

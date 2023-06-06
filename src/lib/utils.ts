@@ -82,7 +82,9 @@ function executePromisesWithLimit<T extends any>(promises: Array<Promises<T>>, l
           executeNextPromise();
         }
       }
-  
+      if (len === 0) {
+        return Promise.resolve()
+      }
       // Start executing promises
       for (let i = 0; i < limit && promises.length > 0; i++) {
         executeNextPromise();

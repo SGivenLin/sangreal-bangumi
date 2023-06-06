@@ -54,10 +54,12 @@ interface UserSubjectCollection {
 
 type IGroupRate = number | [number, number]
 type IGroup = Map<IGroupRate, CollectionRes['data']>
+type Collection = CollectionRes['data'][number]
 
 export type {
     UserSubjectCollection,
     CollectionRes,
+    Collection,
     IGroupRate,
     IGroup,
     Images,
