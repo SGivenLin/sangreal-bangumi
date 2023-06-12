@@ -11,6 +11,10 @@ interface BangumiAuthor {
 }
 
 function getBangumiAuthor(data: Array<number>): Promise<Array<BangumiAuthor>> {
+    if (data.length === 0) {
+        console.warn('getBangumiAuthor no data')
+        return Promise.resolve([])
+    }
     const str = data.join(',')
     const sql = `select * from bangumi_2_author where bangumi_id in (${str})`
     return new Promise((resolve, reject) => {

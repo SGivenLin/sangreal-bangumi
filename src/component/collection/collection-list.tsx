@@ -1,8 +1,8 @@
 import { Card } from 'antd'
 import type { ReactNode } from 'react'
 
-export default function CollectionList( { children } : { children: ReactNode }) {
+export default function CollectionList( { children, title } : { children: ReactNode, title?: ReactNode }) {
     return (
-        <Card>{ children }</Card>
+        <Card title={title} bodyStyle={{ paddingLeft: '0' }} style={{ marginBottom: '16px' }}>{ children }</Card>
     )
 }

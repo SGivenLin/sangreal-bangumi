@@ -1,15 +1,15 @@
 .subject-item
     display: flex
-    // border-bottom: 1px solid #EAEAEA;
-    padding: 14px 0;
+    padding: 14px 0 14px 24px;
     img
         width: 78px
-        height 78px
+        height: fit-content;
         border: 1px solid #0187C5;
         box-shadow: 0 1px 5px #0187C5;
         margin-right 12px
-    .bangumi-content
+    .bangumi-list
         flex 1
+    .bangumi-content
         font-size: 18px;
         .title
             color: #0084B4;
@@ -24,3 +24,14 @@
     &:nth-of-type(2n)
         background-color: #f9f9f9;
         border-top: 1px solid #FAFAFA;
+.relation-content
+    margin-bottom: 4px
+.tag-relation
+    display: inline-block
+    margin-right: 6px;
+    background: #369CF8;
+    padding: 1px 5px;
+    border-radius: 5px;
+    color: #FFF;
+    margin-bottom: 2px
+    font-size: 11px

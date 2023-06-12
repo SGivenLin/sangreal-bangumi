@@ -6,7 +6,7 @@ const { Content } = Layout
 
 function AppContent() {
     return (
-        <Content>
+        <Content style={{ padding: '10px' }}>
             <Routes>
                 <Route path='/' element={<CollectionView></CollectionView>}></Route>
                 <Route path='/author' element={<AuthorView></AuthorView>}></Route>

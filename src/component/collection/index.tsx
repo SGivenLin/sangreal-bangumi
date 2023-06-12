@@ -33,11 +33,11 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
             {
                 groupList.map(item => (
                     item.collectionList.length !== 0 &&
-                    <List key={item.title}>
-                        <div>
+                    <List key={item.title}  title={<GroupTitle subject={item}></GroupTitle>}>
+                        {/* <div className='groupTitle'>
                             <span className="group-title">{ item.title }</span>
                             <span className="group-count">({ item.collectionList.length })</span>
-                        </div>
+                        </div> */}
                         { item.collectionList.map(collection => <Collection.Item collection={collection} key={collection.subject_id}></Collection.Item>) }
                     </List>
                 ))
@@ -46,6 +46,16 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
 
     )
 }
+
+function GroupTitle({ subject }: { subject: IGroupList[number] }) {
+    return (
+        <div>
+            <span className="group-title">{ subject.title }</span>
+            <span className="group-count">({ subject.collectionList.length })</span>
+        </div>
+    )
+}
+
 Collection.Item = Item
 Collection.List = List
 

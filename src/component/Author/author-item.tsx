@@ -30,7 +30,7 @@ export default function AuthorList({ authorData }: { authorData: AuthorData[] })
                 <a className="title" target="_blank" href={`${baseUrl}/person/${author.author_id}`} rel="noreferrer">{ author.author_name }</a>
             </div>
             <div className='bangumi-list'>
-                {  subjectList.map(item => <SubjectSide authorData={item}></SubjectSide>) }
+                {  subjectList.map(item => <SubjectSide authorData={item} key={item[0].subject_id}></SubjectSide>) }
             </div>
         </div>
     )
@@ -40,9 +40,9 @@ export default function AuthorList({ authorData }: { authorData: AuthorData[] })
 function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
     const subject = authorData[0]
     return (
-        <div>
+        <div className='relation-content'>
             <div><a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subject.subject.name_cn }</a></div>
-            <div className="relation-tag">{ authorData.map(item => <div>{ item.relation }</div>) }</div>
+            <div>{ authorData.map(item => <div key={item.subject_id + item.relation} className='tag-relation'>{ item.relation }</div>) }</div>
         </div>
     )
 }
