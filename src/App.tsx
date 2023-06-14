@@ -1,9 +1,13 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, Spin } from 'antd';
 import { Sider, Content } from 'src/component/Layout'
+import { useAppSelector, useAppDispatch } from 'src/store'
 
 function App() {
+  const loading = useAppSelector(state => state.loading)
+
   return (
+    <Spin tip={loading.text} spinning={loading.loading}>
       <div className='app'>
         <Layout>
           <Sider></Sider>
@@ -12,6 +16,7 @@ function App() {
           </Layout>
         </Layout>
       </div>
+    </Spin>
   );
 }
 

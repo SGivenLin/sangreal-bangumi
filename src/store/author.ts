@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit'
 import type { AuthorData } from 'src/component/Author/type'
 import { weightType, type SortType } from 'src/component/Author/select-form'
+import { initialValues } from 'src/component/Author/select-form'
 
 interface InitialState{
     _authorList: AuthorData[][],
@@ -75,7 +76,13 @@ export const counterSlice = createSlice({
             }
             for(const key in action.payload) {
                 // @ts-ignore
-                cur = map[key](cur, { payload: action.payload[key], type: '' })
+                const val = action.payload[key]
+                // // @ts-ignore
+                // if (initialValues[key] === val) {
+                //     continue
+                // }
+                // @ts-ignore
+                cur = map[key](cur, { payload: val, type: '' })
             }
             return cur
         },

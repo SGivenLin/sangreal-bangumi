@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import type { TypedUseSelectorHook } from 'react-redux'
 import collectionReducer from './collection'
 import authorReducer from './author'
+import loadingReducer from 'src/store/loading'
 
 const store = configureStore({
     reducer: {
         collection: collectionReducer,
         author: authorReducer,
+        loading: loadingReducer,
     },
 })
 

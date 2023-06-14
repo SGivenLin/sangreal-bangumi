@@ -1,7 +1,7 @@
 import api from './index'
 import type { CollectionRes } from '../component/collection/type'
 
-async function getAllCollection(params: object, option: object) {
+async function getAllCollection(params: object, option: object, cb?: (list: CollectionRes['data']) => void) {
     const maxLength = 100 // todo
     let list: CollectionRes['data'] = []
     let total = Infinity
@@ -16,6 +16,7 @@ async function getAllCollection(params: object, option: object) {
             total = res.total
         }
         list = list.concat(res.data)
+        cb && cb(list)
     }
 
     return list
