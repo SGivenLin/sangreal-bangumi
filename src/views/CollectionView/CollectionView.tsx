@@ -13,7 +13,7 @@ function CollectionView() {
   const collectionList = useAppSelector(state => state.collection.collectionList)
   const dispatch = useAppDispatch()
   const onSearch =  async (val: string) => {
-    dispatch(setLoading({ text: `正在获取收藏内容` }))
+    dispatch(setLoading({ loading: true, text: `正在获取收藏内容` }))
     const username = val.trim()
     const list = await getAllCollection({
       subject_type:2,
@@ -29,9 +29,9 @@ function CollectionView() {
     dispatch(setLoading({ loading: false }))
   }
 
-  useEffect(() => {
-    onSearch('linwenkanh')
-  }, [])
+  // useEffect(() => {
+  //   onSearch('linwenkanh')
+  // }, [])
   
 
   return (

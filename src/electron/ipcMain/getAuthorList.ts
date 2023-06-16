@@ -3,6 +3,7 @@ import { executePromisesWithLimit, type Promises } from 'src/lib/utils'
 import api from 'src/service/index'
 import type { Images, CollectionRes, Collection } from 'src/component/collection/type'
 import type { AuthorData } from 'src/component/Author/type'
+import type { GetAuthorListCbInfo } from './const'
 
 interface Author {
     name: string,
@@ -12,7 +13,7 @@ interface Author {
     images: Images,
 }
 
-async function getAuthorList(data: Array<number>) {
+async function getAuthorList(data: Array<number>, cb?: (info: GetAuthorListCbInfo) => void) {
     const res = await getBangumiAuthor(data)
     const bangumiSet = new Set(res.map(item => item.bangumi_id))
     let list: Array<BangumiAuthor> = []
@@ -48,9 +49,13 @@ async function getAuthorList(data: Array<number>) {
         }
     }
     let i = 0
-    const resBangumiAuthorList = await executePromisesWithLimit(promiseList, 6, res => {
+    const resBangumiAuthorList = await executePromisesWithLimit(promiseList, 6, () => {
         i ++
-        // todo
+        cb && cb({
+            total: data.length,
+            finish_new: i,
+            finish_old: bangumiSet.size
+        })
     })
     let listNoStore: Array<BangumiAuthor> = []
     resBangumiAuthorList.successResults.forEach(item => {

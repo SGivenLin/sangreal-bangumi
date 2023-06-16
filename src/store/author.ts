@@ -54,18 +54,23 @@ const _filterSubjectCount: ReducerType = (state, action: PayloadAction<number | 
     }
 }
 
+interface SortTypeReducer extends SortType{ 
+    _init?: boolean
+}
+
 
 export const counterSlice = createSlice({
     name: 'author',
     initialState,
     reducers: {
         setAuthorList: (state, action: PayloadAction<AuthorData[][]>) => {
-            return {
-                _authorList: action.payload,
-                authorList: action.payload,
-            }
+            state = counterSlice.caseReducers.sortByForm({
+                _authorList: [ ...action.payload ],
+                authorList: [ ...action.payload ],
+            }, { type: '', payload: { ...initialValues, _init: true } })
+            return state
         },
-        sortByForm: (state, action: PayloadAction<SortType>) => {
+        sortByForm: (state, action: PayloadAction<SortTypeReducer>) => {
             const map = {
                 weight: _sortBySubject,
                 subjectCount: _filterSubjectCount,
@@ -74,16 +79,22 @@ export const counterSlice = createSlice({
                 ...state,
                 authorList: state._authorList
             }
-            for(const key in action.payload) {
-                // @ts-ignore
+            const isInit = !!action.payload['_init']
+
+            let key: (keyof typeof action.payload)
+            for(key in action.payload) {
                 const val = action.payload[key]
-                // // @ts-ignore
-                // if (initialValues[key] === val) {
-                //     continue
-                // }
+                if (
+                    (key === '_init') ||
+                    (!isInit && initialValues[key] === val)
+                ) {
+                    continue
+                }
                 // @ts-ignore
                 cur = map[key](cur, { payload: val, type: '' })
             }
+            isInit && ( cur._authorList = cur.authorList )
+
             return cur
         },
         sortBySubject: _sortBySubject,
