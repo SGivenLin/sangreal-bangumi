@@ -15,18 +15,24 @@ function CollectionView() {
   const onSearch =  async (val: string) => {
     dispatch(setLoading({ loading: true, text: `正在获取收藏内容` }))
     const username = val.trim()
-    const list = await getAllCollection({
-      subject_type:2,
-      type:2,
-      limit:50,
-      offset:0
-    }, {
-      username
-    }, list => {
-      dispatch(setLoading({ text: `正在获取收藏内容 ${list.length}条` }))
-    })
-    dispatch(setCollectionList(list))
-    dispatch(setLoading({ loading: false }))
+    try {
+      const list = await getAllCollection({
+        subject_type:2,
+        type:2,
+        limit:50,
+        offset:0
+      }, {
+        username
+      }, list => {
+        dispatch(setLoading({ text: `正在获取收藏内容 ${list.length}条` }))
+      })
+      dispatch(setCollectionList(list))
+      dispatch(setLoading({ loading: false }))
+    } catch(e) {
+      console.error(e)
+      dispatch(setLoading({ loading: false }))
+    }
+
   }
 
   // useEffect(() => {

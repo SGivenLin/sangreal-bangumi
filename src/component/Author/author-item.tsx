@@ -1,7 +1,6 @@
 import './author-item.styl'
 import type { AuthorData } from './type'
-
-const baseUrl = 'https://bangumi.tv'
+import { baseUrl } from 'src/lib/const'
 
 function groupBySubject(authorData: AuthorData[]): AuthorData[][] {
     let map: Map<AuthorData['subject_id'], AuthorData[]> = new Map()
@@ -41,7 +40,15 @@ function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
     const subject = authorData[0]
     return (
         <div className='relation-content'>
-            <div><a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subject.subject.name_cn }</a></div>
+            <div>
+                <a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subject.subject.name_cn }</a>
+                <span className='rate'>
+                    <span className='subject-rate'> ({ subject.rate || '未评分' }</span>
+                    <span>/</span>
+                    <span className='subject-score'>{ subject.subject.score })</span>
+                </span>
+
+            </div>
             <div>{ authorData.map(item => <div key={item.subject_id + item.relation} className='tag-relation'>{ item.relation }</div>) }</div>
         </div>
     )

@@ -7,11 +7,11 @@ import { throttle } from 'lodash-es'
 function setIpcMain(win: BrowserWindow | null): void {
     ipcMain.handle(getAuthorResult, once(async (e, data: CollectionRes['data']) => {
         const webContents = win?.webContents
-        const { list } = await getAuthorList(data.map(item => item.subject_id), throttle(info => {
+        const { list, failList } = await getAuthorList(data.map(item => item.subject_id), throttle(info => {
             webContents?.send(authorResultProcess, info)
         }, 100))
         const res = formatAuthorList(list, data)
-        return res
+        return { authorData: res, failList: failList.map(item => ({ error: String(item.error), key: item.key })) }
     }))
 }
 

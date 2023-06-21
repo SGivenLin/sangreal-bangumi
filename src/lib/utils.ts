@@ -101,5 +101,6 @@ function executePromisesWithLimit<T extends any>(promises: Array<Promises<T>>, l
   }
 
   export type {
-    Promises
+    Promises,
+    PromisesResult,
   }

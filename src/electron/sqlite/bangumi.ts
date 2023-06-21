@@ -60,7 +60,6 @@ function setBangumiAuthor(data: Array<BangumiAuthor>) {
     })
     return executePromisesWithLimit<void>(taskList, 10)
 }
-
  
 function groupArray<T>(arr: Array<T>, n: number) {
     const len = arr.length;
@@ -71,7 +70,7 @@ function groupArray<T>(arr: Array<T>, n: number) {
       i += n;
     }
     return result;
-  }
+}
   
 
 export {

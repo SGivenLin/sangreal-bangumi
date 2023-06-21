@@ -3,13 +3,16 @@ import type { PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit'
 import type { AuthorData } from 'src/component/Author/type'
 import { weightType, type SortType } from 'src/component/Author/select-form'
 import { initialValues } from 'src/component/Author/select-form'
+import { jobMap } from 'src/lib/const'
 
 interface InitialState{
+    relationList: string[],
     _authorList: AuthorData[][],
     authorList: AuthorData[][],
 }
 
 const initialState: InitialState = {
+    relationList: [],
     _authorList: [],
     authorList: [],
 }
@@ -21,6 +24,20 @@ function getLength(authorList: AuthorData[]): number{
         set.add(item.bangumi_id)
     })
     return set.size
+}
+
+function getAvgRate(authorList: AuthorData[]): number{
+    let avg = 0
+    let bangumiList: number[] = []
+    authorList.forEach(item => {
+        if (bangumiList.includes(item.subject_id)) {
+            return
+        } else {
+            bangumiList.push(item.subject_id)
+            avg += item.rate || item.subject.score
+        }
+    })
+    return avg / bangumiList.length
 }
 
 type ReducerType = SliceCaseReducers<InitialState>[string]
@@ -58,13 +75,21 @@ interface SortTypeReducer extends SortType{
     _init?: boolean
 }
 
-
 export const counterSlice = createSlice({
     name: 'author',
     initialState,
     reducers: {
         setAuthorList: (state, action: PayloadAction<AuthorData[][]>) => {
+
+            const relationList = new Set<string>()
+            action.payload.forEach(_ => {
+                _.forEach(item => {
+                    relationList.add(item.relation)
+                })
+            })
             state = counterSlice.caseReducers.sortByForm({
+                ...state,
+                relationList:  [ ...relationList ],
                 _authorList: [ ...action.payload ],
                 authorList: [ ...action.payload ],
             }, { type: '', payload: { ...initialValues, _init: true } })
@@ -72,8 +97,10 @@ export const counterSlice = createSlice({
         },
         sortByForm: (state, action: PayloadAction<SortTypeReducer>) => {
             const map = {
-                weight: _sortBySubject,
-                subjectCount: _filterSubjectCount,
+                weight: counterSlice.caseReducers.sortBySubject,
+                subjectCount: counterSlice.caseReducers.filterSubjectCount,
+                useRate: counterSlice.caseReducers.sortByRate,
+                relation: counterSlice.caseReducers.filterSubjectByRelation
             }
             let cur = {
                 ...state,
@@ -99,10 +126,34 @@ export const counterSlice = createSlice({
         },
         sortBySubject: _sortBySubject,
         filterSubjectCount: _filterSubjectCount,
+        sortByRate: (state, action: PayloadAction<boolean>) => {
+            if (action.payload === false) {
+                return state
+            }
+            const authorList = [ ...state.authorList ]
+            authorList.sort((a, b) => {
+                return getAvgRate(b) - getAvgRate(a)
+            })
+            return {
+                ...state,
+                authorList: authorList
+            }
+        },
+        filterSubjectByRelation(state, action: PayloadAction<Array<keyof typeof jobMap>>) {
+            let relation: string[] = []
+            const extraRelation = state.relationList.filter(_ => Object.values(jobMap).every(item => !item || !item.includes(_)))
+            action.payload.forEach(item => {
+                relation = relation.concat(jobMap[item] || extraRelation)
+            })
+            const authorList = [ ...state.authorList ].map(_ => _.filter(item => relation.includes(item.relation))).filter(item => item.length)
+            return {
+                ...state,
+                authorList,
+            }
+        }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setAuthorList, sortBySubject, filterSubjectCount, sortByForm } = counterSlice.actions
-
+export const { setAuthorList, sortBySubject, filterSubjectCount, sortByForm, sortByRate } = counterSlice.actions
 export default counterSlice.reducer
