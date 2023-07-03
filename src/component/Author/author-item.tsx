@@ -41,7 +41,7 @@ function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
     return (
         <div className='relation-content'>
             <div>
-                <a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subject.subject.name_cn }</a>
+                <a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subject.subject.name_cn || subject.subject.name }</a>
                 <span className='rate'>
                     <span className='subject-rate'> ({ subject.rate || '未评分' }</span>
                     <span>/</span>
