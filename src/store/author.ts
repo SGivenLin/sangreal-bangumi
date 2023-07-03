@@ -17,19 +17,25 @@ const initialState: InitialState = {
     authorList: [],
 }
 
+function filterIgnore(authorList: AuthorData[]): AuthorData[] { return authorList.filter(item => !item.isIgnore) }
+
 // 按bangumi_id去重
-function getLength(authorList: AuthorData[]): number{
+function getLengthUnique(authorList: AuthorData[]): number{
     let set = new Set()
-    authorList.forEach(item => {
+    filterIgnore(authorList).forEach(item => {
         set.add(item.bangumi_id)
     })
     return set.size
 }
 
+function getLength(authorList: AuthorData[]): number {
+    return filterIgnore(authorList).length
+}
+
 function getAvgRate(authorList: AuthorData[]): number{
     let avg = 0
     let bangumiList: number[] = []
-    authorList.forEach(item => {
+    filterIgnore(authorList).forEach(item => {
         if (bangumiList.includes(item.subject_id)) {
             return
         } else {
@@ -47,12 +53,12 @@ const _sortBySubject: ReducerType = (state, action: PayloadAction<weightType>) =
     switch(action.payload) {
         case weightType.subject:
             authorList.sort((a, b) => {
-                return getLength(b) - getLength(a)
+                return getLengthUnique(b) - getLengthUnique(a)
             })
             break;
         default:
             authorList.sort((a, b) => {
-                return b.length - a.length
+                return getLength(b) - getLength(a)
             })  
     }
     return {
@@ -66,7 +72,7 @@ const _filterSubjectCount: ReducerType = (state, action: PayloadAction<number | 
     return {
         ...state,
         authorList: authorList.filter(item => {
-            return getLength(item) >= (action.payload || 1)
+            return getLengthUnique(item) >= (action.payload || 1)
         })
     }
 }
@@ -80,7 +86,6 @@ export const counterSlice = createSlice({
     initialState,
     reducers: {
         setAuthorList: (state, action: PayloadAction<AuthorData[][]>) => {
-
             const relationList = new Set<string>()
             action.payload.forEach(_ => {
                 _.forEach(item => {
@@ -92,7 +97,7 @@ export const counterSlice = createSlice({
                 relationList:  [ ...relationList ],
                 _authorList: [ ...action.payload ],
                 authorList: [ ...action.payload ],
-            }, { type: '', payload: { ...initialValues, _init: true } })
+            }, { type: '', payload: { ...initialValues } })
             return state
         },
         sortByForm: (state, action: PayloadAction<SortTypeReducer>) => {
@@ -106,22 +111,13 @@ export const counterSlice = createSlice({
                 ...state,
                 authorList: state._authorList
             }
-            const isInit = !!action.payload['_init']
 
             let key: (keyof typeof action.payload)
             for(key in action.payload) {
                 const val = action.payload[key]
-                if (
-                    (key === '_init') ||
-                    (!isInit && initialValues[key] === val)
-                ) {
-                    continue
-                }
                 // @ts-ignore
                 cur = map[key](cur, { payload: val, type: '' })
             }
-            isInit && ( cur._authorList = cur.authorList )
-
             return cur
         },
         sortBySubject: _sortBySubject,
@@ -145,7 +141,7 @@ export const counterSlice = createSlice({
             action.payload.forEach(item => {
                 relation = relation.concat(jobMap[item] || extraRelation)
             })
-            const authorList = [ ...state.authorList ].map(_ => _.filter(item => relation.includes(item.relation))).filter(item => item.length)
+            const authorList = state.authorList.map(_ => _.map(item => ({ ...item, isIgnore: !relation.includes(item.relation) })))
             return {
                 ...state,
                 authorList,

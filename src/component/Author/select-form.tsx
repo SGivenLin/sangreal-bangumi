@@ -33,8 +33,15 @@ const AuthorForm: React.FC = () => {
 
     const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 12 } }
     const onFormChange = (val: Partial<SortType>, allVal: SortType) => {
-        console.log(allVal)
-        dispatch(sortByForm(allVal))
+        // 修正 allVal 的属性顺序
+        // @ts-ignore
+        let _val: SortType = {}
+        let key: keyof SortType
+        for(key in initialValues) {
+            // @ts-ignore
+            _val[key] = allVal[key]
+        }
+        dispatch(sortByForm(_val))
     };
 
     const rateDom =

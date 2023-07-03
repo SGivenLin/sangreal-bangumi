@@ -49,7 +49,7 @@ function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
                 </span>
 
             </div>
-            <div>{ authorData.map(item => <div key={item.subject_id + item.relation} className='tag-relation'>{ item.relation }</div>) }</div>
+            <div>{ authorData.map(item => <div key={item.subject_id + item.relation} className='tag-relation' style={{ opacity: item.isIgnore ? '0.8' : '1' }}>{ item.relation }</div>) }</div>
         </div>
     )
 }
