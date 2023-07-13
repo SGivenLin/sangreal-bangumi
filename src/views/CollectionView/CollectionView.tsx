@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getAllCollection } from 'src/service/action';
 import { Input, Space } from 'antd';
-import Collection from 'src/component/collection'
+import Collection from 'src/component/Collection'
 import { useAppSelector, useAppDispatch } from 'src/store'
 import { setCollectionList } from 'src/store/collection'
 import { setLoading } from 'src/store/loading';

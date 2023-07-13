@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { CollectionRes } from 'src/component/collection/type'
+import type { CollectionRes } from 'src/component/Collection/type'
 import type { PromisesResult } from 'src/lib/utils' 
 
 interface InitialState{

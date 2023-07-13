@@ -1,4 +1,5 @@
-import type { CollectionRes, IGroup, IGroupRate } from './type'
+import type { CollectionRes, IGroup, IGroupRate, UserSubjectCollection } from './type'
+import { decodeHtml } from 'src/lib/utils'
 
 function groupCollectionByRate(collectionList: CollectionRes['data'], groupRate: Array<IGroupRate>) {
     const group: IGroup = new Map()
@@ -33,6 +34,19 @@ function getMapKey(rate: CollectionRes['data'][number]['rate'], map: IGroup): IG
     return null
 }
 
+function formatSubjectString(item: UserSubjectCollection) {
+    return {
+        ...item,
+        subject: {
+            ...item.subject,
+            name: decodeHtml(item.subject.name),
+            name_cn: decodeHtml(item.subject.name)
+        },
+    }
+}
+
+
 export {
-    groupCollectionByRate
+    groupCollectionByRate,
+    formatSubjectString,
 }

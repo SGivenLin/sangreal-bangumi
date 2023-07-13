@@ -95,9 +95,33 @@ function executePromisesWithLimit<T extends any>(promises: Array<Promises<T>>, l
       }
     });
   }
+
+  function isNode() {
+    return typeof window !== 'object'
+  }
+
+  function toEnvContext<T>(fn: (...res: unknown[]) => T, onlyBrowser = true): T {
+    let val: T
+    const isCurEnv = onlyBrowser ? !isNode() : isNode()
+    if (isCurEnv) {
+      val = fn()
+    } else {
+      // @ts-ignore
+      val = null
+    }
+    return val
+  }
+
+  let htmlParser = toEnvContext(() => new window.DOMParser())
+  function decodeHtml(input: string) {
+    const doc = htmlParser.parseFromString(input, "text/html");
+    return doc.documentElement.textContent || '';
+  }
   
   export {
     executePromisesWithLimit,
+    decodeHtml,
+    isNode,
   }
 
   export type {

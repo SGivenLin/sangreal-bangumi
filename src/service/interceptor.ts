@@ -1,4 +1,5 @@
 import type { AxiosStatic, AxiosInstance, InternalAxiosRequestConfig, AxiosRequestHeaders } from 'axios'
+import { isNode } from 'src/lib/utils'
 
 export function setInterceptor(axios: AxiosStatic | AxiosInstance) {
     axios.interceptors.request.use((config: InternalAxiosRequestConfig<any>) => {
@@ -32,7 +33,7 @@ function replaceUrl(config: InternalAxiosRequestConfig<any>) {
 
 function resetUserAgent(config: InternalAxiosRequestConfig<any>) {
     // if (!window) {
-    if (typeof window !== 'object') {
+    if (isNode()) {
         config.headers = {
             ...config.headers,
             'User-Agent': 'lin.hayashi@foxmail.com/sangreal-bangumi 0.0.1'

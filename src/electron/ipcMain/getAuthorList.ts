@@ -1,7 +1,7 @@
 import { setBangumiAuthor, getBangumiAuthor, type BangumiAuthor } from '../sqlite/bangumi'
 import { executePromisesWithLimit, type Promises } from 'src/lib/utils'
 import api from 'src/service/index'
-import type { Images, CollectionRes, Collection } from 'src/component/collection/type'
+import type { Images, CollectionRes, Collection } from 'src/component/Collection/type'
 import type { AuthorData } from 'src/component/Author/type'
 import type { GetAuthorListCbInfo } from './const'
 

@@ -1,7 +1,7 @@
 import { ipcMain, type BrowserWindow } from 'electron'
 import { getAuthorResult, authorResultProcess } from './const'
 import getAuthorList, { formatAuthorList } from './getAuthorList'
-import type { CollectionRes } from '../../component/collection/type'
+import type { CollectionRes } from '../../component/Collection/type'
 import { throttle } from 'lodash-es'
 
 function setIpcMain(win: BrowserWindow | null): void {

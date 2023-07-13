@@ -2,8 +2,10 @@ import './collection-item.styl'
 import type { UserSubjectCollection } from './type'
 import { Rate } from 'antd';
 import { baseUrl } from 'src/lib/const'
+import { formatSubjectString } from './utils'
 
 export default function CollectionItem({ collection }: { collection: UserSubjectCollection }) {
+    collection = formatSubjectString(collection)
     const subject = collection.subject
     return (
         <div className="subject-item">

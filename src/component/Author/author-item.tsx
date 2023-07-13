@@ -1,6 +1,8 @@
 import './author-item.styl'
 import type { AuthorData } from './type'
 import { baseUrl } from 'src/lib/const'
+import { decodeHtml } from 'src/lib/utils'
+import { formatSubjectString } from 'src/component/Collection/utils'
 
 function groupBySubject(authorData: AuthorData[]): AuthorData[][] {
     let map: Map<AuthorData['subject_id'], AuthorData[]> = new Map()
@@ -21,12 +23,13 @@ export default function AuthorList({ authorData }: { authorData: AuthorData[] })
     const author = authorData[0]
     const image = JSON.parse(author.author_images || '{}').small
     const subjectList = groupBySubject(authorData)
+    const author_name = decodeHtml(author.author_name)
 
     return (
         <div className="subject-item">
-            <img src={ image} alt={ author.author_name } />
+            <img src={ image} alt={ author_name } />
             <div className="bangumi-content">
-                <a className="title" target="_blank" href={`${baseUrl}/person/${author.author_id}`} rel="noreferrer">{ author.author_name }</a>
+                <a className="title" target="_blank" href={`${baseUrl}/person/${author.author_id}`} rel="noreferrer">{ author_name }</a>
             </div>
             <div className='bangumi-list'>
                 {  subjectList.map(item => <SubjectSide authorData={item} key={item[0].subject_id}></SubjectSide>) }
@@ -37,7 +40,7 @@ export default function AuthorList({ authorData }: { authorData: AuthorData[] })
 
 
 function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
-    const subject = authorData[0]
+    const subject = formatSubjectString(authorData[0])
     return (
         <div className='relation-content'>
             <div>

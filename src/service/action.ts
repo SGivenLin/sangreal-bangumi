@@ -1,5 +1,5 @@
 import api from './index'
-import type { CollectionRes } from '../component/collection/type'
+import type { CollectionRes } from '../component/Collection/type'
 
 async function getAllCollection(params: object, option: object, cb?: (list: CollectionRes['data']) => void) {
     const maxLength = 100 // todo

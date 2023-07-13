@@ -54,13 +54,11 @@ async function main() {
     await app.whenReady()
     setMenu()
     app.on('window-all-closed', () => {
-        console.log('关闭')
         if (process.platform !== 'darwin') app.quit()
     })
     createWindow()
     rewriteWindow(win)
     app.on('activate', () => {
-        console.log('activate')
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
     setIpcMain(win)
