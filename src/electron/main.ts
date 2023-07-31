@@ -1,7 +1,8 @@
 // const { app, BrowserWindow } = require('electron');
-import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu, type MenuItemConstructorOptions } from 'electron'
 import { rewriteWindow } from './windowInterceptor'
 import setIpcMain from './ipcMain'
+import { isMac } from './env'
 const url = require('url');
 const path = require('path');
 
@@ -40,13 +41,21 @@ function createWindow() {
 }
 
 function setMenu(): void {
-  const menu = Menu.buildFromTemplate([{
+  const baseMenu: MenuItemConstructorOptions[] = [
+  {
     label: '关于',
-    role: 'about'
+    role: 'about',
   }, {
     label: '重启',
     role: 'reload'
-  }])
+  }]
+
+  const menuTmp = isMac ? [{
+    label: app.name,
+    submenu: baseMenu,
+  }] : baseMenu
+  
+  const menu = Menu.buildFromTemplate(menuTmp)
   Menu.setApplicationMenu(menu)
 }
 
