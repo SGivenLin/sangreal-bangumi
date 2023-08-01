@@ -1,4 +1,4 @@
-import { setBangumiAuthor, getBangumiAuthor, type BangumiAuthor } from '../sqlite/bangumi'
+import { setBangumiAuthor, getBangumiAuthor, setBangumi, getIllegalBangumi, type BangumiAuthor } from '../sqlite/bangumi'
 import { executePromisesWithLimit, type Promises } from 'src/lib/utils'
 import api from 'src/service/index'
 import type { Images, CollectionRes, Collection } from 'src/component/Collection/type'
@@ -6,11 +6,12 @@ import type { AuthorData } from 'src/component/Author/type'
 import type { GetAuthorListCbInfo } from './const'
 
 async function getAuthorList(data: Array<number>, cb?: (info: GetAuthorListCbInfo) => void) {
-    const res = await getBangumiAuthor(data)
+    const [ res, illegalRes ] = await Promise.all([ getBangumiAuthor(data), getIllegalBangumi() ])
+    const illegalBangumiSet = new Set(illegalRes.map(item => item.bangumi_id))
     const bangumiSet = new Set(res.map(item => item.bangumi_id))
     let list: Array<BangumiAuthor> = []
-    let promiseList: Array<Promises<Array<BangumiAuthor>>> = []
-    for(const bangumiId of data) {
+    let promiseList: Promises<Array<BangumiAuthor>>[] = []
+    for(const bangumiId of data.filter(item => !illegalBangumiSet.has(item))) {
         if (bangumiSet.has(bangumiId)) {
             list = list.concat(res.filter(item => item.bangumi_id === bangumiId))
         } else {
@@ -54,9 +55,20 @@ async function getAuthorList(data: Array<number>, cb?: (info: GetAuthorListCbInf
         listNoStore = listNoStore.concat(item.result)
     })
     setBangumiAuthor(listNoStore)
+
+    // 存入里番数据，下次不再请求
+    const illegalList = resBangumiAuthorList.failResults.filter(({ error }) => {
+        // 里番 不会返回，记录到数据库下次不再查询
+        return error.response.status === 404 && error.response.data.title === 'Not Found'
+    }).map(({ key }) => ({
+        bangumi_id: key as number,
+        name: '',
+        bangumi_legal_type: 1,
+    }))
+    setBangumi(illegalList)
     return {
         list: list.concat(listNoStore),
-        failList: resBangumiAuthorList.failResults
+        failList: resBangumiAuthorList.failResults.concat(illegalRes.map(item => ({ key: item.bangumi_id, error: 'illegal' })))
     }
 }
 

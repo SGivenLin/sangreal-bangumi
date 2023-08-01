@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from 'src/store'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
 import { getAuthorResult, authorResultProcess, type GetAuthorListCbInfo } from '../../electron/ipcMain/const'
 import type { AuthorData } from 'src/component/Author/type'

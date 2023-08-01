@@ -10,6 +10,17 @@ interface BangumiAuthor {
     author_images: string, // json
 }
 
+enum Bangumi_legal_type{
+    common,
+    r18,
+}
+interface Bangumi {
+    id?: number,
+    bangumi_id: number,
+    name: string,
+    bangumi_legal_type: Bangumi_legal_type
+}
+
 function getBangumiAuthor(data: Array<number>): Promise<Array<BangumiAuthor>> {
     if (data.length === 0) {
         console.warn('getBangumiAuthor no data')
@@ -60,6 +71,41 @@ function setBangumiAuthor(data: Array<BangumiAuthor>) {
     })
     return executePromisesWithLimit<void>(taskList, 10)
 }
+
+function setBangumi(data: Bangumi[]) {
+    if (data.length === 0) {
+        console.warn('setBangumi no data')
+        return Promise.resolve([])
+    }
+    const sql = 'INSERT INTO bangumi (bangumi_id, name, bangumi_legal_type) VALUES (?, ?, ?)'
+    return new Promise<void>((resolve, reject) => {
+        db.serialize(() => {
+            const stmt = db.prepare(sql);
+            data.forEach(item => {
+              stmt.run(item.bangumi_id, item.name, item.bangumi_legal_type);
+            });
+            stmt.finalize((err) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve()
+                }
+              });
+          });
+    })
+}
+
+function getIllegalBangumi(): Promise<Bangumi[]> {
+    const sql = `select * from bangumi where bangumi_legal_type=1`
+    return new Promise((resolve, reject) => {
+        db.all<Bangumi>(sql, (err, rows) => {
+            if (err) {
+                return reject(err)
+            }
+            resolve(rows)
+        })
+    })
+}
  
 function groupArray<T>(arr: Array<T>, n: number) {
     const len = arr.length;
@@ -76,5 +122,7 @@ function groupArray<T>(arr: Array<T>, n: number) {
 export {
     setBangumiAuthor,
     getBangumiAuthor,
+    setBangumi,
+    getIllegalBangumi,
     type BangumiAuthor,
 }
