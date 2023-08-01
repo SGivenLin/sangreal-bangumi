@@ -5,14 +5,6 @@ import type { Images, CollectionRes, Collection } from 'src/component/Collection
 import type { AuthorData } from 'src/component/Author/type'
 import type { GetAuthorListCbInfo } from './const'
 
-interface Author {
-    name: string,
-    relation: string,
-    type: number,
-    id: number,
-    images: Images,
-}
-
 async function getAuthorList(data: Array<number>, cb?: (info: GetAuthorListCbInfo) => void) {
     const res = await getBangumiAuthor(data)
     const bangumiSet = new Set(res.map(item => item.bangumi_id))
@@ -26,7 +18,7 @@ async function getAuthorList(data: Array<number>, cb?: (info: GetAuthorListCbInf
                 key: bangumiId,
                 promise: api.getProducerList({}, {
                     subject_id: bangumiId
-                }).then((res: Array<Author>) => {
+                }).then(res => {
                     if (!res.length) {
                         return [{
                             bangumi_id: bangumiId,
@@ -105,4 +97,11 @@ function formatAuthorList(authorList: Array<BangumiAuthor>, collectionList: Coll
 export default getAuthorList
 export {
     formatAuthorList,
+}
+export interface Author {
+    name: string,
+    relation: string,
+    type: number,
+    id: number,
+    images: Images,
 }

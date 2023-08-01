@@ -8,7 +8,7 @@ async function getAllCollection(params: object, option: object, cb?: (list: Coll
 
     while(list.length < total && list.length < maxLength) {
         const curOffset = list.length
-        const res: CollectionRes = await api.getCollectionList({
+        const res = await api.getCollectionList({
             ...params,
             offset: curOffset
         }, option)

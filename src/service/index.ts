@@ -1,5 +1,7 @@
 import axios, { type AxiosInstance, Method } from 'axios'
 import { setInterceptor } from './interceptor'
+import type { CollectionRes } from 'src/component/Collection/type'
+import { type Author } from 'src/electron/ipcMain/getAuthorList'
 
 interface IApi {
     [key: string]: string | [string, Method]
@@ -13,10 +15,12 @@ const api: IApi = {
     getProducerList: '/v0/subjects/:subject_id/persons'
 }
 
+type apiFunction<T> = (params: object, option: object) => Promise<T>
 class Service {
     api: IApi
     axios: AxiosInstance
-    [props: string]: any
+    getCollectionList: apiFunction<CollectionRes>
+    getProducerList: apiFunction<Author[]>
     constructor(bangumiAxios: AxiosInstance, api: IApi) {
         this.api = api
         this.axios = bangumiAxios
