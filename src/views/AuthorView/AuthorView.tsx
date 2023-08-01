@@ -63,7 +63,7 @@ function AuthorView() {
         <AuthorForm></AuthorForm>
         <ResultInfo></ResultInfo>
         <Author.List>
-            { authorList.map(item => <Author.Item authorData={item} key={item[0].author_id}></Author.Item>) }
+            { authorList.map((item, index) => <Author.Item index={index} authorData={item} key={item[0].author_id}></Author.Item>) }
         </Author.List>
     </div>)
 }

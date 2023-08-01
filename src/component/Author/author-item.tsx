@@ -19,15 +19,21 @@ function groupBySubject(authorData: AuthorData[]): AuthorData[][] {
     return [ ...map.values() ]
 }
 
-export default function AuthorList({ authorData }: { authorData: AuthorData[] }) {
+export default function AuthorList({ authorData, index }: { authorData: AuthorData[], index: number }) {
     const author = authorData[0]
     const image = JSON.parse(author.author_images || '{}').small
     const subjectList = groupBySubject(authorData)
     const author_name = decodeHtml(author.author_name)
 
+    const val = ['#FE2D46', '#FF6600', '#FAA90E'][index]
+    let style = val ?  {
+        backgroundImage: `linear-gradient(155deg, ${val}, ${val}00)`,
+        fontWeight: 'bold',
+    } : {}
     return (
         <div className="subject-item">
-            <img src={ image} alt={ author_name } />
+            <span className='bangumi-rank-icon' style={style}>{ index + 1 }</span>
+            <img src={ image } alt={ author_name } />
             <div className="bangumi-content">
                 <a className="title" target="_blank" href={`${baseUrl}/person/${author.author_id}`} rel="noreferrer">{ author_name }</a>
             </div>
@@ -52,7 +58,18 @@ function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
                 </span>
 
             </div>
-            <div>{ authorData.map(item => <div key={item.subject_id + item.relation} className='tag-relation' style={{ opacity: item.isIgnore ? '0.8' : '1' }}>{ item.relation }</div>) }</div>
+            <div>
+                {
+                    authorData.map(item => {
+                        const style: React.CSSProperties = item.isIgnore ? {
+                            opacity: '.8',
+                        } : {
+                            fontWeight: 'bold'
+                        }
+                        return <div key={item.subject_id + item.relation} className='tag-relation' style={style}>{ item.relation }</div>
+                    })
+                }
+            </div>
         </div>
     )
 }

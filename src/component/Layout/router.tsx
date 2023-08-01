@@ -35,7 +35,7 @@ const router: RouterItem[] = [{
         icon: <ContainerOutlined />,
         disabledInfo: {
             depCollection: true,
-            message: '请查询收藏'
+            message: '请先执行【收藏】查询'
         }
     }
 }]

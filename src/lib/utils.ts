@@ -117,7 +117,7 @@ function executePromisesWithLimit<T extends any>(promises: Array<Promises<T>>, l
     const doc = htmlParser.parseFromString(input, "text/html");
     return doc.documentElement.textContent || '';
   }
-  
+
   export {
     executePromisesWithLimit,
     decodeHtml,
