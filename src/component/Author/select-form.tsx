@@ -39,7 +39,6 @@ const AuthorForm: React.FC = () => {
                 break;
             }
         }
-        console.log(allVal, initialValues, disabled)
         setResetDisabled(disabled)
     }
 
@@ -76,8 +75,8 @@ const AuthorForm: React.FC = () => {
         >
             <Form.Item label="优先级" name="weight">
                 <Radio.Group value={initialValues} >
-                    <Radio.Button value={weightType.relation}>创作者*职位/作品</Radio.Button>
                     <Radio.Button value={weightType.subject}>创作者/作品</Radio.Button>
+                    <Radio.Button value={weightType.relation}>创作者*职位/作品</Radio.Button>
                 </Radio.Group>
             </Form.Item>
             <Form.Item label={rateDom} name="useRate" valuePropName='checked'>
