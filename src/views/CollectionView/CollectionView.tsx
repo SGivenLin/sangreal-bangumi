@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+// import React, { useEffect, useRef, useState } from 'react';
 import { getAllCollection } from 'src/service/action';
 import { Input, Space } from 'antd';
 import Collection from 'src/component/Collection'
@@ -34,11 +34,6 @@ function CollectionView() {
     }
 
   }
-
-  // useEffect(() => {
-  //   onSearch('linwenkanh')
-  // }, [])
-  
 
   return (
     <Space className="collection-view" direction='vertical' size="middle">

@@ -1,15 +1,14 @@
 import { Layout } from 'antd'
 import { Routes, Route } from 'react-router-dom'
-import CollectionView from 'src/views/CollectionView/CollectionView'
-import AuthorView from 'src/views/AuthorView/AuthorView'
+import router from './router'
+
 const { Content } = Layout
 
 function AppContent() {
     return (
         <Content style={{ padding: '10px', background: '#fff' }} className='main-content'>
             <Routes>
-                <Route path='/' element={<CollectionView></CollectionView>}></Route>
-                <Route path='/author' element={<AuthorView></AuthorView>}></Route>
+                { router.map(item => <Route key={item.path} path={item.path} element={item.element}></Route>) }
             </Routes>
         </Content>
     )

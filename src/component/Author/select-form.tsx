@@ -19,12 +19,6 @@ interface SortType {
     relation: string[],
 }
 
-// const plainOptions = [ 
-//     {label: '作画', value: []},
-//     {label: '监督', value: []},
-//     {label: '音乐', value: []},
-//     {label: '其他', value: []},
-// ];
 const plainOptions = Object.keys(jobMap)
 const initialValues: SortType = {  relation: plainOptions, subjectCount: 2, weight: weightType.subject, useRate: false }
 const AuthorForm: React.FC = () => {
@@ -64,7 +58,7 @@ const AuthorForm: React.FC = () => {
                     <Radio.Button value={weightType.subject}>创作者/作品</Radio.Button>
                 </Radio.Group>
             </Form.Item>
-            <Form.Item label={rateDom} name="useRate">
+            <Form.Item label={rateDom} name="useRate" valuePropName='checked'>
                 <Switch />
             </Form.Item>
             <Form.Item label="参与至少" name="subjectCount">

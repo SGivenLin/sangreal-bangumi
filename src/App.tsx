@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Spin } from 'antd';
 import { Sider, Content } from 'src/component/Layout'
-import { useAppSelector, useAppDispatch } from 'src/store'
+import { useAppSelector } from 'src/store'
 
 function App() {
   const loading = useAppSelector(state => state.loading)
