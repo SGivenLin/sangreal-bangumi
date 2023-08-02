@@ -2,7 +2,7 @@ import api from './index'
 import type { CollectionRes } from '../component/Collection/type'
 
 async function getAllCollection(params: object, option: object, cb?: (list: CollectionRes['data']) => void) {
-    const maxLength = 100 // todo
+    const maxLength = Number.MAX_SAFE_INTEGER // todo
     let list: CollectionRes['data'] = []
     let total = Infinity
 
