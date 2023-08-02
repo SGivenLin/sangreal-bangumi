@@ -75,12 +75,16 @@ async function main() {
     app.on('window-all-closed', () => {
         if (process.platform !== 'darwin') app.quit()
     })
-    createWindow()
-    rewriteWindow(win)
+    createWin()
     app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
+        if (BrowserWindow.getAllWindows().length === 0) createWin()
     })
-    setIpcMain(win)
+}
+
+function createWin() {
+  createWindow()
+  rewriteWindow(win)
+  setIpcMain(win)
 }
 
 main()

@@ -8,7 +8,7 @@ export default function CollectionItem({ collection }: { collection: UserSubject
     collection = formatSubjectString(collection)
     const subject = collection.subject
     return (
-        <div className="subject-item">
+        <div className="subject-collection-item">
             <img src={ subject.images.small } alt={ subject.name_cn } />
             <div className="bangumi-content">
                 <div className='title'>

@@ -1,7 +1,8 @@
-.subject-item
-    display: flex
-    padding: 14px 0 14px 24px;
+.subject-author-item
+    padding: 14px 8px 14px 24px;
     position: relative
+    .item-header
+        display: flex
     img
         width: 78px
         height: fit-content;
@@ -11,22 +12,22 @@
         position relative
         z-index 2
     .bangumi-rank-icon
-        position: absolute
-        top 2px
-        left 6px
         font-size: 16px
         width: 24px
         height 24px
         border-radius: 50%
-        background-image: linear-gradient(155deg, #9195A3, #9195A300)
+        background-image: linear-gradient(to right, #9195A3 40%, #9195A300)
         color #fff
         line-height: 24px;
         text-align: center;
+        margin-right 0
     .bangumi-list
-        flex 1
+        margin-top 24px
+        display: flex
+        flex-wrap: wrap
     .bangumi-content
         font-size: 18px;
-        min-width: 120px;
+        flex: 1;
         .title
             color: #0084B4;
             text-decoration: none
@@ -41,7 +42,9 @@
         background-color: #f9f9f9;
         border-top: 1px solid #FAFAFA;
 .relation-content
-    margin-bottom: 4px
+    margin-bottom: 12px
+    width: 50%
+    box-sizing: border-box
     .rate
         margin-left 4px
         color: #666

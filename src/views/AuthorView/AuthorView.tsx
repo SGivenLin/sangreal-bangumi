@@ -24,14 +24,14 @@ interface AuthorRes {
     failList: PromisesResult<any>['failResults']
 }
 
+const pageSize = 20
 function AuthorView() {
     const collectionList = useAppSelector(state => state.collection.collectionList)
     const allAuthorList = useAppSelector(state => state.author.authorList)
-    const [ curAuthorList, setCurAuthorList ] = useState(allAuthorList.slice(0, 100))
+    const [ curAuthorList, setCurAuthorList ] = useState(allAuthorList.slice(0, pageSize))
     const dispatch = useAppDispatch()
-
     useEffect(() => {
-        setCurAuthorList(allAuthorList.slice(0, 100));
+        setCurAuthorList(allAuthorList.slice(0, pageSize));
       }, [allAuthorList]);
 
     const handle = useCallback((event: Electron.IpcRendererEvent, info: GetAuthorListCbInfo) => {
@@ -69,7 +69,7 @@ function AuthorView() {
 
     const [ hasMore, setHasMore ] = useState(false)
     useScrollToBottom(() => {
-        const _authorList = allAuthorList.slice(0, curAuthorList.length + 100)
+        const _authorList = allAuthorList.slice(0, curAuthorList.length + pageSize)
         if (_authorList.length === allAuthorList.length) {
             setHasMore(true)
             return

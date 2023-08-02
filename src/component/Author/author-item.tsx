@@ -3,6 +3,7 @@ import type { AuthorData } from './type'
 import { baseUrl } from 'src/lib/const'
 import { decodeHtml } from 'src/lib/utils'
 import { formatSubjectString } from 'src/component/Collection/utils'
+import { Divider } from 'antd'
 
 function groupBySubject(authorData: AuthorData[]): AuthorData[][] {
     let map: Map<AuthorData['subject_id'], AuthorData[]> = new Map()
@@ -27,16 +28,19 @@ export default function AuthorList({ authorData, index }: { authorData: AuthorDa
 
     const val = ['#FE2D46', '#FF6600', '#FAA90E'][index]
     let style = val ?  {
-        backgroundImage: `linear-gradient(155deg, ${val}, ${val}00)`,
+        backgroundImage: `linear-gradient(to right, ${val} 40%, ${val}00)`,
         fontWeight: 'bold',
     } : {}
     return (
-        <div className="subject-item">
-            <span className='bangumi-rank-icon' style={style}>{ index + 1 }</span>
-            <img src={ image } alt={ author_name } />
-            <div className="bangumi-content">
-                <a className="title" target="_blank" href={`${baseUrl}/person/${author.author_id}`} rel="noreferrer">{ author_name }</a>
+        <div className="subject-author-item">
+            <div className='item-header'>
+                <img src={ image } alt={ author_name } />
+                <div className="bangumi-content">
+                    <a className="title" target="_blank" href={`${baseUrl}/person/${author.author_id}`} rel="noreferrer">{ author_name }</a>
+                </div>
+                <span className='bangumi-rank-icon' style={style}>{ index + 1 }</span>
             </div>
+            <Divider></Divider>
             <div className='bangumi-list'>
                 {  subjectList.map(item => <SubjectSide authorData={item} key={item[0].subject_id}></SubjectSide>) }
             </div>
