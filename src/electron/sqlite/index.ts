@@ -19,7 +19,7 @@ db.serialize(function() {
 
 function createTable(): void {
     db.run("CREATE TABLE bangumi_2_author (id integer primary key AUTOINCREMENT, bangumi_id integer, author_id integer, author_name text, author_images text, relation text)");
-    db.run("CREATE TABLE bangumi (id integer primary key AUTOINCREMENT, bangumi_id integer, name text, bangumi_legal_type integer)");
+    db.run("CREATE TABLE bangumi (bangumi_id integer primary key, name text, bangumi_legal_type integer)");
 }
 
 
