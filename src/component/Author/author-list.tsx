@@ -3,6 +3,6 @@ import type { ReactNode } from 'react'
 
 export default function AuthorList( { children } : { children: ReactNode }) {
     return (
-        <Card bodyStyle={{ paddingLeft: '0', paddingRight: '0' }}>{ children }</Card>
+        <Card bodyStyle={{ padding: '16px 0 24px 0' }}>{ children }</Card>
     )
 }

@@ -77,7 +77,7 @@ function AuthorView() {
         setCurAuthorList(_authorList)
     })
     
-    return (<div>
+    return (<>
         <AuthorForm></AuthorForm>
         <Author.List>
             <ResultInfo></ResultInfo>
@@ -85,7 +85,7 @@ function AuthorView() {
             { hasMore && allAuthorList.length !== 0 && <div className='list-bottom'>—— 已经到底了 ——</div> }
             { curAuthorList.length === 0 && <div className='list-bottom'>—— 此处什么都没有 ——</div> }
         </Author.List>
-    </div>)
+    </>)
 }
 
 export default AuthorView
