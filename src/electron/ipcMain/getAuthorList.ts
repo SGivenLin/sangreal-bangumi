@@ -4,6 +4,10 @@ import api from 'src/service/index'
 import type { Images, CollectionRes, Collection } from 'src/component/Collection/type'
 import type { AuthorData } from 'src/component/Author/type'
 import type { GetAuthorListCbInfo } from './const'
+import { ipcMain, type BrowserWindow } from 'electron'
+import { getAuthorResult, authorResultProcess } from './const'
+import { once } from './utils'
+import { throttle } from 'lodash-es'
 
 async function getAuthorList(data: Array<number>, cb?: (info: GetAuthorListCbInfo) => void) {
     const [ res, illegalRes ] = await Promise.all([ getBangumiAuthor(data), getIllegalBangumi() ])
@@ -104,12 +108,18 @@ function formatAuthorList(authorList: Array<BangumiAuthor>, collectionList: Coll
     return authorResList
 }
 
-
-
-export default getAuthorList
-export {
-    formatAuthorList,
+function setGetAuthorResultIpc(win: BrowserWindow | null) {
+    ipcMain.handle(getAuthorResult, once(async (e: any, data: CollectionRes['data']) => {
+        const webContents = win?.webContents
+        const { list, failList } = await getAuthorList(data.map(item => item.subject_id), throttle(info => {
+            webContents?.send(authorResultProcess, info)
+        }, 100))
+        const res = formatAuthorList(list, data)
+        return { authorData: res, failList: failList.map(item => ({ error: String(item.error), key: item.key })) }
+    }))
 }
+
+export default setGetAuthorResultIpc
 export interface Author {
     name: string,
     relation: string,

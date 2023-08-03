@@ -9,6 +9,9 @@ import { useFullLoading } from 'src/lib/hooks';
 import SearchHistory from 'src/lib/SearchHistory';
 import './CollectionView.styl'
 import { useState } from 'react';
+import { ipcRenderer } from 'electron';
+import { getCollectionListCache, setCollectionListCache } from 'src/electron/ipcMain/const';
+import type { GetCollectionListCache } from 'src/electron/ipcMain/getCollection'
 
 const { Search } = Input
 
@@ -24,6 +27,13 @@ function CollectionView() {
     const username = val.trim()
     searchHistory.addEntry(username)
     try {
+      dispatch(setLoading({ text: '正在查询缓存' }))
+      const cacheCollection = await ipcRenderer.invoke(getCollectionListCache, { username }) as GetCollectionListCache
+      if (cacheCollection.useCache) {
+        dispatch(setCollectionList(cacheCollection.collection))
+        return
+      }
+
       const list = await getAllCollection({
         subject_type:2,
         type:2,
@@ -35,6 +45,7 @@ function CollectionView() {
         dispatch(setLoading({ text: `正在获取收藏内容 ${list.length}条` }))
       })
       dispatch(setCollectionList(list))
+      ipcRenderer.invoke(setCollectionListCache, { username, collection: list })
     } catch(e: any) {
       console.error(e)
       message.error(e?.response?.status === 404 ? 'bangumi账号id错误' : e?.message || '未知错误')
