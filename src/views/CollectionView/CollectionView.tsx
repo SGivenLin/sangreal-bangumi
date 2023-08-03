@@ -1,6 +1,7 @@
 // import React, { useEffect, useRef, useState } from 'react';
 import { getAllCollection } from 'src/service/action';
-import { Input, Space, message, AutoComplete } from 'antd';
+import { Input, Space, message, AutoComplete, Button, Tooltip } from 'antd';
+import { ReloadOutlined } from '@ant-design/icons'
 import Collection from 'src/component/Collection'
 import { useAppSelector, useAppDispatch } from 'src/store'
 import { setCollectionList } from 'src/store/collection'
@@ -11,6 +12,7 @@ import './CollectionView.styl'
 import { ipcRenderer } from 'electron';
 import { getCollectionListCache, setCollectionListCache } from 'src/electron/ipcMain/const';
 import type { GetCollectionListCache } from 'src/electron/ipcMain/getCollection'
+import { useState } from 'react';
 
 const { Search } = Input
 
@@ -21,15 +23,17 @@ function CollectionView() {
   const searchHistory = new SearchHistory("user_collection_search_history");
   const history = searchHistory.getHistory();
 
-  const onSearch =  useFullLoading(async (val: string) => {
+  const onSearch =  useFullLoading(async (val: string, useCache = true) => {
     const username = val.trim()
     if (!username) return
     try {
-      dispatch(setLoading({ text: '正在查询缓存' }))
-      const cacheCollection = await ipcRenderer.invoke(getCollectionListCache, { username }) as GetCollectionListCache
-      if (cacheCollection.useCache) {
-        dispatch(setCollectionList(cacheCollection.collection))
-        return
+      if (useCache) {
+        dispatch(setLoading({ text: '正在查询缓存' }))
+        const cacheCollection = await ipcRenderer.invoke(getCollectionListCache, { username }) as GetCollectionListCache
+        if (cacheCollection.useCache) {
+          dispatch(setCollectionList(cacheCollection.collection))
+          return
+        }
       }
 
       const list = await getAllCollection({
@@ -51,21 +55,35 @@ function CollectionView() {
     }
   }, '正在获取收藏内容')
 
+  const [ curValue, setCurValue ] = useState('')
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setCurValue(e.target.value)
+  }
   return (
     <Space className="collection-view" direction='vertical' size="middle">
-      <AutoComplete
-        className='search-input'
-        popupClassName="search-input-pop"
-        options={history.map(item => ({ value: item }))}
-      >
-        <Search
-          placeholder="Bangumi账号id"
-          allowClear
-          enterButton="查询"
-          size="large"
-          onSearch={onSearch}
-        />
-      </AutoComplete>
+      <div className='search'>
+        <AutoComplete
+          className='search-input'
+          popupClassName="search-input-pop"
+          options={history.map(item => ({ value: item }))}
+        >
+          <Search
+            placeholder="Bangumi账号id"
+            allowClear
+            enterButton="查询"
+            size="large"
+            onSearch={onSearch}
+            onChange={onChange}
+          />
+        </AutoComplete>
+        <Tooltip title="不使用缓存查询最新收藏">
+          <Button
+            type="text"
+            icon={<ReloadOutlined style={{ fontSize: '1.2em' }} />}
+            onClick={() => onSearch(curValue, false)}
+          />
+        </Tooltip>
+      </div>
       <Collection collectionList={collectionList}></Collection>
     </Space>
   );
