@@ -6,7 +6,7 @@ const { Content } = Layout
 
 function AppContent() {
     return (
-        <Content style={{ padding: '10px', background: '#fff' }} className='main-content'>
+        <Content style={{ padding: '0 10px 10px' }} className='main-content'>
             <Routes>
                 { router.map(item => <Route key={item.path} path={item.path} element={item.element}></Route>) }
             </Routes>

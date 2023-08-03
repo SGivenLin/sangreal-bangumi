@@ -1,4 +1,4 @@
-import { Form, Radio, InputNumber, Switch, Tooltip, Checkbox, Button } from 'antd';
+import { Form, Radio, InputNumber, Switch, Tooltip, Checkbox, Button, Card } from 'antd';
 import { SearchOutlined } from '@ant-design/icons'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import React, { useState } from 'react';
@@ -66,6 +66,7 @@ const AuthorForm: React.FC = () => {
             </Tooltip>
         </span>
     return (
+        <Card>
         <Form
             className='author-form'
             {...formItemLayout}
@@ -97,6 +98,7 @@ const AuthorForm: React.FC = () => {
                 </Button>
             </Form.Item>
         </Form>
+        </Card>
     );
 };
 

@@ -1,4 +1,5 @@
 import { Popover } from 'antd'
+import { DatabaseOutlined } from '@ant-design/icons'
 import { useAppSelector } from 'src/store'
 import './result-info.styl'
 import { baseUrl } from 'src/lib/const'
@@ -12,6 +13,7 @@ function ResultInfo() {
     </div>
     return (
         <div className='result-info'>
+            <DatabaseOutlined style={{paddingRight: 4}} />
             <span>共统计收藏：{ collectionList.length - failCollectionList.length }</span>
             {
                 failCollectionList.length

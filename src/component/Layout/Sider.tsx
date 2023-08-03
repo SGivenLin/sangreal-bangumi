@@ -10,7 +10,9 @@ const siderStyle: React.CSSProperties = {
     textAlign: 'center',
     lineHeight: '120px',
     color: '#fff',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    borderRadius: '0 8px 8px 0',
+    overflow: 'hidden',
 };
 interface MenuItemProps {
   label: string;

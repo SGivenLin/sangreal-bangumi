@@ -3,7 +3,7 @@ import Item from './collection-item'
 import List from './collection-list'
 import type { CollectionRes, IGroup } from './type'
 import { groupCollectionByRate } from './utils'
-import { Collapse, type CollapseProps } from 'antd'
+import { Collapse, type CollapseProps, Card } from 'antd'
 import './index.styl'
 
 type IGroupList = Array<{
@@ -40,22 +40,14 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
 
                        
     return (
-        <div>
-            {/* {
-                groupList.map(item => (
-                    item.collectionList.length !== 0 &&
-                    <List key={item.title}  title={<GroupTitle subject={item}></GroupTitle>}>
-                        { item.collectionList.map(collection => <Collection.Item collection={collection} key={collection.subject_id}></Collection.Item>) }
-                    </List>
-                ))
-            } */}
+        <Card bodyStyle={{padding: 0}}>
             <Collapse
                 bordered={false}
                 ghost
                 size='large'
                 items={getItems(groupList)}
             />
-        </div>
+        </Card>
 
     )
 }

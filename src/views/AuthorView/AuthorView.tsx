@@ -79,8 +79,8 @@ function AuthorView() {
     
     return (<div>
         <AuthorForm></AuthorForm>
-        <ResultInfo></ResultInfo>
         <Author.List>
+            <ResultInfo></ResultInfo>
             { curAuthorList.map((item, index) => <Author.Item index={index} authorData={item} key={item[0].author_id}></Author.Item>) }
             { hasMore && allAuthorList.length !== 0 && <div className='list-bottom'>—— 已经到底了 ——</div> }
             { curAuthorList.length === 0 && <div className='list-bottom'>—— 此处什么都没有 ——</div> }
