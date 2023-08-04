@@ -22,7 +22,7 @@ interface SortType {
 }
 
 const plainOptions = Object.keys(jobMap)
-const initialValues: SortType = { relation: plainOptions, subjectCount: 2, weight: weightType.subject, useRate: false }
+const initialValues: SortType = { relation: plainOptions, subjectCount: 2, weight: weightType.subject, useRate: true }
 const AuthorForm: React.FC = () => {
     const [ resetDisabled, setResetDisabled ] = useState(true)
     const [form] = Form.useForm<SortType>();

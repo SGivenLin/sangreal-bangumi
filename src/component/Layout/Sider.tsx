@@ -9,10 +9,13 @@ const { Sider } = Layout
 const siderStyle: React.CSSProperties = {
     textAlign: 'center',
     lineHeight: '120px',
+    height: '94vh',
     color: '#fff',
     backgroundColor: 'white',
     borderRadius: '0 8px 8px 0',
     overflow: 'hidden',
+    position: 'sticky',
+    top: 0,
 };
 interface MenuItemProps {
   label: string;

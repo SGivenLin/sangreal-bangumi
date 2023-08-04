@@ -51,8 +51,9 @@ export default function AuthorList({ authorData, index }: { authorData: AuthorDa
 
 function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
     const subject = formatSubjectString(authorData[0])
+    const isIgnore = authorData.every(item => item.isIgnore)
     return (
-        <div className='relation-content'>
+        <div className='relation-content' style={{opacity: isIgnore ? '.6' : '1'}}>
             <div>
                 <a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subject.subject.name_cn || subject.subject.name }</a>
                 <span className='rate'>
@@ -65,11 +66,10 @@ function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
             <div>
                 {
                     authorData.map(item => {
-                        const style: React.CSSProperties = item.isIgnore ? {
+                        const style = !isIgnore && item.isIgnore ? {
                             opacity: '.8',
-                        } : {
-                            fontWeight: 'bold'
-                        }
+                            fontWeight: 'normal',
+                        } : {}
                         return <div key={item.subject_id + item.relation} className='tag-relation' style={style}>{ item.relation }</div>
                     })
                 }
