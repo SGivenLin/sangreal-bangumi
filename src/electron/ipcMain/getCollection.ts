@@ -5,7 +5,9 @@ import type { CollectionRes } from 'src/component/Collection/type'
 import Store from 'electron-store'
 import api from 'src/service'
 
-const store = new Store<Record<string, CollectionRes['data']>>();
+const store = new Store<Record<string, CollectionRes['data']>>({
+    name: 'collection'
+})
 
 async function setGetCollectionIpc() {
     ipcMain.handle(getCollectionListCache, once(async (e: any, data: { username: string }) => {

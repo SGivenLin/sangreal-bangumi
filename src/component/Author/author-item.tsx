@@ -37,6 +37,7 @@ export default function AuthorList({ authorData, index }: { authorData: AuthorDa
                 <img src={ image } alt={ author_name } />
                 <div className="bangumi-content">
                     <a className="title" target="_blank" href={`${baseUrl}/person/${author.author_id}`} rel="noreferrer">{ author_name }</a>
+                    <span className="subject-count">({ subjectList.length })</span>
                 </div>
                 <span className='bangumi-rank-icon' style={style}>{ index + 1 }</span>
             </div>

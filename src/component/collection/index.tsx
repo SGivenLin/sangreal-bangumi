@@ -3,8 +3,11 @@ import Item from './collection-item'
 import List from './collection-list'
 import type { CollectionRes, IGroup } from './type'
 import { groupCollectionByRate } from './utils'
-import { Collapse, type CollapseProps, Card } from 'antd'
+import { Collapse, type CollapseProps, Card, Divider } from 'antd'
+import { DatabaseOutlined, UserOutlined } from '@ant-design/icons'
 import './index.styl'
+import { useAppSelector } from 'src/store'
+import { baseUrl } from 'src/lib/const'
 
 type IGroupList = Array<{
     title: string,
@@ -38,9 +41,38 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
         dispatch(groupCollectionByRate(collectionList, [10, 9, 8, 7, [6, 1], 0]))
     }, [ collectionList ])
 
-                       
+    const username = useAppSelector(state => state.userInfo.searchUserInfo.username)
+    const userLink = username ? `${baseUrl}/user/${username}` : '#'
+    const hookPreventDefault = (test: () => boolean, fn?: React.DOMAttributes<HTMLAnchorElement>['onClick']) => {
+        const cb: React.DOMAttributes<HTMLAnchorElement>['onClick'] = e => {
+            test() && e.preventDefault();
+            fn && fn(e)
+        }
+        return cb
+    }
+
+    const onUserNameLinkClick = hookPreventDefault(() => !username)
     return (
         <Card bodyStyle={{padding: 0}}>
+            <div style={{
+                color: '#1677ff',
+                fontSize: 20,
+                fontWeight: 'bold',
+                padding: '8px 20px 0',
+                display: 'flex',
+                justifyContent: 'space-between'
+            }}>
+                <span>
+                    <UserOutlined style={{paddingRight: 4}}></UserOutlined>
+                    <a onClick={onUserNameLinkClick} target="_blank" href={userLink} rel="noreferrer">{ username || '-' }</a>
+                </span>
+                <span>
+                    <DatabaseOutlined style={{paddingRight: 4}}></DatabaseOutlined>
+                    <a onClick={onUserNameLinkClick} target="_blank" href={`${baseUrl}/anime/list/${username}/collect`} rel="noreferrer">收藏：{ collectionList.length }</a>
+                </span>
+            
+            </div>
+            <Divider style={{ margin:'8px 0 0 0' }}></Divider>
             <Collapse
                 bordered={false}
                 ghost

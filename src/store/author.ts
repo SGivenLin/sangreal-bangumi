@@ -81,7 +81,7 @@ interface SortTypeReducer extends SortType{
     _init?: boolean
 }
 
-export const counterSlice = createSlice({
+export const slice = createSlice({
     name: 'author',
     initialState,
     reducers: {
@@ -92,7 +92,7 @@ export const counterSlice = createSlice({
                     relationList.add(item.relation)
                 })
             })
-            state = counterSlice.caseReducers.sortByForm({
+            state = slice.caseReducers.sortByForm({
                 ...state,
                 relationList:  [ ...relationList ],
                 _authorList: [ ...action.payload ],
@@ -102,10 +102,10 @@ export const counterSlice = createSlice({
         },
         sortByForm: (state, action: PayloadAction<SortTypeReducer>) => {
             const map = {
-                weight: counterSlice.caseReducers.sortBySubject,
-                subjectCount: counterSlice.caseReducers.filterSubjectCount,
-                useRate: counterSlice.caseReducers.sortByRate,
-                relation: counterSlice.caseReducers.filterSubjectByRelation
+                weight: slice.caseReducers.sortBySubject,
+                subjectCount: slice.caseReducers.filterSubjectCount,
+                useRate: slice.caseReducers.sortByRate,
+                relation: slice.caseReducers.filterSubjectByRelation
             }
             let cur = {
                 ...state,
@@ -151,5 +151,5 @@ export const counterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setAuthorList, sortBySubject, filterSubjectCount, sortByForm, sortByRate } = counterSlice.actions
-export default counterSlice.reducer
+export const { setAuthorList, sortBySubject, filterSubjectCount, sortByForm, sortByRate } = slice.actions
+export default slice.reducer

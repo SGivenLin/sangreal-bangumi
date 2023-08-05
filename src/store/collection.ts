@@ -13,7 +13,7 @@ const initialState: InitialState = {
     failList: [],
 }
 
-export const counterSlice = createSlice({
+export const slice = createSlice({
     name: 'collection',
     initialState,
     reducers: {
@@ -35,6 +35,6 @@ export const counterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setCollectionList, setFailList } = counterSlice.actions
+export const { setCollectionList, setFailList } = slice.actions
 
-export default counterSlice.reducer
+export default slice.reducer
