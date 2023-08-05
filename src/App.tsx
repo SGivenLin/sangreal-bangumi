@@ -7,7 +7,7 @@ function App() {
   const loading = useAppSelector(state => state.loading)
 
   return (
-    <Spin tip={loading.text} spinning={loading.loading}>
+    <Spin tip={<span style={{ fontWeight: 'bold' }}>{loading.text}</span>} spinning={loading.loading} size="large">
       <div className='app'>
         <Layout>
           <Sider></Sider>

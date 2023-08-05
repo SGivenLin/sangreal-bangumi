@@ -79,7 +79,7 @@
     "start": "concurrently \"npm run start:html\" \"npm run nodemon\"",
     "start:html": "node scripts/start.js",
     "build": "node scripts/build.js && webpack --config ./webpack/webpack.prod.js",
-    "dist": "electron-builder --config builder.json"
+    "dist": "npm run build && electron-builder --config builder.json"
   },
   "main": "main.js",
   "browserslist": {

@@ -4,7 +4,7 @@ export const authorResultProcess = 'authorResultProcess'
 
 export const getCollectionListCache = 'getCollectionListCache'
 export const setCollectionListCache = 'setCollectionListCache'
-interface GetAuthorListCbInfo {
+interface AuthorListCbInfo {
     total: number,
     finish_new: number,
     finish_old: number
@@ -16,4 +16,4 @@ type FailList = Array<{
     errmsg: string
 }>
 
-export type { GetAuthorListCbInfo, FailList }
+export type { AuthorListCbInfo, FailList }

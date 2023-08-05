@@ -3,13 +3,13 @@ import { executePromisesWithLimit, PromisesResult, type Promises } from 'src/lib
 import api from 'src/service/index'
 import type { Images, CollectionRes, Collection } from 'src/component/Collection/type'
 import type { AuthorData } from 'src/component/Author/type'
-import type { GetAuthorListCbInfo } from './const'
+import type { AuthorListCbInfo } from './const'
 import { ipcMain, type BrowserWindow } from 'electron'
 import { getAuthorResult, authorResultProcess, type FailList } from './const'
 import { once } from './utils'
 import { throttle } from 'lodash-es'
 
-async function getAuthorList(data: Array<number>, cb?: (info: GetAuthorListCbInfo) => void) {
+async function getAuthorList(data: Array<number>, cb?: (info: AuthorListCbInfo) => void) {
     const [ res, illegalRes ] = await Promise.all([ getBangumiAuthor(data), getIllegalBangumi() ])
     const illegalBangumiSet = new Set(illegalRes.map(item => item.bangumi_id))
     const bangumiSet = new Set(res.map(item => item.bangumi_id))

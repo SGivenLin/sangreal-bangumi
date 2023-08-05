@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from 'src/store'
 import { useCallback, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
-import { getAuthorResult, authorResultProcess, type GetAuthorListCbInfo, type FailList } from '../../electron/ipcMain/const'
+import { getAuthorResult, authorResultProcess, type AuthorListCbInfo, type FailList } from '../../electron/ipcMain/const'
 import type { AuthorData } from 'src/component/Author/type'
 import Author from 'src/component/Author'
 import AuthorForm from 'src/component/Author/select-form'
@@ -33,7 +33,7 @@ function AuthorView() {
         setCurAuthorList(allAuthorList.slice(0, pageSize));
       }, [allAuthorList]);
 
-    const handle = useCallback((event: Electron.IpcRendererEvent, info: GetAuthorListCbInfo) => {
+    const handle = useCallback((event: Electron.IpcRendererEvent, info: AuthorListCbInfo) => {
         dispatch(setLoading({
             loading: true,
             text: `正在获取信息 ${info.finish_old + info.finish_new}/${info.total}`
