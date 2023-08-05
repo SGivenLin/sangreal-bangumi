@@ -1,11 +1,11 @@
 import { setBangumiAuthor, getBangumiAuthor, setBangumi, getIllegalBangumi, type BangumiAuthor } from '../sqlite/bangumi'
-import { executePromisesWithLimit, type Promises } from 'src/lib/utils'
+import { executePromisesWithLimit, PromisesResult, type Promises } from 'src/lib/utils'
 import api from 'src/service/index'
 import type { Images, CollectionRes, Collection } from 'src/component/Collection/type'
 import type { AuthorData } from 'src/component/Author/type'
 import type { GetAuthorListCbInfo } from './const'
 import { ipcMain, type BrowserWindow } from 'electron'
-import { getAuthorResult, authorResultProcess } from './const'
+import { getAuthorResult, authorResultProcess, type FailList } from './const'
 import { once } from './utils'
 import { throttle } from 'lodash-es'
 
@@ -55,15 +55,49 @@ async function getAuthorList(data: Array<number>, cb?: (info: GetAuthorListCbInf
         })
     })
     let listNoStore: Array<BangumiAuthor> = []
-    resBangumiAuthorList.successResults.forEach(item => {
-        listNoStore = listNoStore.concat(item.result)
+    resBangumiAuthorList.successResults.forEach(({ result }) => {
+        listNoStore = listNoStore.concat(result)
     })
     setBangumiAuthor(listNoStore)
 
+    const errorStrategy = [{
+        test: (error: any) => {
+            return error?.response?.status === 404 && error.response.data.title === 'Not Found'
+        },
+        info: (error?: any) => ({
+            errno: 'illegal',
+            errmsg: '疑似违规信息'
+        })
+    }, {
+        test: (error: any) => {
+            return  error?.errno !== undefined && error?.code
+        },
+        info: (error: any) => ({
+            errno: error?.errno || '',
+            errmsg: error?.code || '',
+        })
+    }]
+    const failList: FailList = resBangumiAuthorList.failResults.map(item => {
+        for(const strategy of errorStrategy) {
+            if (strategy.test(item.error)) {
+                return {
+                    key: item.key,
+                    ...strategy.info(item.error),
+                }
+            }
+        }
+
+        return {
+            key: item.key,
+            errno: String(item.error),
+            errmsg: '',
+        }
+
+    })
     // 存入里番数据，下次不再请求
-    const illegalList = resBangumiAuthorList.failResults.filter(({ error }) => {
+    const illegalList = failList.filter(({ errno }) => {
         // 里番 不会返回，记录到数据库下次不再查询
-        return error.response.status === 404 && error.response.data.title === 'Not Found'
+        return errno === 'illegal'
     }).map(({ key }) => ({
         bangumi_id: key as number,
         name: '',
@@ -72,7 +106,7 @@ async function getAuthorList(data: Array<number>, cb?: (info: GetAuthorListCbInf
     setBangumi(illegalList)
     return {
         list: list.concat(listNoStore),
-        failList: resBangumiAuthorList.failResults.concat(illegalRes.map(item => ({ key: item.bangumi_id, error: 'illegal' })))
+        failList: failList.concat(illegalRes.map(item => ({ key: item.bangumi_id, ...errorStrategy[0].info({}) }))),
     }
 }
 
@@ -115,7 +149,7 @@ function setGetAuthorResultIpc(win: BrowserWindow | null) {
             webContents?.send(authorResultProcess, info)
         }, 100))
         const res = formatAuthorList(list, data)
-        return { authorData: res, failList: failList.map(item => ({ error: String(item.error), key: item.key })) }
+        return { authorData: res, failList: failList }
     }))
 }
 

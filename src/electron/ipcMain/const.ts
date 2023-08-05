@@ -10,4 +10,10 @@ interface GetAuthorListCbInfo {
     finish_old: number
 }
 
-export type { GetAuthorListCbInfo }
+type FailList = Array<{
+    key: number | string,
+    errno: string | number,
+    errmsg: string
+}>
+
+export type { GetAuthorListCbInfo, FailList }

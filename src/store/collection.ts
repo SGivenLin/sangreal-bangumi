@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { CollectionRes } from 'src/component/Collection/type'
-import type { PromisesResult } from 'src/lib/utils' 
+import type { Collection, CollectionRes } from 'src/component/Collection/type'
+import { type FailList } from 'src/electron/ipcMain/const'
+
+type failCollection = Collection & Partial<FailList[number]>
 
 interface InitialState{
     collectionList: CollectionRes['data'],
-    failList: CollectionRes['data']
+    failList: failCollection[]
 }
 
 const initialState: InitialState = {
@@ -20,14 +22,18 @@ export const slice = createSlice({
         setCollectionList: (state, action: PayloadAction<CollectionRes['data']>) => {
             state.collectionList = action.payload
         },
-        setFailList: (state, action: PayloadAction<PromisesResult<any>['failResults']>) => {
-            const list = state.collectionList.filter(item => {
-                for(const key of action.payload) {
-                    if (item.subject_id === key.key) {
-                        return true
+        setFailList: (state, action: PayloadAction<FailList>) => {
+            let list: failCollection[] = []
+            state.collectionList.forEach(item => {
+                for(const failInfo of action.payload) {
+                    if (item.subject_id === failInfo.key) {
+                        list.push({
+                            ...item,
+                            errno: failInfo.errno,
+                            errmsg: failInfo.errmsg,
+                        })
                     }
                 }
-                return false
             })
             state.failList = list
         },

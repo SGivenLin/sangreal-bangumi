@@ -1,9 +1,8 @@
 import { useAppDispatch, useAppSelector } from 'src/store'
 import { useCallback, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
-import { getAuthorResult, authorResultProcess, type GetAuthorListCbInfo } from '../../electron/ipcMain/const'
+import { getAuthorResult, authorResultProcess, type GetAuthorListCbInfo, type FailList } from '../../electron/ipcMain/const'
 import type { AuthorData } from 'src/component/Author/type'
-import type { PromisesResult  } from 'src/lib/utils'
 import Author from 'src/component/Author'
 import AuthorForm from 'src/component/Author/select-form'
 import ResultInfo from 'src/component/Author/result-info'
@@ -21,7 +20,7 @@ declare global {
 
 interface AuthorRes {
     authorData: AuthorData[][] | undefined,
-    failList: PromisesResult<any>['failResults']
+    failList: FailList
 }
 
 const pageSize = 20

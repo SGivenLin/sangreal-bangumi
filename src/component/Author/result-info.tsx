@@ -11,13 +11,17 @@ function ResultInfo() {
     const authorList = useAppSelector(state => state.author.authorList)
 
     const failContent = <ul className='fail-content'>
-        {failCollectionList.map(item => <li key={item.subject_id}><a className="title" target="_blank" href={`${baseUrl}/subject/${item.subject_id}`} rel="noreferrer">{ item.subject.name_cn }</a></li>)}
+        {failCollectionList.map(item =>
+            <li key={item.subject_id}>
+                <a className="title" target="_blank" href={`${baseUrl}/subject/${item.subject_id}`} rel="noreferrer">{ item.subject.name_cn }</a>
+                <span>（{item.errmsg || '-'}）</span>
+            </li>
+        )}
     </ul>
     return (
         <div className='result-info'>
             <div>
                 <DatabaseOutlined style={{paddingRight: 4}} />
-                
                 <Popover
                     placement="rightTop"
                     title={<span style={{color: 'red'}}>数据获取失败</span>}

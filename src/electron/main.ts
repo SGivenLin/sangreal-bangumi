@@ -13,7 +13,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1000,
     height: 600,
-    title: 'sangreal',
+    title: 'Sangreal',
     webPreferences: {
       preload: path.join(__dirname, './preload.js'),
       nodeIntegration: true,
@@ -28,7 +28,8 @@ function createWindow() {
   win.loadURL(isDev ? 'http://localhost:3000' : url.format({
     protocol: 'file',
     slashes: true,
-    pathname: path.join(__dirname, 'index.html'),
+    // pathname: path.join(__dirname, '../html/index.html'),
+    pathname: path.join(__dirname, '../../dist/html/index.html'),
   }));
 
   // 打开开发者工具

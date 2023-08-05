@@ -8,24 +8,18 @@ module.exports = {
     'preload': path.resolve(__dirname, '../src/electron/preload.ts')
   },
   target: 'electron-main',
-  output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, '../dist')
-  },
   devtool: 'inline-source-map',
   module: {
     rules: [
       // {
-      //   oneOf: [
-      //     {
-      //       test: /\.(js|jsx|ts|tsx)$/,
-      //       exclude: /node_modules/,
-      //       use: {
-      //         loader: 'babel-loader',
-      //         options: { cacheDirectory: true }
-      //       }
-      //     },
-      //   ]
+      //   test: /\.(js|jsx|ts|tsx)$/,
+      //   exclude: /node_modules/,
+      //   use: {
+      //     loader: 'babel-loader',
+      //     options: {
+      //       presets: ['@babel/preset-env']
+      //     }
+      //   }
       // },
       {
         test: /.tsx?$/,

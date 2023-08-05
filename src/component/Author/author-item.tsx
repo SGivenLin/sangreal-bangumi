@@ -34,7 +34,7 @@ export default function AuthorList({ authorData, index }: { authorData: AuthorDa
     return (
         <div className="subject-author-item">
             <div className='item-header'>
-                <img src={ image } alt={ author_name } />
+                <img src={ image || require('src/static/user.jpg') } alt={ author_name } />
                 <div className="bangumi-content">
                     <a className="title" target="_blank" href={`${baseUrl}/person/${author.author_id}`} rel="noreferrer">{ author_name }</a>
                     <span className="subject-count">({ subjectList.length })</span>

@@ -3,8 +3,10 @@
 # dependencies
 /node_modules
 /dist
+/electron_dist
 /out
 /build
+/tmp
 
 
 # misc

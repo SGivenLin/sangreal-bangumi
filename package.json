@@ -1,7 +1,10 @@
 {
   "name": "sangreal-bangumi",
   "version": "0.1.0",
+  "author": "lin.hayashi@foxmail.com",
+  "description": "An app of bangumi info based bangumi.tv",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
     "@babel/core": "^7.16.0",
@@ -72,10 +75,11 @@
   },
   "scripts": {
     "nodemon": "nodemon",
-    "start:main": "webpack --config ./webpack/webpack.dev.js && electron ./dist/electron.js",
+    "start:main": "webpack --config ./webpack/webpack.dev.js && electron ./tmp/electron/electron.js",
     "start": "concurrently \"npm run start:html\" \"npm run nodemon\"",
     "start:html": "node scripts/start.js",
-    "build": "node scripts/build.js && tsc electron/main --outDir build"
+    "build": "node scripts/build.js && webpack --config ./webpack/webpack.prod.js",
+    "dist": "electron-builder --config builder.json"
   },
   "main": "main.js",
   "browserslist": {

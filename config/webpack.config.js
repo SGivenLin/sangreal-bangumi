@@ -189,7 +189,8 @@ module.exports = function (webpackEnv) {
   };
 
   return {
-    target: ['browserslist'],
+    // target: ['browserslist'],
+    target: 'electron-renderer',
     // Webpack noise constrained to errors and warnings
     stats: 'errors-warnings',
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
