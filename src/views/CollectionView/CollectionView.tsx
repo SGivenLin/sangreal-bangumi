@@ -15,8 +15,6 @@ import { getCollectionListCache, setCollectionListCache } from 'src/electron/ipc
 import type { GetCollectionListCache } from 'src/electron/ipcMain/getCollection'
 import { useState } from 'react';
 
-const { Search } = Input
-
 function CollectionView() {
   const collectionList = useAppSelector(state => state.collection.collectionList)
   const dispatch = useAppDispatch()
@@ -24,8 +22,9 @@ function CollectionView() {
   const searchHistory = new SearchHistory("user_collection_search_history");
   const history = searchHistory.getHistory();
 
-
-  const onSearch =  useFullLoading(async (val: string, useCache = true) => {
+  
+  type SearchEvent = React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLInputElement> | undefined
+  const onSearch =  useFullLoading(async (val: string, e?: SearchEvent, useCache = true) => {
     const username = val.trim()
     if (!username) return
 
@@ -72,11 +71,11 @@ function CollectionView() {
       <div className='search'>
         <AutoComplete
           className='search-input'
-          popupClassName="search-input-pop"
           options={history.map(item => ({ value: item }))}
           autoFocus={true}
+          getPopupContainer={() => document.querySelector('#app') || document.body}
         >
-          <Search
+          <Input.Search
             placeholder="Bangumi账号id"
             allowClear
             enterButton="查询"
@@ -89,7 +88,7 @@ function CollectionView() {
           <Button
             type="text"
             icon={<ReloadOutlined style={{ fontSize: '1.2em' }} />}
-            onClick={() => onSearch(curValue, false)}
+            onClick={() => onSearch(curValue, undefined, false)}
           />
         </Tooltip>
       </div>

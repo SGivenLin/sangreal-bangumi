@@ -8,6 +8,7 @@ interface IApi {
 }
 
 const bangumiAxios = axios.create({
+    timeout: 10000,
     baseURL: 'https://api.bgm.tv'
 })
 const api: IApi = {

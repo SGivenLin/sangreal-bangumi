@@ -1,4 +1,3 @@
-import React from 'react';
 import { Layout, Spin } from 'antd';
 import { Sider, Content } from 'src/component/Layout'
 import { useAppSelector } from 'src/store'
