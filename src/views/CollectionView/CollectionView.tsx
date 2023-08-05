@@ -74,6 +74,7 @@ function CollectionView() {
           className='search-input'
           popupClassName="search-input-pop"
           options={history.map(item => ({ value: item }))}
+          autoFocus={true}
         >
           <Search
             placeholder="Bangumi账号id"

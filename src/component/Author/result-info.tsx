@@ -27,7 +27,7 @@ function ResultInfo() {
                     title={<span style={{color: 'red'}}>数据获取失败</span>}
                     open={failCollectionList.length === 0 ? false : undefined }
                     content={failContent}>
-                    <span>统计收藏：{ `${collectionList.length - failCollectionList.length} / ${collectionList.length}` }</span>
+                    <span>统计收藏：{ `${_authorList.length ? collectionList.length - failCollectionList.length : 0} / ${collectionList.length}` }</span>
                 </Popover>
             </div>
             <div>
