@@ -18,16 +18,14 @@ export function setInterceptor(axios: AxiosStatic | AxiosInstance) {
 }
 
 function replaceUrl(config: InternalAxiosRequestConfig<any>) {
-    if (config.url?.includes(':')) {
-        config.url = config.url.replace(/\/:(.*?)(\/|$)/g, (match, $1, $2) => {
-            const replaceUrl = config[$1 as keyof InternalAxiosRequestConfig<any>]
-            if (replaceUrl) {
-                return `/${replaceUrl}${$2}`
-            } else {
-                return match
-            }
-        })
-    }
+    config.url = (config.url || '').replace(/\{(.*?)\}/g, (match, $1) => {
+        const replaceUrl = config[$1 as keyof InternalAxiosRequestConfig<any>]
+        if (replaceUrl) {
+            return `${replaceUrl}`
+        } else {
+            return match
+        }
+    })
     return config
 }
 

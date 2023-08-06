@@ -1,7 +1,32 @@
 .bangumi-diff-header
+    position: sticky
+    top 0
+    z-index 2
+    background: #fff
+    padding-bottom: 24px
+    & + .shadow
+        height: 30px;
+        display: block;
+        position: sticky;
+        top: 125px;
+        margin-top: -40px;
+        margin-bottom: 10px;
+        box-shadow: 0 6px 10px -10px #000;
+        z-index: 1;
+.bangumi-diff-search
     display: flex
     justify-content: space-around
     align-items: center
-    margin-bottom: 24px
+    margin-bottom: 12px
+    .search-btn
+        padding-left 8px
+    .search-btn-text
+        opacity .8
+        font-size: 12px
+        &:hover
+            text-decoration: underline
 .bangumi-diff-content
     display: flex
+.diff-text
+    font-weight: bold
+    font-size: 24px

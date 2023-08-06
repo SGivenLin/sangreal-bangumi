@@ -14,13 +14,13 @@ const BangumiDiffContent: FC<{ bangumiContent: BangumiContent }> = ({ bangumiCon
         <div className='bangumi-content'>
             
             <div className='bangumi-title'>
-                <img src={bangumiContent.images.small} className='bangumi-img' alt={bangumiContent.name}></img>
-                <div><a className="title" target="_blank" href={`${baseUrl}/subject/${bangumiContent.id}`} rel="noreferrer">{ bangumiContent.name || bangumiContent.name_cn }</a></div>
+                <img src={bangumiContent.images?.small} className='bangumi-img' alt={bangumiContent.name}></img>
+                <div><a className="title" target="_blank" href={`${baseUrl}/subject/${bangumiContent.id}`} rel="noreferrer">{ bangumiContent.name_cn }</a></div>
             </div>
             <Divider plain><span style={{ color: '#999' }}><TeamOutlined /> staff</span></Divider>
             <div className='bangumi-staff'>
                 { bangumiContent.staffList.map(item => (
-                    <div className="staff-item">
+                    <div key={item.relation} className="staff-item">
                         <div className='staff-label'>{ item.relation }</div>
                         <div className='staff-author'>
                             { item.authorList.map(author => {
@@ -30,7 +30,7 @@ const BangumiDiffContent: FC<{ bangumiContent: BangumiContent }> = ({ bangumiCon
                                             backgroundColor: diffColor[author.diffType]
                                         }
                                     }
-                                    return <span className="auhor-name" style={style}>{ decodeHtml(author.name) }</span>
+                                    return <span key={author.name} className="auhor-name" style={style}>{ decodeHtml(author.name) }</span>
                                 }
                             )} </div>
                     </div>

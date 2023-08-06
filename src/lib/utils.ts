@@ -1,4 +1,4 @@
-import type { SlimBangumi } from 'src/component/Bangumi/type'
+import type { Bangumi } from 'src/component/Bangumi/type'
 
 interface PromisesResult<T> {
     results: Array<{
@@ -120,11 +120,13 @@ function executePromisesWithLimit<T extends any>(promises: Array<Promises<T>>, l
     return doc.documentElement.textContent || '';
   }
 
-  function decodeSubjectName<T extends SlimBangumi>(item: T) {
+  function decodeSubjectName<T extends Pick<Bangumi, 'name' | 'name_cn'>>(item: T) {
+    const name_cn = item.name_cn || item.name
+    const name = item.name_cn ? item.name : ''
     return {
       ...item,
-      name: decodeHtml(item.name),
-      name_cn: decodeHtml(item.name_cn)
+      name: decodeHtml(name),
+      name_cn: decodeHtml(name_cn)
     }
   }
 

@@ -1,23 +1,30 @@
 import './BangumiDIffView.styl'
-import { Card, Input,  Divider, Button, InputRef, Col, Row } from 'antd'
+import { Card, Input,  Divider, Button, InputRef, Col, Row, Alert } from 'antd'
 import { SearchOutlined } from '@ant-design/icons';
 import { useRef, useState } from 'react';
 import api from 'src/service';
 import BangumiDiffContent from 'src/component/Bangumi/BangumiDiffContent'
-import { DiffType, type BangumiContent, type AuthorList, type Bangumi } from 'src/component/Bangumi/type'
+import BangumiSearchPanel from 'src/component/Bangumi/BangumiSearchPanel'
+import { DiffType, type BangumiContent, type AuthorList, type Bangumi, type BangumiBySearch } from 'src/component/Bangumi/type'
 import { Author } from 'src/component/Author/type';
 import { useFullLoading } from 'src/lib/hooks';
 
+const SearchBtn = ({ onClick }: { onClick?: React.DOMAttributes<HTMLSpanElement>['onClick'] }) => {
+    return <Button type="link" className='search-btn'><span className='search-btn-text' onClick={onClick}>不知道id，按名搜索</span></Button>
+}
+
 const BangumiDIffView = () => {
 
-    const input1Ref = useRef<InputRef>(null)
-    const input2Ref = useRef<InputRef>(null)
     const [bangumiContent1, setBangumiContent1] = useState<BangumiContent>()
     const [bangumiContent2, setBangumiContent2] = useState<BangumiContent>()
 
+    const [ input1Val, setInput1Value ] = useState('')
+    const [ input2Val, setInput2Value ] = useState('')
+    const [ diffText, setDiffText ] = useState('')
+
     const onClick = useFullLoading(async () => {
-        const bangumiId1 = input1Ref.current?.input?.value?.trim()
-        const bangumiId2 = input2Ref.current?.input?.value?.trim()
+        const bangumiId1 = input1Val.trim()
+        const bangumiId2 = input2Val.trim()
 
         if (!bangumiId1 || !bangumiId2) {
             return
@@ -32,9 +39,6 @@ const BangumiDIffView = () => {
         addDiff(authorList1, authorList2)
         const staffList1 = groupAuthorList(authorList1, bangumiInfo1)
         const staffList2 = groupAuthorList(authorList2, bangumiInfo2)
-
-        console.log(authorList1, bangumiInfo1, staffList1)
-
         setBangumiContent1({
             ...bangumiInfo1,
             staffList: staffList1,
@@ -43,25 +47,58 @@ const BangumiDIffView = () => {
             ...bangumiInfo2,
             staffList: staffList2,
         })
+
+        setDiffText(getDiffText(authorList1, authorList2))
     }, '正在查询')
+    type searchCb = typeof setInput1Value
+    const curSearchCbRef = useRef<searchCb>(() => {})
+    const [searchPanelOpen, setSearchPanelOpen] = useState(false)
+
+    const searchBtnClick = (cb: searchCb) => {
+        setSearchPanelOpen(true)
+        curSearchCbRef.current = cb
+    }
+
+    const onSelectBangumi = (item: BangumiBySearch) => {
+        curSearchCbRef.current(String(item.id))
+        setSearchPanelOpen(false)
+    }
 
     return (
-    <Card>
-        <div className="bangumi-diff-header">
-            <div className='bangumi-left'>
-                <Input ref={input1Ref} placeholder='bangumi id'></Input>
+    <Card className='bangumi-diff'>
+        <div className='bangumi-diff-header'>
+            <div className="bangumi-diff-search">
+                <div className='bangumi-left'>
+                    <Input placeholder='bangumi id' value={input1Val} onChange={e => setInput1Value(e.target.value)}></Input>
+                    <SearchBtn onClick={() => searchBtnClick(setInput1Value)}></SearchBtn>
+                </div>
+                <div><Button shape="circle" size='large' icon={<SearchOutlined />} onClick={onClick} style={{ margin: '0 20px' }} /></div>
+                <div className='bangumi-right'>
+                <Input placeholder='bangumi id' value={input2Val} onChange={e => setInput2Value(e.target.value)}></Input>
+                    <SearchBtn onClick={() => searchBtnClick(setInput2Value)}></SearchBtn>
+                </div>
             </div>
-            <div><Button shape="circle" size='large' icon={<SearchOutlined />} onClick={onClick} /></div>
-            {/* <Divider></Divider> */}
-            <div className='bangumi-right'>
-                <Input ref={input2Ref} placeholder='bangumi id'></Input>
-            </div>
+            <Alert
+                message={diffText ? <span className="diff-text">对比结果：{diffText}</span> : '输入动画id后查询，进行对比'}
+                style={{ textAlign: 'center' }}
+            ></Alert>
         </div>
-        <Row>
-            { bangumiContent1 && <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent1}></BangumiDiffContent></Col>}
-            <Col span={2}><Divider type="vertical" style={{ height: '100%', textAlign: 'center' }} /></Col>
-            { bangumiContent2 && <Col span={11} style={{ paddingLeft: 12 }}><BangumiDiffContent bangumiContent={bangumiContent2}></BangumiDiffContent></Col>}
-        </Row>
+        {/* <div className='demo'>123</div> */}
+        <div className='shadow'></div>
+        {
+            bangumiContent1 && bangumiContent2 &&
+            <Row>
+                { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent1}></BangumiDiffContent></Col>}
+                <Col span={2} style={{ textAlign: 'center' }}><Divider type="vertical" style={{ height: '100%' }} /></Col>
+                { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent2}></BangumiDiffContent></Col>}
+            </Row>
+        }
+
+        <BangumiSearchPanel
+            open={searchPanelOpen}
+            onCancel={() => setSearchPanelOpen(false)}
+            onSelect={onSelectBangumi}
+        ></BangumiSearchPanel>
     </Card>)
 }
 
@@ -105,7 +142,25 @@ function addDiff(authorList1: AuthorList, authorList2: AuthorList): void {
             }
         })
     })
+}
 
+function getDiffText(authorList1: AuthorList, authorList2: AuthorList) {
+    const percent1 = authorList1.filter(item => item.diffType).length / authorList1.length
+    const percent2 = authorList2.filter(item => item.diffType).length / authorList2.length
+    const percent = Math.max(percent1, percent2) * 100
+
+    let text = '卡巴斯基和巴基斯坦'
+    if (percent > 60) {
+        text = '原班人马'
+    } else if (percent > 20) {
+        text = '有一点联系'
+    } else if (percent > 10){
+        text = '基本无关'
+    } else if (percent > 0) {
+        text = '毫不相干'
+    }
+
+    return text
 }
 
 export default BangumiDIffView

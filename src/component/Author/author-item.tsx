@@ -56,7 +56,7 @@ function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
     return (
         <div className='relation-content' style={{opacity: isIgnore ? '.6' : '1'}}>
             <div>
-                <a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subjectBangumi.name_cn || subjectBangumi.name }</a>
+                <a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subjectBangumi.name_cn }</a>
                 <span className='rate'>
                     <span className='subject-rate'> ({ subject.rate || '-' }</span>
                     <span>/</span>

@@ -13,6 +13,7 @@ import './CollectionView.styl'
 import { ipcRenderer } from 'electron';
 import { getCollectionListCache, setCollectionListCache } from 'src/electron/ipcMain/const';
 import type { GetCollectionListCache } from 'src/electron/ipcMain/getCollection'
+import { SubjectType } from 'src/component/Bangumi/type'
 import { useState } from 'react';
 
 function CollectionView() {
@@ -45,7 +46,7 @@ function CollectionView() {
       }
 
       const list = await getAllCollection({
-        subject_type:2,
+        subject_type: SubjectType.anime,
         type:2,
         limit:50,
         offset:0

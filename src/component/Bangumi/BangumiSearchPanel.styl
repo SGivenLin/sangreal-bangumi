@@ -1,0 +1,61 @@
+.demo
+    height: 40px
+    position sticky
+    top: 0
+    background: white
+    z-index 2
+
+.bangumi-search-panel-content
+    height: 60vh
+    overflow-y auto
+    .bangumi-search-input
+        position: sticky
+        top 0
+        z-index: 2;
+        background: white;
+        box-shadow: 0 6px 10px -10px rgb(0,0,0,.3)
+    .bangumi-item
+        display: flex
+        align-items: flex-start
+        cursor: pointer
+        padding 4px 8px 4px 0
+        &:hover
+            opacity: .9
+            background: #E3E5E7
+            box-shadow: 0 1px 2px #0187C544;
+        .content
+            flex 1
+            padding 0 24px
+        .bangumi-img
+            width: 84px
+            // 在没有图的时候会超过width
+            max-width: 84px;
+            border: 1px solid #0187C5;
+            box-shadow: 0 1px 5px #0187C5;
+        .main-title
+            font-size: 16px;
+        .sub-title
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px
+        .date
+            font-size: 12px;
+            color: #666;
+        .score
+            color #F90
+            font-size: 12px;
+            .count
+                color: #999;
+                margin-left 4px
+        .rank
+            background: #02A3FB;
+            font-size: 14px;
+            padding: 2px 5px 1px 5px;
+            border-radius: 5px;
+            color #fff
+        .id
+            font-weight: bold
+            margin-bottom: 8px
+            font-size: 14px;
+            padding: 2px 5px 1px 5px;
+            border-radius: 5px;

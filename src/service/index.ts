@@ -2,7 +2,7 @@ import axios, { type AxiosInstance, Method } from 'axios'
 import { setInterceptor } from './interceptor'
 import type { CollectionRes } from 'src/component/Collection/type'
 import { type Author } from 'src/component/Author/type'
-import type { Bangumi } from 'src/component/Bangumi/type'
+import type { Bangumi, BangumiSearchResult } from 'src/component/Bangumi/type'
 
 interface IApi {
     [key: string]: string | [string, Method]
@@ -13,9 +13,10 @@ const bangumiAxios = axios.create({
     baseURL: 'https://api.bgm.tv'
 })
 const api: IApi = {
-    getCollectionList: '/v0/users/:username/collections',
-    getProducerList: '/v0/subjects/:subject_id/persons',
-    getBangumiInfo: '/v0/subjects/:subject_id'
+    getCollectionList: '/v0/users/{username}/collections',
+    getProducerList: '/v0/subjects/{subject_id}/persons',
+    getBangumiInfo: '/v0/subjects/{subject_id}',
+    getSubjectListBySearch: '/search/subject/{keywords}'
 }
 
 type apiFunction<T> = (params: object, option: object) => Promise<T>
@@ -25,6 +26,7 @@ class Service {
     getCollectionList: apiFunction<CollectionRes>
     getProducerList: apiFunction<Author[]>
     getBangumiInfo: apiFunction<Bangumi>
+    getSubjectListBySearch: apiFunction<BangumiSearchResult>
     constructor(bangumiAxios: AxiosInstance, api: IApi) {
         this.api = api
         this.axios = bangumiAxios
