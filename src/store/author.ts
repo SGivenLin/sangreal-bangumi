@@ -141,7 +141,20 @@ export const slice = createSlice({
             action.payload.forEach(item => {
                 relation = relation.concat(jobMap[item] || extraRelation)
             })
-            const authorList = state.authorList.map(_ => _.map(item => ({ ...item, isIgnore: !relation.includes(item.relation) })))
+            
+            // 某些职位极可能存在人，也可能是公司。需要二次判断，如果有其他真人职位则一定是真人
+            const needJudgeIsPerson = action.payload.includes('动画公司')
+            const authorList = state.authorList.map(_ => {
+                let _relation = relation
+                if (needJudgeIsPerson) {
+                    const isCompany = _.map(item => item.relation).every(item => jobMap.动画公司.includes(item))
+                    if (!isCompany) {
+                        _relation = _relation.filter(item => !jobMap.动画公司.includes(item))
+                    }
+                }
+                
+                return _.map(item => ({ ...item, isIgnore: !_relation.includes(item.relation) }))
+            })
             return {
                 ...state,
                 authorList,

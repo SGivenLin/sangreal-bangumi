@@ -72,8 +72,8 @@ function CollectionView() {
         <AutoComplete
           className='search-input'
           options={history.map(item => ({ value: item }))}
-          autoFocus={true}
-          getPopupContainer={() => document.querySelector('#app') || document.body}
+          // autoFocus={true}
+          // getPopupContainer={() => document.querySelector('#app') || document.body}
         >
           <Input.Search
             placeholder="Bangumi账号id"

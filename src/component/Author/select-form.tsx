@@ -59,9 +59,15 @@ const AuthorForm: React.FC = () => {
         dispatch(sortByForm(_val))
     })
 
-    const rateDom =
+    const rateNode =
         <span>按评分加权
             <Tooltip placement='bottom' title={<ul><li>优先使用用户评分，未评分动画按当前评分计算</li><li>单个作品仅计算评分一次</li></ul>}>
+                <ExclamationCircleOutlined style={{ marginLeft: '4px' }}/>
+            </Tooltip>
+        </span>
+    const relationNode =
+        <span>职位
+            <Tooltip placement='bottom' title={"分类可能存在误判，不一定完全准确"}>
                 <ExclamationCircleOutlined style={{ marginLeft: '4px' }}/>
             </Tooltip>
         </span>
@@ -80,13 +86,13 @@ const AuthorForm: React.FC = () => {
                     <Radio.Button value={weightType.relation}>创作者*职位/作品</Radio.Button>
                 </Radio.Group>
             </Form.Item>
-            <Form.Item label={rateDom} name="useRate" valuePropName='checked'>
+            <Form.Item label={rateNode} name="useRate" valuePropName='checked'>
                 <Switch />
             </Form.Item>
             <Form.Item label="参与至少" name="subjectCount">
                 <InputNumber addonAfter='部作品' min={1} max={100} style={{ width: '120px' }}/>
             </Form.Item>
-            <Form.Item label="职位" name="relation">
+            <Form.Item label={relationNode} name="relation">
                 <CheckboxGroup options={plainOptions} />
             </Form.Item>
             <Form.Item { ...formBtnLayout }>
