@@ -1,8 +1,10 @@
 import CollectionView from 'src/views/CollectionView/CollectionView'
 import AuthorView from 'src/views/AuthorView/AuthorView'
+import BangumiDIffView from 'src/views/BangumiDiffView/BangumiDIffView'
 import {
     AppstoreOutlined,
     ContainerOutlined,
+    DiffOutlined,
 } from '@ant-design/icons';
 import React from 'react';
 
@@ -37,6 +39,13 @@ const router: RouterItem[] = [{
             depCollection: true,
             message: '请先执行【收藏】查询'
         }
+    }
+}, {
+    element: <BangumiDIffView></BangumiDIffView>,
+    path: '/bangumi-diff',
+    sider: {
+        label: '动画制作团队对比',
+        icon: <DiffOutlined />,
     }
 }]
 

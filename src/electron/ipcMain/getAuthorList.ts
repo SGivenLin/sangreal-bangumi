@@ -1,7 +1,7 @@
 import { setBangumiAuthor, getBangumiAuthor, setBangumi, getIllegalBangumi, type BangumiAuthor } from '../sqlite/bangumi'
-import { executePromisesWithLimit, PromisesResult, type Promises } from 'src/lib/utils'
+import { executePromisesWithLimit, type Promises } from 'src/lib/utils'
 import api from 'src/service/index'
-import type { Images, CollectionRes, Collection } from 'src/component/Collection/type'
+import type { CollectionRes, Collection } from 'src/component/Collection/type'
 import type { AuthorData } from 'src/component/Author/type'
 import type { AuthorListCbInfo } from './const'
 import { ipcMain, type BrowserWindow } from 'electron'
@@ -154,10 +154,3 @@ function setGetAuthorResultIpc(win: BrowserWindow | null) {
 }
 
 export default setGetAuthorResultIpc
-export interface Author {
-    name: string,
-    relation: string,
-    type: number,
-    id: number,
-    images: Images,
-}

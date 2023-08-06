@@ -1,8 +1,7 @@
 import './author-item.styl'
 import type { AuthorData } from './type'
 import { baseUrl } from 'src/lib/const'
-import { decodeHtml } from 'src/lib/utils'
-import { formatSubjectString } from 'src/component/Collection/utils'
+import { decodeHtml, decodeSubjectName } from 'src/lib/utils'
 import { Divider } from 'antd'
 
 function groupBySubject(authorData: AuthorData[]): AuthorData[][] {
@@ -51,12 +50,13 @@ export default function AuthorList({ authorData, index }: { authorData: AuthorDa
 
 
 function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
-    const subject = formatSubjectString(authorData[0])
+    const subject = authorData[0]
+    const subjectBangumi = decodeSubjectName(authorData[0].subject)
     const isIgnore = authorData.every(item => item.isIgnore)
     return (
         <div className='relation-content' style={{opacity: isIgnore ? '.6' : '1'}}>
             <div>
-                <a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subject.subject.name_cn || subject.subject.name }</a>
+                <a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subjectBangumi.name_cn || subjectBangumi.name }</a>
                 <span className='rate'>
                     <span className='subject-rate'> ({ subject.rate || '-' }</span>
                     <span>/</span>

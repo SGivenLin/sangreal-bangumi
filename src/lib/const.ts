@@ -9,3 +9,15 @@ export const jobMap = {
     'CG': ['CG 导演', '特效', '数码绘图', '摄影监督', '3DCG', 'CG'],
     '其他': null,
 }
+
+interface Images {
+    large: string,
+    common: string,
+    medium: string,
+    small: string,
+    grid: string,
+}
+
+export type {
+    Images
+}

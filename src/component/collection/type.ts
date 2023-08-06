@@ -1,46 +1,21 @@
+import type { SubjectType, SlimBangumi } from 'src/component/Bangumi/type'
+
 interface CollectionRes {
     total: number,
     limit: number,
     offset: number,
     data: Array<UserSubjectCollection>,
-  }
-  
-
-enum subject_type {
-    book = 1,
-    anime = 2,
-    music = 3,
-    game = 4,
-    none = 5,
-    real = 6,
 }
 
-interface Images {
-    large: string,
-    common: string,
-    medium: string,
-    small: string,
-    grid: string,
-}
 
-interface SlimSubject{
-    id: number,
-    type: subject_type,
-    name: string,
-    name_cn: string,
+interface SlimSubject extends SlimBangumi{
     short_summary: string,
-    date: string,
-    images: Images,
-    volumes: number,
-    eps: number,
     collection_total: number,
-    score: number,
-    tags: Array<string>
 }
 
 interface UserSubjectCollection {
     subject_id: number,
-    subject_type: subject_type,
+    subject_type: SubjectType,
     rate: number,
     type: number, // todo
     comment?: string,
@@ -62,5 +37,4 @@ export type {
     Collection,
     IGroupRate,
     IGroup,
-    Images,
 }

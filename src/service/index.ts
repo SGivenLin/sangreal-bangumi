@@ -1,7 +1,8 @@
 import axios, { type AxiosInstance, Method } from 'axios'
 import { setInterceptor } from './interceptor'
 import type { CollectionRes } from 'src/component/Collection/type'
-import { type Author } from 'src/electron/ipcMain/getAuthorList'
+import { type Author } from 'src/component/Author/type'
+import type { Bangumi } from 'src/component/Bangumi/type'
 
 interface IApi {
     [key: string]: string | [string, Method]
@@ -13,7 +14,8 @@ const bangumiAxios = axios.create({
 })
 const api: IApi = {
     getCollectionList: '/v0/users/:username/collections',
-    getProducerList: '/v0/subjects/:subject_id/persons'
+    getProducerList: '/v0/subjects/:subject_id/persons',
+    getBangumiInfo: '/v0/subjects/:subject_id'
 }
 
 type apiFunction<T> = (params: object, option: object) => Promise<T>
@@ -22,6 +24,7 @@ class Service {
     axios: AxiosInstance
     getCollectionList: apiFunction<CollectionRes>
     getProducerList: apiFunction<Author[]>
+    getBangumiInfo: apiFunction<Bangumi>
     constructor(bangumiAxios: AxiosInstance, api: IApi) {
         this.api = api
         this.axios = bangumiAxios

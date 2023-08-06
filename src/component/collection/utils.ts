@@ -34,19 +34,6 @@ function getMapKey(rate: CollectionRes['data'][number]['rate'], map: IGroup): IG
     return null
 }
 
-function formatSubjectString(item: UserSubjectCollection) {
-    return {
-        ...item,
-        subject: {
-            ...item.subject,
-            name: decodeHtml(item.subject.name),
-            name_cn: decodeHtml(item.subject.name)
-        },
-    }
-}
-
-
 export {
     groupCollectionByRate,
-    formatSubjectString,
 }

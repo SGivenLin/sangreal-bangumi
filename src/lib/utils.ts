@@ -1,3 +1,5 @@
+import type { SlimBangumi } from 'src/component/Bangumi/type'
+
 interface PromisesResult<T> {
     results: Array<{
         status: 'success' | 'fail'
@@ -118,10 +120,19 @@ function executePromisesWithLimit<T extends any>(promises: Array<Promises<T>>, l
     return doc.documentElement.textContent || '';
   }
 
+  function decodeSubjectName<T extends SlimBangumi>(item: T) {
+    return {
+      ...item,
+      name: decodeHtml(item.name),
+      name_cn: decodeHtml(item.name_cn)
+    }
+  }
+
   export {
     executePromisesWithLimit,
     decodeHtml,
     isNode,
+    decodeSubjectName,
   }
 
   export type {
