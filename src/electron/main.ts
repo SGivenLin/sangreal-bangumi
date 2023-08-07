@@ -1,5 +1,4 @@
-// const { app, BrowserWindow } = require('electron');
-import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu, type MenuItemConstructorOptions } from 'electron'
+import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu, type MenuItemConstructorOptions, globalShortcut } from 'electron'
 import { rewriteWindow } from './windowInterceptor'
 import { setIpcMain, removeIpcMain } from './ipcMain'
 import { isMac } from './env'
@@ -34,10 +33,15 @@ function createWindow() {
 
   // 打开开发者工具
   isDev && win.webContents.openDevTools();
+  globalShortcut.register('F12', () => {
+    // 打开控制台的代码
+    (win as BrowserWindow).webContents.openDevTools()
+  });
 
   // 当 window 被关闭，这个事件会被触发。
   win.on('closed', () => {
     removeIpcMain()
+    globalShortcut.unregisterAll()
     win = null;
   });
 }
