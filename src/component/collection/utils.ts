@@ -1,5 +1,4 @@
-import type { CollectionRes, IGroup, IGroupRate, UserSubjectCollection } from './type'
-import { decodeHtml } from 'src/lib/utils'
+import type { CollectionRes, IGroup, IGroupRate } from './type'
 
 function groupCollectionByRate(collectionList: CollectionRes['data'], groupRate: Array<IGroupRate>) {
     const group: IGroup = new Map()
