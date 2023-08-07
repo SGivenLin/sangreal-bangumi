@@ -13,7 +13,7 @@
     },
     "mac": {
       "target": "dmg",
-      "icon": "dist/html/logo256.png"
+      "icon": "dist/html/logo512.png"
     },
     "win": {
       "target": "nsis",

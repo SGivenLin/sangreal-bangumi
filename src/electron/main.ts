@@ -1,7 +1,7 @@
 // const { app, BrowserWindow } = require('electron');
 import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu, type MenuItemConstructorOptions } from 'electron'
 import { rewriteWindow } from './windowInterceptor'
-import setIpcMain from './ipcMain'
+import { setIpcMain, removeIpcMain } from './ipcMain'
 import { isMac } from './env'
 const url = require('url');
 const path = require('path');
@@ -37,6 +37,7 @@ function createWindow() {
 
   // 当 window 被关闭，这个事件会被触发。
   win.on('closed', () => {
+    removeIpcMain()
     win = null;
   });
 }
@@ -76,10 +77,11 @@ async function main() {
     app.on('window-all-closed', () => {
         if (process.platform !== 'darwin') app.quit()
     })
-    createWin()
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWin()
     })
+
+    createWin()
 }
 
 function createWin() {
