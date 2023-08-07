@@ -143,7 +143,7 @@ export const slice = createSlice({
             })
             
             // 某些职位可能存在人，也可能是公司。需要二次判断，如果有其他真人职位则一定是真人
-            const needJudgeIsPerson = action.payload.includes('动画公司')
+            const needJudgeIsPerson = action.payload.includes('动画公司') && !action.payload.includes('其他')
             const authorList = state.authorList.map(_ => {
                 let _relation = relation
                 if (needJudgeIsPerson) {
