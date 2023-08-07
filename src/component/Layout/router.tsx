@@ -3,7 +3,7 @@ import AuthorView from 'src/views/AuthorView/AuthorView'
 import BangumiDIffView from 'src/views/BangumiDiffView/BangumiDIffView'
 import {
     AppstoreOutlined,
-    ContainerOutlined,
+    TeamOutlined,
     DiffOutlined,
 } from '@ant-design/icons';
 import React from 'react';
@@ -34,7 +34,7 @@ const router: RouterItem[] = [{
     path: '/author',
     sider: {
         label: '收藏/创作者',
-        icon: <ContainerOutlined />,
+        icon: <TeamOutlined />,
         disabledInfo: {
             depCollection: true,
             message: '请先执行【收藏】查询'

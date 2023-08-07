@@ -1,5 +1,5 @@
 import './BangumiDIffView.styl'
-import { Card, Input,  Divider, Button, InputRef, Col, Row, Alert } from 'antd'
+import { Card, Input,  Divider, Button, Col, Row, Alert } from 'antd'
 import { SearchOutlined } from '@ant-design/icons';
 import { useRef, useState } from 'react';
 import api from 'src/service';
@@ -72,7 +72,7 @@ const BangumiDIffView = () => {
                     <Input placeholder='bangumi id' value={input1Val} onChange={e => setInput1Value(e.target.value)}></Input>
                     <SearchBtn onClick={() => searchBtnClick(setInput1Value)}></SearchBtn>
                 </div>
-                <div><Button shape="circle" size='large' icon={<SearchOutlined />} onClick={onClick} style={{ margin: '0 20px' }} /></div>
+                <div><Button shape="circle" size='large' type='primary' ghost={true} icon={<SearchOutlined />} onClick={onClick} style={{ margin: '0 20px' }} /></div>
                 <div className='bangumi-right'>
                 <Input placeholder='bangumi id' value={input2Val} onChange={e => setInput2Value(e.target.value)}></Input>
                     <SearchBtn onClick={() => searchBtnClick(setInput2Value)}></SearchBtn>
@@ -83,7 +83,6 @@ const BangumiDIffView = () => {
                 style={{ textAlign: 'center' }}
             ></Alert>
         </div>
-        {/* <div className='demo'>123</div> */}
         <div className='shadow'></div>
         {
             bangumiContent1 && bangumiContent2 &&

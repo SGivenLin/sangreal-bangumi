@@ -1,6 +1,3 @@
-import { ipcMain } from 'electron'
-import { getCollectionListCache, setCollectionListCache } from './const'
-import { once } from './utils'
 import type { CollectionRes } from 'src/component/Collection/type'
 import Store from 'electron-store'
 import api from 'src/service'
@@ -9,23 +6,16 @@ const store = new Store<Record<string, CollectionRes['data']>>({
     name: 'collection'
 })
 
-async function setGetCollectionIpc() {
-    ipcMain.handle(getCollectionListCache, once(async (e: any, data: { username: string }) => {
-        const res = await diffCollectionCache(data.username)
-        return res
-    }))
-
-    ipcMain.handle(setCollectionListCache, once(async (e: any, data: { username: string, collection: CollectionRes['data'] }) => {
-        return store.set(data.username, data.collection)
-    }))
+async function setCollectionListCache(username: string, collection: CollectionRes['data']) {
+    store.set(username, collection)
 }
 
-interface GetCollectionListCache {
+interface CollectionListCacheResult {
     useCache: boolean,
     collection: CollectionRes['data']
 }
 
-async function diffCollectionCache(username: string): Promise<GetCollectionListCache> {
+async function diffCollectionCache(username: string): Promise<CollectionListCacheResult> {
     let cacheCollection  = store.get(username, [])
     let useCache = false
     const latestCollection = await api.getCollectionList({
@@ -39,5 +29,5 @@ async function diffCollectionCache(username: string): Promise<GetCollectionListC
     return { useCache, collection: cacheCollection }
 }
 
-export default setGetCollectionIpc
-export type { GetCollectionListCache }
+export { setCollectionListCache, diffCollectionCache }
+export type { CollectionListCacheResult }

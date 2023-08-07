@@ -10,11 +10,9 @@ import { setLoading } from 'src/store/loading';
 import { useFullLoading } from 'src/lib/hooks';
 import SearchHistory from 'src/lib/SearchHistory';
 import './CollectionView.styl'
-import { ipcRenderer } from 'electron';
-import { getCollectionListCache, setCollectionListCache } from 'src/electron/ipcMain/const';
-import type { GetCollectionListCache } from 'src/electron/ipcMain/getCollection'
 import { SubjectType } from 'src/component/Bangumi/type'
 import { useState } from 'react';
+import { setCollectionListCache, diffCollectionCache, type CollectionListCacheResult } from './getCollection'
 
 function CollectionView() {
   const collectionList = useAppSelector(state => state.collection.collectionList)
@@ -29,7 +27,7 @@ function CollectionView() {
     const username = val.trim()
     if (!username) return
 
-    const dispatchCollectionList = (list: GetCollectionListCache['collection']) => {
+    const dispatchCollectionList = (list: CollectionListCacheResult['collection']) => {
       dispatch(setCollectionList(list))
       dispatch(setSearchUserInfo({ username }))
       searchHistory.addEntry(username)
@@ -38,7 +36,7 @@ function CollectionView() {
     try {
       if (useCache) {
         dispatch(setLoading({ text: '正在查询缓存' }))
-        const cacheCollection = await ipcRenderer.invoke(getCollectionListCache, { username }) as GetCollectionListCache
+        const cacheCollection = await diffCollectionCache(username)
         if (cacheCollection.useCache) {
           dispatchCollectionList(cacheCollection.collection)
           return
@@ -55,8 +53,7 @@ function CollectionView() {
       }, list => {
         dispatch(setLoading({ text: `正在获取收藏内容 ${list.length}条` }))
       })
-      dispatchCollectionList(list)
-      ipcRenderer.invoke(setCollectionListCache, { username, collection: list })
+      setCollectionListCache(username, list)
     } catch(e: any) {
       console.error(e)
       message.error(e?.response?.status === 404 ? 'bangumi账号id错误' : e?.message || '未知错误')

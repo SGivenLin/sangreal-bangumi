@@ -10,8 +10,8 @@ function useLoading<T extends any[]>(fn: (...args: T) => any): [boolean, Loading
 
   const loadingCb = useCallback<LoadingCb<T>>((...args: T) => {
     setLoading(true)
-    setTimeout(() => {
-        fn(...args)
+    setTimeout(async () => {
+        await fn(...args)
         setLoading(false)
     }, 100)
   }, [fn])
