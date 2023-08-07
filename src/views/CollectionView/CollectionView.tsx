@@ -53,6 +53,7 @@ function CollectionView() {
       }, list => {
         dispatch(setLoading({ text: `正在获取收藏内容 ${list.length}条` }))
       })
+      dispatchCollectionList(list)
       setCollectionListCache(username, list)
     } catch(e: any) {
       console.error(e)
