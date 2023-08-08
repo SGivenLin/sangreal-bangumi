@@ -22,8 +22,8 @@ async function diffCollectionCache(username: string): Promise<CollectionListCach
         subject_type:2,
         type:2,
         limit:1,
-    }, { username }).catch(e => ({ data: [] }))
-    if (cacheCollection.length && latestCollection.data.length && JSON.stringify(cacheCollection[0]) === JSON.stringify(latestCollection.data[0])) {
+    }, { username }).catch(e => ({ total: null }))
+    if (cacheCollection.length === latestCollection.total && cacheCollection[0].updated_at === latestCollection.data[0].updated_at) {
         useCache = true
     }
     return { useCache, collection: cacheCollection }
