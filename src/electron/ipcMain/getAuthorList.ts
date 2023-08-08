@@ -112,7 +112,6 @@ async function getAuthorList(data: Array<number>, cb?: (info: AuthorListCbInfo) 
 }
 
 function formatAuthorList(authorList: Array<BangumiAuthor>, collectionList: CollectionRes['data']) {
-    // let authorData: AuthorData = {}
     const authorMap: Map<BangumiAuthor['author_id'], Array<Partial<AuthorData>>> = new Map()
     const collectionMap: Map<Collection['subject_id'], Collection> = new Map()
     collectionList.forEach(item => collectionMap.set(item.subject_id, item))
@@ -130,16 +129,7 @@ function formatAuthorList(authorList: Array<BangumiAuthor>, collectionList: Coll
 
         authorMap.set(item.author_id, data)
     })
-    // 过滤不超过一个
-    let authorResList: Array<Array<Partial<AuthorData>>> = []
-    authorMap.forEach(item => {
-        if (item.length > 1) {
-            authorResList.push(item)
-        }
-    })
-    authorResList.sort((a, b) => {
-        return b.length - a.length
-    })
+    const authorResList: Array<Array<Partial<AuthorData>>> = Array.from(authorMap.values())
     return authorResList
 }
 
