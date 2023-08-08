@@ -1,8 +1,9 @@
 import { app } from 'electron'
+import { isDev } from '../env'
 import sqlite3 from 'sqlite3'
 const path = require('path')
 const fs = require('fs')
-const dbFile = path.resolve(app.getPath('userData'), './bangumi.db')
+const dbFile = path.resolve(isDev ? '' : app.getPath('userData'), './bangumi.db')
 const exists = fs.existsSync(dbFile);
 
 const db = new (sqlite3.verbose()).Database(dbFile, err => {

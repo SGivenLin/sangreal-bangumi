@@ -106,6 +106,18 @@ function getIllegalBangumi(): Promise<Bangumi[]> {
         })
     })
 }
+
+function getAllRelation(): Promise<string[]>{
+    const sql = `select DISTINCT relation from bangumi_2_author`
+    return new Promise((resolve, reject) => {
+        db.all<{ relation: string }>(sql, (err, rows) => {
+            if (err) {
+                return reject(err)
+            }
+            resolve(rows.map(item => item.relation))
+        })
+    })
+}
  
 function groupArray<T>(arr: Array<T>, n: number) {
     const len = arr.length;
@@ -124,5 +136,6 @@ export {
     getBangumiAuthor,
     setBangumi,
     getIllegalBangumi,
+    getAllRelation,
     type BangumiAuthor,
 }

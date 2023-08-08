@@ -1,4 +1,4 @@
-import { setBangumiAuthor, getBangumiAuthor, setBangumi, getIllegalBangumi, type BangumiAuthor } from '../sqlite/bangumi'
+import { setBangumiAuthor, getBangumiAuthor, setBangumi, getIllegalBangumi, type BangumiAuthor, getAllRelation } from '../sqlite/bangumi'
 import { executePromisesWithLimit, type Promises } from 'src/lib/utils'
 import api from 'src/service/index'
 import type { CollectionRes, Collection } from 'src/component/Collection/type'
@@ -10,7 +10,7 @@ import { once } from './utils'
 import { throttle } from 'lodash-es'
 
 async function getAuthorList(data: Array<number>, cb?: (info: AuthorListCbInfo) => void) {
-    const [ res, illegalRes ] = await Promise.all([ getBangumiAuthor(data), getIllegalBangumi() ])
+    const [ res, illegalRes, relationList ] = await Promise.all([ getBangumiAuthor(data), getIllegalBangumi(), getAllRelation() ])
     const illegalBangumiSet = new Set(illegalRes.map(item => item.bangumi_id))
     const bangumiSet = new Set(res.map(item => item.bangumi_id))
     let list: Array<BangumiAuthor> = []
@@ -107,6 +107,7 @@ async function getAuthorList(data: Array<number>, cb?: (info: AuthorListCbInfo) 
     return {
         list: list.concat(listNoStore),
         failList: failList.concat(illegalRes.map(item => ({ key: item.bangumi_id, ...errorStrategy[0].info({}) }))),
+        relationList,
     }
 }
 
@@ -145,11 +146,11 @@ function formatAuthorList(authorList: Array<BangumiAuthor>, collectionList: Coll
 function setGetAuthorResultIpc(win: BrowserWindow | null) {
     ipcMain.handle(getAuthorResult, once(async (e: any, data: CollectionRes['data']) => {
         const webContents = win?.webContents
-        const { list, failList } = await getAuthorList(data.map(item => item.subject_id), throttle(info => {
+        const { list, relationList, failList } = await getAuthorList(data.map(item => item.subject_id), throttle(info => {
             webContents?.send(authorResultProcess, info)
         }, 100))
         const res = formatAuthorList(list, data)
-        return { authorData: res, failList: failList }
+        return { authorData: res, failList, relationList }
     }))
 }
 

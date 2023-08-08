@@ -6,7 +6,7 @@ import type { AuthorData } from 'src/component/Author/type'
 import Author from 'src/component/Author'
 import AuthorForm from 'src/component/Author/select-form'
 import ResultInfo from 'src/component/Author/result-info'
-import { setAuthorList } from 'src/store/author'
+import { setAuthorList, setRelationListByDB } from 'src/store/author'
 import { setFailList } from 'src/store/collection'
 import { setLoading } from 'src/store/loading'
 import { useScrollToBottom } from 'src/lib/hooks'
@@ -20,7 +20,8 @@ declare global {
 
 interface AuthorRes {
     authorData: AuthorData[][] | undefined,
-    failList: FailList
+    failList: FailList,
+    relationList: string[],
 }
 
 const pageSize = 20
@@ -52,6 +53,7 @@ function AuthorView() {
                 }))
                 dispatch(setAuthorList(res.authorData))
                 dispatch(setFailList(res.failList))
+                dispatch(setRelationListByDB(res.relationList))
                 setTimeout(() => {
                     dispatch(setLoading({
                         loading: false,

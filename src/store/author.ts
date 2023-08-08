@@ -3,16 +3,18 @@ import type { PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit'
 import type { AuthorData } from 'src/component/Author/type'
 import { weightType, type SortType } from 'src/component/Author/select-form'
 import { initialValues } from 'src/component/Author/select-form'
-import { jobMap } from 'src/lib/const'
+import { jobMap, allRelation } from 'src/lib/const'
 
 interface InitialState{
     relationList: string[],
+    relationListByDB: string[],
     _authorList: AuthorData[][],
     authorList: AuthorData[][],
 }
 
 const initialState: InitialState = {
     relationList: [],
+    relationListByDB: [],
     _authorList: [],
     authorList: [],
 }
@@ -100,6 +102,9 @@ export const slice = createSlice({
             }, { type: '', payload: { ...initialValues } })
             return state
         },
+        setRelationListByDB: (state, action: PayloadAction<string[]>) => {
+            state.relationListByDB = [ ...action.payload ]
+        },
         sortByForm: (state, action: PayloadAction<SortTypeReducer>) => {
             const map = {
                 weight: slice.caseReducers.sortBySubject,
@@ -137,7 +142,7 @@ export const slice = createSlice({
         },
         filterSubjectByRelation(state, action: PayloadAction<Array<keyof typeof jobMap>>) {
             let relation: string[] = []
-            const extraRelation = state.relationList.filter(_ => Object.values(jobMap).every(item => !item || !item.includes(_)))
+            const extraRelation = state.relationList.filter(_ => !allRelation.includes(_))
             action.payload.forEach(item => {
                 relation = relation.concat(jobMap[item] || extraRelation)
             })
@@ -164,5 +169,5 @@ export const slice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setAuthorList, sortBySubject, filterSubjectCount, sortByForm, sortByRate } = slice.actions
+export const { setAuthorList, sortByForm, setRelationListByDB } = slice.actions
 export default slice.reducer

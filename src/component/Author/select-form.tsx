@@ -2,9 +2,9 @@ import { Form, Radio, InputNumber, Switch, Tooltip, Checkbox, Button, Card } fro
 import { SearchOutlined } from '@ant-design/icons'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import React, { useState } from 'react';
-import { useAppDispatch } from 'src/store';
+import { useAppDispatch, useAppSelector } from 'src/store';
 import { sortByForm } from 'src/store/author'
-import { jobMap } from 'src/lib/const'
+import { jobMap, allRelation } from 'src/lib/const'
 import { useLoading } from 'src/lib/hooks';
 
 const CheckboxGroup = Checkbox.Group;
@@ -20,8 +20,8 @@ interface SortType {
     subjectCount: number,
     relation: string[],
 }
-
-const plainOptions = Object.keys(jobMap)
+type JobMapKey = keyof typeof jobMap
+const plainOptions = Object.keys(jobMap) as JobMapKey[]
 const initialValues: SortType = { relation: plainOptions, subjectCount: 2, weight: weightType.subject, useRate: true }
 const AuthorForm: React.FC = () => {
     const [ resetDisabled, setResetDisabled ] = useState(true)
@@ -71,6 +71,24 @@ const AuthorForm: React.FC = () => {
                 <ExclamationCircleOutlined style={{ marginLeft: '4px' }}/>
             </Tooltip>
         </span>
+
+    const relationListByDB = useAppSelector(state => state.author.relationListByDB)
+    const extraRelationList = relationListByDB.filter(item => !allRelation.includes(item))
+    const jobList = plainOptions.map((key) => {
+        const relation = jobMap[key]
+        if (relation) {
+            return {
+                label: <Tooltip title={relation.join('，')}>{key}</Tooltip>,
+                value: key
+            }
+        } else {
+            return {
+                label: <Tooltip title={extraRelationList.join('，')} open={extraRelationList.length === 0 ? false : undefined}>{key}</Tooltip>,
+                value: key
+            }
+        }
+        
+    })
     return (
         <Card>
         <Form
@@ -93,7 +111,7 @@ const AuthorForm: React.FC = () => {
                 <InputNumber addonAfter='部作品' min={1} max={100} style={{ width: '120px' }}/>
             </Form.Item>
             <Form.Item label={relationNode} name="relation">
-                <CheckboxGroup options={plainOptions} />
+                <CheckboxGroup options={jobList} />
             </Form.Item>
             <Form.Item { ...formBtnLayout }>
                 <Button type="primary" htmlType="submit" onClick={onSubmit} style={{ marginRight: '12px' }} loading={loading} icon={<SearchOutlined />}> 
