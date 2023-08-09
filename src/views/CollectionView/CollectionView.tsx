@@ -75,7 +75,7 @@ function CollectionView() {
           getPopupContainer={() => document.querySelector('#app') || document.body}
         >
           <Input.Search
-            placeholder="Bangumi账号id"
+            placeholder="Bangumi账号名称"
             allowClear
             enterButton="查询"
             size="large"
