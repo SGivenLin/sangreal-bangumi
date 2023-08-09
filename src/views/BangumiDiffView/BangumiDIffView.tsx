@@ -5,9 +5,10 @@ import { useRef, useState } from 'react';
 import api from 'src/service';
 import BangumiDiffContent from 'src/component/Bangumi/BangumiDiffContent'
 import BangumiSearchPanel from 'src/component/Bangumi/BangumiSearchPanel'
-import { DiffType, type BangumiContent, type AuthorList, type Bangumi, type BangumiBySearch } from 'src/component/Bangumi/type'
+import { type BangumiContent, type Bangumi, type BangumiBySearch } from 'src/component/Bangumi/type'
 import { Author } from 'src/component/Author/type';
 import { useFullLoading } from 'src/lib/hooks';
+import { addDiff, getDiffText } from './getDiffRes'
 
 const SearchBtn = ({ onClick }: { onClick?: React.DOMAttributes<HTMLSpanElement>['onClick'] }) => {
     return <Button type="link" className='search-btn'><span className='search-btn-text' onClick={onClick}>不知道id，按名搜索</span></Button>
@@ -121,45 +122,6 @@ function groupAuthorList(authorList: Author[], bangumiInfo: Bangumi) {
     }
 
     return staffList
-}
-
-function addDiff(authorList1: AuthorList, authorList2: AuthorList): void {
-    authorList1.forEach(author1 => {
-        authorList2.forEach(author2 => {
-            if (author1.id === author2.id) {
-                let diffType = DiffType.person_same
-                if (author1.relation === author2.relation) {
-                    diffType = DiffType.all_same
-                }
-                if(diffType > (author1.diffType || 0)) {
-                    author1.diffType = diffType
-                }
-
-                if(diffType > (author2.diffType || 0)) {
-                    author2.diffType = diffType
-                }
-            }
-        })
-    })
-}
-
-function getDiffText(authorList1: AuthorList, authorList2: AuthorList) {
-    const percent1 = authorList1.filter(item => item.diffType).length / authorList1.length
-    const percent2 = authorList2.filter(item => item.diffType).length / authorList2.length
-    const percent = Math.max(percent1, percent2) * 100
-
-    let text = '卡巴斯基和巴基斯坦'
-    if (percent > 60) {
-        text = '原班人马'
-    } else if (percent > 20) {
-        text = '有一点联系'
-    } else if (percent > 10){
-        text = '基本无关'
-    } else if (percent > 0) {
-        text = '毫不相干'
-    }
-
-    return text
 }
 
 export default BangumiDIffView

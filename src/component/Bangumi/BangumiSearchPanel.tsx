@@ -1,11 +1,11 @@
-import { Input, Modal, type ModalFuncProps, List, message } from "antd"
+import { Input, Modal, type ModalFuncProps, List, message, InputRef } from "antd"
 import './BangumiSearchPanel.styl'
 import api from 'src/service'
 import { SubjectType, BangumiSearchResult, BangumiBySearch } from './type'
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { decodeSubjectName } from "src/lib/utils"
-import { baseUrl } from "src/lib/const"
 import { useLoading } from "src/lib/hooks"
+import { BangumiLink } from "../common/link"
 
 type OnSelect = (bangumi: BangumiBySearch) => void
 
@@ -36,19 +36,20 @@ const BangumiSearchPanel = (props: ModalFuncProps & { onSelect: OnSelect }) => {
         props.onSelect(item)
     }
 
-    const onClickLink = (link: string, e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        e.preventDefault()
-        e.stopPropagation()
-        window.open(link, '_blank')
+    const inputRef = useRef<InputRef>(null)
+    const focusInput = (open: boolean) => {
+        open && inputRef.current?.focus()
     }
 
     return  <Modal
         footer={null}
         title="动画搜索"
+        afterOpenChange={focusInput}
         { ...props }
     >
         <div className="bangumi-search-panel-content">
             <Input.Search
+                ref={inputRef}
                 className="bangumi-search-input"
                 placeholder="动画名称"
                 allowClear
@@ -57,18 +58,16 @@ const BangumiSearchPanel = (props: ModalFuncProps & { onSelect: OnSelect }) => {
                 loading={loading}
                 onSearch={onSearch}
             />
-            {/* <div className="demo">123</div> */}
             <div className="shadow"></div>
             <List
                 header={<div style={{ fontWeight: 'bold' }}>搜索结果:</div>}
                 dataSource={bangumiList}
                 renderItem={item => {
                     item = decodeSubjectName(item)
-                    const url = `${baseUrl}/subject/${item.id}`
                     return <List.Item className="bangumi-item" onClick={(e) => onClick(item, e)}>
                         <div><img className="bangumi-img" src={ item.images?.small } alt={item.name}></img></div>
                         <div className="content">
-                            <div><a className="main-title" onClick={e => onClickLink(url, e)} href={url} target="_blank" rel="noreferrer">{ item.name_cn }</a></div>
+                            <div><BangumiLink className="main-title" bangumi={item} stop={true}></BangumiLink></div>
                             <div className="sub-title">{item.name}</div>
                             <div className="date"> { item.air_date } </div>
                             <div className="score">

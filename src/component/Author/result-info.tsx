@@ -2,7 +2,7 @@ import { Popover } from 'antd'
 import { DatabaseOutlined, UserOutlined } from '@ant-design/icons'
 import { useAppSelector } from 'src/store'
 import './result-info.styl'
-import { baseUrl } from 'src/lib/const'
+import { BangumiLink } from '../common/link'
 
 function ResultInfo() {
     const collectionList = useAppSelector(state => state.collection.collectionList)
@@ -13,7 +13,7 @@ function ResultInfo() {
     const failContent = <ul className='fail-content'>
         {failCollectionList.map(item =>
             <li key={item.subject_id}>
-                <a className="title" target="_blank" href={`${baseUrl}/subject/${item.subject_id}`} rel="noreferrer">{ item.subject.name_cn }</a>
+                <BangumiLink className="title" bangumi={item.subject}></BangumiLink>
                 <span>（{item.errmsg || '-'}）</span>
             </li>
         )}

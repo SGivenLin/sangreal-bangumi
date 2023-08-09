@@ -1,8 +1,8 @@
 import './collection-item.styl'
 import type { UserSubjectCollection } from './type'
 import { Rate } from 'antd';
-import { baseUrl } from 'src/lib/const'
 import { decodeSubjectName } from 'src/lib/utils';
+import { BangumiLink } from 'src/component/common/link';
 
 export default function CollectionItem({ collection }: { collection: UserSubjectCollection }) {
     const subject = decodeSubjectName(collection.subject)
@@ -11,7 +11,7 @@ export default function CollectionItem({ collection }: { collection: UserSubject
             <img src={ subject.images?.small } alt={ subject.name_cn } />
             <div className="bangumi-content">
                 <div className='title'>
-                    <a className="main-title" target="_blank" href={`${baseUrl}/subject/${subject.id}`} rel="noreferrer">{ subject.name_cn }</a>
+                    <BangumiLink className="main-title" bangumi={subject}></BangumiLink>
                     <span className="sub-title">{ subject.name }</span>
                 </div>
                 <div className='info'>

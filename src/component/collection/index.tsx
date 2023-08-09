@@ -7,7 +7,7 @@ import { Collapse, type CollapseProps, Card, Divider } from 'antd'
 import { DatabaseOutlined, UserOutlined } from '@ant-design/icons'
 import './index.styl'
 import { useAppSelector } from 'src/store'
-import { baseUrl } from 'src/lib/const'
+import { UserNameLink, CollectionLink } from '../common/link'
 
 type IGroupList = Array<{
     title: string,
@@ -42,16 +42,6 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
     }, [ collectionList ])
 
     const username = useAppSelector(state => state.userInfo.searchUserInfo.username)
-    const userLink = username ? `${baseUrl}/user/${username}` : '#'
-    const hookPreventDefault = (test: () => boolean, fn?: React.DOMAttributes<HTMLAnchorElement>['onClick']) => {
-        const cb: React.DOMAttributes<HTMLAnchorElement>['onClick'] = e => {
-            test() && e.preventDefault();
-            fn && fn(e)
-        }
-        return cb
-    }
-
-    const onUserNameLinkClick = hookPreventDefault(() => !username)
     return (
         <Card bodyStyle={{padding: 0}}>
             <div style={{
@@ -64,11 +54,11 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
             }}>
                 <span>
                     <UserOutlined style={{paddingRight: 4}}></UserOutlined>
-                    <a onClick={onUserNameLinkClick} target="_blank" href={userLink} rel="noreferrer">{ username || '-' }</a>
+                    <UserNameLink username={username} disabled={!username}>{ username || '-' }</UserNameLink>
                 </span>
                 <span>
                     <DatabaseOutlined style={{paddingRight: 4}}></DatabaseOutlined>
-                    <a onClick={onUserNameLinkClick} target="_blank" href={`${baseUrl}/anime/list/${username}/collect`} rel="noreferrer">收藏：{ collectionList.length }</a>
+                    <CollectionLink username={username} disabled={!collectionList.length}>收藏：{ collectionList.length }</CollectionLink>
                 </span>
             
             </div>

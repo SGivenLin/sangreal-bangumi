@@ -1,7 +1,6 @@
 import './author-item.styl'
 import type { AuthorData } from './type'
-import { baseUrl } from 'src/lib/const'
-import { decodeHtml, decodeSubjectName } from 'src/lib/utils'
+import { AuthorLink, BangumiLink } from 'src/component/common/link'
 import { Divider } from 'antd'
 
 function groupBySubject(authorData: AuthorData[]): AuthorData[][] {
@@ -23,7 +22,6 @@ export default function AuthorList({ authorData, index }: { authorData: AuthorDa
     const author = authorData[0]
     const image = JSON.parse(author.author_images || '{}').small
     const subjectList = groupBySubject(authorData)
-    const author_name = decodeHtml(author.author_name)
 
     const val = ['#FE2D46', '#FF6600', '#FAA90E'][index]
     let style = val ?  {
@@ -33,9 +31,9 @@ export default function AuthorList({ authorData, index }: { authorData: AuthorDa
     return (
         <div className="subject-author-item">
             <div className='item-header'>
-                <img src={ image || require('src/static/user.jpg') } alt={ author_name } />
+                <img src={ image || require('src/static/user.jpg') } alt={ author.author_name } />
                 <div className="bangumi-content">
-                    <a className="title" target="_blank" href={`${baseUrl}/person/${author.author_id}`} rel="noreferrer">{ author_name }</a>
+                    <AuthorLink className="title" author={author}></AuthorLink>
                     <span className="subject-count">({ subjectList.length })</span>
                 </div>
                 <span className='bangumi-rank-icon' style={style}>{ index + 1 }</span>
@@ -51,12 +49,11 @@ export default function AuthorList({ authorData, index }: { authorData: AuthorDa
 
 function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
     const subject = authorData[0]
-    const subjectBangumi = decodeSubjectName(authorData[0].subject)
     const isIgnore = authorData.every(item => item.isIgnore)
     return (
         <div className='relation-content' style={{opacity: isIgnore ? '.6' : '1'}}>
             <div>
-                <a className="title" target="_blank" href={`${baseUrl}/subject/${subject.subject_id}`} rel="noreferrer">{ subjectBangumi.name_cn }</a>
+                <BangumiLink className="title" bangumi={subject.subject}></BangumiLink>
                 <span className='rate'>
                     <span className='subject-rate'> ({ subject.rate || '-' }</span>
                     <span>/</span>
