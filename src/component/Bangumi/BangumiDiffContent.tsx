@@ -28,7 +28,9 @@ const BangumiDiffContent: FC<{ bangumiContent: BangumiContent }> = ({ bangumiCon
                                             backgroundColor: diffColor[author.diffType]
                                         }
                                     }
-                                    return <AuthorLink key={author.name} author={author} className="auhor-name" style={style}></AuthorLink>
+                                    return author.id
+                                        ? <AuthorLink key={author.name} author={author} className="auhor-name" style={style}></AuthorLink>
+                                        : <span style={{ color: '#000' }}>{ author.name }</span>
                                 }
                             )} </div>
                     </div>

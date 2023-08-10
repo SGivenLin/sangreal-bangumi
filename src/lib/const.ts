@@ -13,11 +13,11 @@ export const jobMap = {
 export const allRelation = Object.values(jobMap).filter(Boolean).flat() as unknown as string[]
 
 interface Images {
-    large: string,
-    common: string,
-    medium: string,
-    small: string,
-    grid: string,
+    large?: string,
+    common?: string,
+    medium?: string,
+    small?: string,
+    grid?: string,
 }
 
 export type {

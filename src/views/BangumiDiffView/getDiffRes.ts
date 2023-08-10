@@ -1,4 +1,5 @@
-import { type AuthorList, DiffType } from "src/component/Bangumi/type"
+import { type AuthorList, DiffType, type Bangumi } from "src/component/Bangumi/type"
+import { type Author } from 'src/component/Author/type'
 import { jobMap } from 'src/lib/const'
 
 const diffTextList = [{
@@ -73,4 +74,30 @@ function addDiff(authorList1: AuthorList, authorList2: AuthorList): void {
     })
 }
 
-export { getDiffText, addDiff }
+function addDiffAll(authorList1: AuthorList, authorList2: AuthorList, bangumiInfo1: Bangumi, bangumiInfo2: Bangumi) {
+    mergeInfoBox(authorList1, bangumiInfo1)
+    mergeInfoBox(authorList2, bangumiInfo2)
+    addDiff(authorList1, authorList2)
+}
+
+function mergeInfoBox(authorList: AuthorList, bangumiInfo: Bangumi) {
+    const _authorList = bangumiInfo.infobox.reduce((pre, { key, value }) => {
+        if (typeof value !== 'string') {
+            return pre
+        }
+        const _authorList: Author[] = value.split('、').map(item => ({
+            name: item.replace(/\[.*?\]|\(.*?\)|（.*?）/, ''),
+            relation: key,
+            type: 0,
+            id: NaN,
+            images: {},
+        }))
+        return pre.concat(_authorList)
+    }, [] as Author[])
+    const nameSet = new Set(authorList.map(item => item.name))
+    _authorList.forEach(item => {
+        !nameSet.has(item.name) && authorList.push(item)
+    })
+}
+
+export { getDiffText, addDiff, addDiffAll }

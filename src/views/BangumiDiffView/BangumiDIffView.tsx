@@ -1,5 +1,5 @@
 import './BangumiDIffView.styl'
-import { Card, Input,  Divider, Button, Col, Row, Alert } from 'antd'
+import { Card, Input,  Divider, Button, Col, Row, Alert, Checkbox, Tooltip } from 'antd'
 import { SearchOutlined } from '@ant-design/icons';
 import { useRef, useState } from 'react';
 import api from 'src/service';
@@ -8,7 +8,7 @@ import BangumiSearchPanel from 'src/component/Bangumi/BangumiSearchPanel'
 import { type BangumiContent, type Bangumi, type BangumiBySearch } from 'src/component/Bangumi/type'
 import { Author } from 'src/component/Author/type';
 import { useFullLoading } from 'src/lib/hooks';
-import { addDiff, getDiffText } from './getDiffRes'
+import { addDiff, addDiffAll, getDiffText } from './getDiffRes'
 
 const SearchBtn = ({ onClick }: { onClick?: React.DOMAttributes<HTMLSpanElement>['onClick'] }) => {
     return <Button type="link" className='search-btn'><span className='search-btn-text' onClick={onClick}>不知道id，按名搜索</span></Button>
@@ -22,6 +22,7 @@ const BangumiDIffView = () => {
     const [ input1Val, setInput1Value ] = useState('')
     const [ input2Val, setInput2Value ] = useState('')
     const [ diffText, setDiffText ] = useState('')
+    const [ isDiffAll, setIsDiffAll ] = useState(false)
 
     const onClick = useFullLoading(async () => {
         const bangumiId1 = input1Val.trim()
@@ -31,13 +32,14 @@ const BangumiDIffView = () => {
             return
         }
         // 285666 331752
+        // 274613 284428
         const getProducerList1 = api.getProducerList({}, { subject_id: bangumiId1 })
         const getProducerList2 = api.getProducerList({}, { subject_id: bangumiId2 })
         const getBangumiInfo1 = api.getBangumiInfo({}, { subject_id: bangumiId1 })
         const getBangumiInfo2 = api.getBangumiInfo({}, { subject_id: bangumiId2 })
         const [ authorList1, authorList2, bangumiInfo1, bangumiInfo2 ] = await Promise.all([getProducerList1, getProducerList2, getBangumiInfo1, getBangumiInfo2])
-       
-        addDiff(authorList1, authorList2)
+        
+        isDiffAll ? addDiffAll(authorList1, authorList2, bangumiInfo1, bangumiInfo2) : addDiff(authorList1, authorList2)
         const staffList1 = groupAuthorList(authorList1, bangumiInfo1)
         const staffList2 = groupAuthorList(authorList2, bangumiInfo2)
         setBangumiContent1({
@@ -73,7 +75,14 @@ const BangumiDIffView = () => {
                     <Input placeholder='bangumi id' value={input1Val} onChange={e => setInput1Value(e.target.value)}></Input>
                     <SearchBtn onClick={() => searchBtnClick(setInput1Value)}></SearchBtn>
                 </div>
-                <div><Button shape="circle" size='large' type='primary' ghost={true} icon={<SearchOutlined />} onClick={onClick} style={{ margin: '0 20px' }} /></div>
+                <div>
+                    <Button className='diff-btn' shape="circle" size='large' type='primary' ghost={true} icon={<SearchOutlined />} onClick={onClick} />
+                    <div>
+                        <Checkbox className='diff-check' checked={isDiffAll} onChange={(e) => setIsDiffAll(e.target.checked)}>
+                            <Tooltip title="冷门动画，尝试查询全部被记录的制作方(未被bangumi.tv的人物收录，存在误判)">全部信息比对</Tooltip>
+                        </Checkbox>
+                    </div>
+                </div>
                 <div className='bangumi-right'>
                 <Input placeholder='bangumi id' value={input2Val} onChange={e => setInput2Value(e.target.value)}></Input>
                     <SearchBtn onClick={() => searchBtnClick(setInput2Value)}></SearchBtn>
