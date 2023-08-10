@@ -89,7 +89,7 @@ const BangumiDIffView = () => {
                 </div>
             </div>
             <Alert
-                message={diffText ? <span className="diff-text">对比结果：{diffText}</span> : '输入动画id后查询，进行对比'}
+                message={diffText ? <span className="diff-text">对比结果：{<span className='diff-text-res'>{diffText}</span>}</span> : '输入动画id后查询，进行对比'}
                 style={{ textAlign: 'center' }}
             ></Alert>
         </div>
