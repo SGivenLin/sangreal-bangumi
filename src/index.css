@@ -16,5 +16,19 @@ code {
   min-height: 100vh;
   padding-top: 12px;
   box-sizing: border-box;
-  background: #f5f5f5;
+  background-image: url('static/bg_eva.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
+section {
+  background: #f5f5f533 !important;
+}
+
+.ant-card {
+  background: #ffffffdd !important;
+}
+.ant-card .ant-card {
+  background: #ffffff99 !important;
+}
+

@@ -93,7 +93,6 @@ const BangumiDIffView = () => {
                 style={{ textAlign: 'center' }}
             ></Alert>
         </div>
-        <div className='shadow'></div>
         {
             bangumiContent1 && bangumiContent2 &&
             <Row>

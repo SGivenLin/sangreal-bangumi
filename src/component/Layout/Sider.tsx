@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import router,{ type DisabledInfo } from './router'
 import { Layout, Menu, type MenuProps, Popover } from 'antd'
-import { Link } from 'react-router-dom'
-import { useAppSelector } from 'src/store';
+import { NavLink, useLocation } from 'react-router-dom'
+import { useRouterDisabled } from 'src/lib/hooks'
+import { CommonRouterLink } from 'src/component/common/link'
 type MenuItem = Required<MenuProps>['items'][number];
 const { Sider } = Layout
 
@@ -11,7 +12,7 @@ const siderStyle: React.CSSProperties = {
     lineHeight: '120px',
     height: '94vh',
     color: '#fff',
-    backgroundColor: 'white',
+    backgroundColor: '#ffffffaa',
     borderRadius: '0 8px 8px 0',
     overflow: 'hidden',
     position: 'sticky',
@@ -28,20 +29,18 @@ interface MenuItemProps {
 }
 
 function AppSider() {
-  const collectionList = useAppSelector(state => state.collection.collectionList);
+  const routerDisabled = useRouterDisabled()
+  const selectedKeys = [ useLocation().pathname ]
 
-  function getMenuItem(props: MenuItemProps): MenuItem {
+  const getMenuItem = useCallback((props: MenuItemProps) => {
     const { label, key, icon, children, type, path, disabledInfo } = props;
     let disabled = false;
     if (disabledInfo?.depCollection) {
-      disabled = !collectionList.length;
+      disabled = routerDisabled
     }
     const labelCp = !disabled
-      ? <Link to={path}>{label}</Link>
-      : <Popover placement="rightTop" content={<span style={{color: '#666'}}>{ disabledInfo?.message }</span>}>
-          <span style={{ cursor: 'not-allowed' }}><Link style={{ pointerEvents: 'none' }} to={path}>{label}</Link></span>
-        </Popover>
-
+      ? <NavLink style={({ isActive }) => ({ fontWeight: isActive ? 'bold' : 'normal' })} to={path}>{label}</NavLink>
+      : <CommonRouterLink route={{ path, sider: { disabledInfo, label, icon } }}>{ label }</CommonRouterLink>
     return {
       key,
       icon,
@@ -50,10 +49,10 @@ function AppSider() {
       type,
       disabled,
     } as MenuItem;
-  }
+  }, [routerDisabled])
   
-  function getMenuItems(): MenuItem[] {
-    return router.filter((item) => item.sider).map((item) =>
+  const getMenuItems = useCallback(
+    () => router.filter((item) => item.sider).map((item) =>
       getMenuItem({
         label: item.sider!.label,
         path: item.path,
@@ -61,20 +60,19 @@ function AppSider() {
         icon: item.sider!.icon,
         disabledInfo: item.sider!.disabledInfo,
       })
-    );
-  }
-  // const items = useMenuItems()
+  ), [ getMenuItem ])
+
   const [ items, setItems ] = useState(getMenuItems())
   useEffect(() => {
     setItems(getMenuItems())
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ collectionList ])
+  }, [ getMenuItems ])
 
   
     return (
         <Sider style={siderStyle}>
             <Menu
-                defaultSelectedKeys={['/']}
+                defaultSelectedKeys={[router[0].path]}
+                selectedKeys={selectedKeys}
                 mode="inline"
                 theme="light"
                 items={items}

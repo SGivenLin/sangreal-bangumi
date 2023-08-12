@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from 'react'
-import { useAppDispatch } from 'src/store'
+import { useAppDispatch, useAppSelector } from 'src/store'
 import { setLoading } from 'src/store/loading'
 import { throttle } from 'lodash-es'
 
@@ -67,8 +67,14 @@ function useScrollToBottom(callback: () => void, option: { throttleTime: number,
     }, [callback, option.offset, option.throttleTime])
 }
 
+function useRouterDisabled() {
+    const collectionList = useAppSelector(state => state.collection.collectionList)
+    return !collectionList.length
+}
+
 export {
     useLoading,
     useFullLoading,
     useScrollToBottom,
+    useRouterDisabled,
 }

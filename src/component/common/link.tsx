@@ -1,15 +1,19 @@
-import { FC } from 'react'
+import React, { FC, ReactNode } from 'react'
+import { Link, type LinkProps } from 'react-router-dom'
 import { baseUrl } from 'src/lib/const'
 import { decodeHtml, decodeSubjectName } from 'src/lib/utils'
+import {type  RouterItem } from '../Layout/router'
+import { useRouterDisabled } from 'src/lib/hooks'
+import { Tooltip } from 'antd'
 
 type AnchorType = React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>
 
-interface CommonLink {
+interface BaseLinkProps {
     disabled?: boolean
     stop?: boolean
 }
 
-const BaseLink: FC<CommonLink & AnchorType> = (props) => {
+const BaseLink: FC<BaseLinkProps & AnchorType> = (props) => {
     const { disabled, stop, children ,...attrs } = props
     const onClick = getLinkOnClick({ disabled, stop })
     return <a
@@ -21,7 +25,7 @@ const BaseLink: FC<CommonLink & AnchorType> = (props) => {
     </a>
 }
 
-interface AuthorLinkInfo extends CommonLink {
+interface AuthorLinkInfo extends BaseLinkProps {
     author: {
         author_name?: string,
         author_id?: number,
@@ -37,7 +41,7 @@ const AuthorLink: FC<AuthorLinkInfo & AnchorType> = (props) => {
     return <BaseLink href={`${baseUrl}/person/${id}`} { ...attrs }>{name}</BaseLink>
 }
 
-interface BangumiLinkInfo extends CommonLink {
+interface BangumiLinkInfo extends BaseLinkProps {
     bangumi: {
         name_cn: string,
         name: string,
@@ -51,7 +55,7 @@ const BangumiLink: FC<BangumiLinkInfo & AnchorType> = (props) => {
     return <BaseLink href={`${baseUrl}/person/${bangumi.id || bangumi.subject_id}`} { ...attrs }>{ _bangumi.name_cn }</BaseLink>
 }
 
-interface UserNameLinkInfo extends CommonLink {
+interface UserNameLinkInfo extends BaseLinkProps {
     username: string
 }
 
@@ -65,7 +69,7 @@ const CollectionLink: FC<UserNameLinkInfo & AnchorType> = (props) => {
     return <BaseLink href={`${baseUrl}/anime/list/${username}/collect`} { ...attrs }></BaseLink>
 }
 
-function getLinkOnClick(option: CommonLink | null) {
+function getLinkOnClick(option: BaseLinkProps | null) {
     if (!option) {
         return undefined
     }
@@ -81,9 +85,27 @@ function getLinkOnClick(option: CommonLink | null) {
     }
 }
 
+interface commonLinkProps {
+    route: Omit<RouterItem, 'element'>,
+    children: ReactNode,
+}
+
+const CommonRouterLink: FC<commonLinkProps & React.RefAttributes<HTMLAnchorElement>> = (props) => {
+    const { children, route } = props
+    const disbaled =  useRouterDisabled()
+    if (disbaled && route.sider?.disabledInfo?.depCollection) {
+        return <Tooltip title={route.sider.disabledInfo.message}>
+                <div style={{ cursor: 'not-allowed' }}><Link to={route.path} style={{ pointerEvents: 'none' }}>{ children }</Link></div>
+            </Tooltip>
+    } else {
+        return <Link to={route.path}>{ children }</Link>
+    }
+}
+
 export {
     AuthorLink,
     BangumiLink,
     UserNameLink,
     CollectionLink,
+    CommonRouterLink,
 }   
