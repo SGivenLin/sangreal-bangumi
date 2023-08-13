@@ -1,15 +1,18 @@
-import { type BrowserWindow, ipcMain  } from 'electron'
-import setGetAuthorResultIpc from './getAuthorList'
-import { getAuthorResult } from './const'
+import { ipcMain } from 'electron'
+import getAuthorResultHandle from './getAuthorList'
+import { getAuthorResult, getRelationList } from './const'
 import { initRenderer  } from 'electron-store'
+import getRelationListHandle from './getRelationList'
 
-function setIpcMain(win: BrowserWindow | null): void {
+function setIpcMain(): void {
     initRenderer()
-    setGetAuthorResultIpc(win)
+    ipcMain.handle(getAuthorResult, getAuthorResultHandle)
+    ipcMain.handle(getRelationList, getRelationListHandle)
 }
 
 function removeIpcMain() {
     ipcMain.removeHandler(getAuthorResult)
+    ipcMain.removeHandler(getRelationList)
 }
 
 export { setIpcMain, removeIpcMain }

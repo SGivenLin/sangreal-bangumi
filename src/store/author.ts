@@ -1,9 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit'
 import type { AuthorData } from 'src/component/Author/type'
 import { weightType, type SortType } from 'src/component/Author/select-form'
 import { initialValues } from 'src/component/Author/select-form'
 import { jobMap, allRelation } from 'src/lib/const'
+import { getRelationList as getRelationListCount } from 'src/electron/ipcMain/const'
+import { ipcRenderer } from 'electron'
 
 interface InitialState{
     relationList: string[],
@@ -79,9 +81,12 @@ const _filterSubjectCount: ReducerType = (state, action: PayloadAction<number | 
     }
 }
 
-interface SortTypeReducer extends SortType{ 
-    _init?: boolean
-}
+const getRelationList = createAsyncThunk('author/getRelationList', async (data, { dispatch }) => {
+    const { relationList }: { relationList: string[]  } = await ipcRenderer.invoke(getRelationListCount)
+    dispatch(slice.actions.setRelationListByDB(relationList))
+    return relationList
+})
+
 
 export const slice = createSlice({
     name: 'author',
@@ -105,7 +110,7 @@ export const slice = createSlice({
         setRelationListByDB: (state, action: PayloadAction<string[]>) => {
             state.relationListByDB = [ ...action.payload ]
         },
-        sortByForm: (state, action: PayloadAction<SortTypeReducer>) => {
+        sortByForm: (state, action: PayloadAction<SortType>) => {
             const map = {
                 weight: slice.caseReducers.sortBySubject,
                 subjectCount: slice.caseReducers.filterSubjectCount,
@@ -170,4 +175,5 @@ export const slice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { setAuthorList, sortByForm, setRelationListByDB } = slice.actions
+export { getRelationList }
 export default slice.reducer

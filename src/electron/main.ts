@@ -91,7 +91,7 @@ async function main() {
 function createWin() {
   createWindow()
   rewriteWindow(win)
-  setIpcMain(win)
+  setIpcMain()
 }
 
 main()

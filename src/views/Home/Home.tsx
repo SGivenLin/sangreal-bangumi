@@ -11,7 +11,7 @@ const Home = () => {
             <Divider></Divider>
             <div className='fn-list'>
                 { router.slice(1).map(item => {
-                    return <CommonRouterLink route={item}>
+                    return <CommonRouterLink route={item} key={item.path}>
                         <Card className='fn-item'>
                             <div><img src={item.homeImg} alt={item.sider?.label}></img></div>
                             <Button block type='link' className='fn-link'>{item.sider?.label}</Button>

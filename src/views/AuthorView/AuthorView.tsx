@@ -6,7 +6,7 @@ import type { AuthorData } from 'src/component/Author/type'
 import Author from 'src/component/Author'
 import AuthorForm from 'src/component/Author/select-form'
 import ResultInfo from 'src/component/Author/result-info'
-import { setAuthorList, setRelationListByDB } from 'src/store/author'
+import { setAuthorList, getRelationList } from 'src/store/author'
 import { setFailList } from 'src/store/collection'
 import { setLoading } from 'src/store/loading'
 import { useScrollToBottom } from 'src/lib/hooks'
@@ -21,7 +21,6 @@ declare global {
 interface AuthorRes {
     authorData: AuthorData[][] | undefined,
     failList: FailList,
-    relationList: string[],
 }
 
 const pageSize = 20
@@ -45,7 +44,7 @@ function AuthorView() {
             loading: true,
             text: '正在查询'
         }))
-        ipcRenderer.invoke(getAuthorResult, collectionList).then((res: AuthorRes) => {
+        ipcRenderer.invoke(getAuthorResult, collectionList.slice(0, 100)).then((res: AuthorRes) => {
             if (res && res.authorData) {
                 dispatch(setLoading({
                     loading: true,
@@ -53,7 +52,7 @@ function AuthorView() {
                 }))
                 dispatch(setAuthorList(res.authorData))
                 dispatch(setFailList(res.failList))
-                dispatch(setRelationListByDB(res.relationList))
+                dispatch(getRelationList())
                 setTimeout(() => {
                     dispatch(setLoading({
                         loading: false,

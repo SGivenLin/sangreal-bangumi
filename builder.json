@@ -19,6 +19,14 @@
       "target": "nsis",
       "icon": "dist/html/logo256.png"
     },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": false,
+      "perMachine": true,"unicode": true
+    },
     "publish": [{
       "provider": "github",
       "owner": "username",
