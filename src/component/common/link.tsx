@@ -52,7 +52,7 @@ interface BangumiLinkInfo extends BaseLinkProps {
 const BangumiLink: FC<BangumiLinkInfo & AnchorType> = (props) => {
     const { bangumi, ...attrs } = props
     const _bangumi = decodeSubjectName(bangumi)
-    return <BaseLink href={`${baseUrl}/person/${bangumi.id || bangumi.subject_id}`} { ...attrs }>{ _bangumi.name_cn }</BaseLink>
+    return <BaseLink href={`${baseUrl}/subject/${bangumi.id || bangumi.subject_id}`} { ...attrs }>{ _bangumi.name_cn }</BaseLink>
 }
 
 interface UserNameLinkInfo extends BaseLinkProps {
