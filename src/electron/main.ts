@@ -2,6 +2,7 @@ import { app, BrowserWindow, type BrowserWindow as IBrowserWindow, Menu, type Me
 import { rewriteWindow } from './windowInterceptor'
 import { setIpcMain, removeIpcMain } from './ipcMain'
 import { isMac } from './env'
+import { initDB } from './sqlite'
 const url = require('url');
 const path = require('path');
 
@@ -76,6 +77,7 @@ function setMenu(): void {
 }
 
 async function main() {
+    initDB()
     await app.whenReady()
     setMenu()
     app.on('window-all-closed', () => {
