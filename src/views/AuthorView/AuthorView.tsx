@@ -44,7 +44,7 @@ function AuthorView() {
             loading: true,
             text: '正在查询'
         }))
-        ipcRenderer.invoke(getAuthorResult, collectionList.slice(0, 100)).then((res: AuthorRes) => {
+        ipcRenderer.invoke(getAuthorResult, collectionList).then((res: AuthorRes) => {
             if (res && res.authorData) {
                 dispatch(setLoading({
                     loading: true,
