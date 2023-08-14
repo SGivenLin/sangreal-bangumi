@@ -1,12 +1,14 @@
 import CollectionView from 'src/views/CollectionView/CollectionView'
 import AuthorView from 'src/views/AuthorView/AuthorView'
 import BangumiDIffView from 'src/views/BangumiDiffView/BangumiDIffView'
+import CollectionChartView from 'src/views/CollectionChartView/CollectionChartView'
 import Home from 'src/views/Home/Home';
 import {
     AppstoreOutlined,
     TeamOutlined,
     DiffOutlined,
     HomeOutlined,
+    PieChartOutlined,
 } from '@ant-design/icons';
 
 interface DisabledInfo {
@@ -50,6 +52,19 @@ const router: RouterItem[] = [{
     sider: {
         label: '收藏-创作者',
         icon: <TeamOutlined />,
+        disabledInfo: {
+            depCollection: true,
+            message: '请先执行【收藏】查询',
+        }
+    }
+}, {
+    element: <CollectionChartView></CollectionChartView>,
+    path: '/collection-chart',
+    homeImg: require('src/static/author.png'),
+    desc: '对已查询到的收藏动画的分类并以图表展示',
+    sider: {
+        label: '收藏-图表分析',
+        icon: <PieChartOutlined />,
         disabledInfo: {
             depCollection: true,
             message: '请先执行【收藏】查询',

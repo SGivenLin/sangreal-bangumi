@@ -2,7 +2,7 @@ import { useEffect, useReducer } from 'react'
 import Item from './collection-item'
 import List from './collection-list'
 import type { CollectionRes, IGroup } from './type'
-import { groupCollectionByRate } from './utils'
+import CollectionData from './CollectionData'
 import { Collapse, type CollapseProps, Card, Divider } from 'antd'
 import { DatabaseOutlined, UserOutlined } from '@ant-design/icons'
 import './index.styl'
@@ -25,12 +25,12 @@ function getItems(list: IGroupList): CollapseProps['items'] {
 }
 
 function Collection( { collectionList } : { collectionList: CollectionRes['data'] }) {
+    
     const [ groupList, dispatch ] = useReducer((state: IGroupList, group: IGroup )=> {
         let list: IGroupList = []
         for(const [rate, collectionList] of group) {
-            const title = Array.isArray(rate) ? `${rate[0]}-${rate[1]}分` : rate === 0 ? '未评分' : `${rate}分`
+            const title = CollectionData.groupRate2Str(rate)
             collectionList.length && list.push({
-                // rate,
                 title,
                 collectionList: collectionList
             })
@@ -38,8 +38,9 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
         return list
     }, [])
     useEffect(() => {
-        dispatch(groupCollectionByRate(collectionList, [10, 9, 8, 7, [6, 1], 0]))
-    }, [ collectionList ])
+        const collectionData = new CollectionData(collectionList)
+        dispatch(collectionData.groupCollectionByRate())
+    }, [collectionList])
 
     const username = useAppSelector(state => state.userInfo.searchUserInfo.username)
     return (
