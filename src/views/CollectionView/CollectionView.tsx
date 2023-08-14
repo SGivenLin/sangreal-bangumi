@@ -62,9 +62,6 @@ function CollectionView() {
   }, '正在获取收藏内容')
 
   const [ curValue, setCurValue ] = useState('')
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setCurValue(e.target.value)
-  }
   return (
     <Space className="collection-view" direction='vertical' size="middle">
       <div className='search'>
@@ -72,7 +69,8 @@ function CollectionView() {
           className='search-input'
           options={history.map(item => ({ value: item }))}
           autoFocus={true}
-          getPopupContainer={() => document.querySelector('#app') || document.body}
+          onChange={setCurValue}
+          getPopupContainer={() => document.querySelector('.app') || document.body}
         >
           <Input.Search
             placeholder="Bangumi账号名称"
@@ -80,13 +78,12 @@ function CollectionView() {
             enterButton="查询"
             size="large"
             onSearch={onSearch}
-            onChange={onChange}
           />
         </AutoComplete>
         <Tooltip title="不使用缓存查询最新收藏">
           <Button
             type="text"
-            icon={<ReloadOutlined style={{ fontSize: '1.2em' }} />}
+            icon={<ReloadOutlined style={{ fontSize: '1.2em', color: '#fff' }} />}
             onClick={() => onSearch(curValue, undefined, false)}
           />
         </Tooltip>
