@@ -1,7 +1,7 @@
-import { useAppSelector } from "src/store";
-import CollectionData from "../Collection/CollectionData";
-import { useEcharts, type ECOption  } from "src/lib/echarts";
-import { FC } from "react";
+import { useAppSelector } from "src/store"
+import CollectionData from "../Collection/CollectionData"
+import { useEcharts, type ECOption  } from "src/lib/echarts"
+import { FC } from "react"
 
 const CollectionRateChartBar: FC = () =>{
     const collectionList = useAppSelector(state => state.collection.collectionList)
@@ -10,15 +10,15 @@ const CollectionRateChartBar: FC = () =>{
         tooltip: {
             trigger: 'axis',
             axisPointer: {
-            type: 'shadow'
-            }
+                type: 'shadow',
+            },
         },
         grid: {
             left: '3%',
             right: '4%',
             bottom: '0',
             top: '3%',
-            containLabel: true
+            containLabel: true,
         },
         xAxis: {
             data: CollectionData.groupRateList.map(CollectionData.groupRate2Str),
@@ -27,10 +27,10 @@ const CollectionRateChartBar: FC = () =>{
         series: [
             {
                 type: 'bar',
-                data: Array.from(collectionData.groupCollectionByRate().values()).map(item => item.length)
-            }
-        ]
-    };
+                data: Array.from(collectionData.groupCollectionByRate().values()).map(item => item.length),
+            },
+        ],
+    }
 
     const domRef = useEcharts(option)
 
@@ -47,7 +47,7 @@ const CollectionRateChartPie: FC = () =>{
 
     const option: ECOption = {
         tooltip: {
-            trigger: 'item'
+            trigger: 'item',
         },
         legend: {
             top: '0',
@@ -57,34 +57,34 @@ const CollectionRateChartPie: FC = () =>{
             },
         },
         series: [
-          {
-            type: 'pie',
-            radius: ['40%', '70%'],
-            avoidLabelOverlap: true,
-            center: ['50%', '60%'],
-            itemStyle: {
-              borderRadius: 6,
-              borderColor: '#fff',
-              borderWidth: 1,
+            {
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: true,
+                center: ['50%', '60%'],
+                itemStyle: {
+                    borderRadius: 6,
+                    borderColor: '#fff',
+                    borderWidth: 1,
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                    },
+                },
+                label: {
+                    show: false,
+                    position: 'center',
+                    formatter: '{b}\n{d}%',
+                },
+                labelLine: {
+                    show: false,
+                },
+                data: pieData,
             },
-            emphasis: {
-              label: {
-                show: true,
-                fontWeight: 'bold',
-                fontSize: 20,
-              }
-            },
-            label: {
-                show: false,
-                position: 'center',
-                formatter: '{b}\n{d}%'
-            },
-            labelLine: {
-              show: false
-            },
-            data: pieData,
-          }
-        ]
+        ],
     }
 
     const domRef = useEcharts(option)
