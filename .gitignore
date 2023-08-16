@@ -3,7 +3,7 @@
 # dependencies
 /node_modules
 /dist
-/electron_dist
+/dist_electron
 /out
 /build
 /tmp

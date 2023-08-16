@@ -31,6 +31,7 @@
     "dotenv-expand": "^5.1.0",
     "echarts": "^5.4.3",
     "electron-store": "^8.1.0",
+    "electron-updater": "^6.1.1",
     "eslint": "^8.3.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-webpack-plugin": "^3.1.1",
@@ -80,7 +81,8 @@
     "start": "concurrently \"npm run start:html\" \"npm run nodemon\"",
     "start:html": "node scripts/start.js",
     "build": "node scripts/build.js && webpack --config ./webpack/webpack.prod.js",
-    "dist": "npm run build && electron-builder --config builder.json"
+    "dist": "npm run build && electron-builder --config builder.json",
+    "release": "electron-builder --config builder.json --publish always"
   },
   "main": "main.js",
   "browserslist": {
@@ -101,6 +103,7 @@
     "concurrently": "^8.0.1",
     "electron": "^24.2.0",
     "nodemon": "^2.0.22",
+    "stylus": "^0.59.0",
     "stylus-loader": "^7.1.0",
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.5",

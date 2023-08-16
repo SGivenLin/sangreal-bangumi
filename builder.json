@@ -5,7 +5,7 @@
       "main": "dist/electron/electron.js"
     },
     "directories": {
-      "output": "electron_dist"
+      "output": "dist_electron"
     },
     "linux": {
       "target": "deb",
@@ -19,6 +19,9 @@
       "target": "nsis",
       "icon": "dist/html/logo256.png"
     },
+    "files": [
+      "dist"
+    ],
     "nsis": {
       "oneClick": false,
       "allowElevation": true,
@@ -29,8 +32,8 @@
     },
     "publish": [{
       "provider": "github",
-      "owner": "username",
-      "repo": "repository",
+      "owner": "SGivenLin",
+      "repo": "sangreal-bangumi",
       "private": true
     }]
   }
