@@ -10,13 +10,13 @@ interface IApi {
 
 const bangumiAxios = axios.create({
     timeout: 10000,
-    baseURL: 'https://api.bgm.tv'
+    baseURL: 'https://api.bgm.tv',
 })
 const api: IApi = {
     getCollectionList: '/v0/users/{username}/collections',
     getProducerList: '/v0/subjects/{subject_id}/persons',
     getBangumiInfo: '/v0/subjects/{subject_id}',
-    getSubjectListBySearch: '/search/subject/{keywords}'
+    getSubjectListBySearch: '/search/subject/{keywords}',
 }
 
 type apiFunction<T> = (params: object, option: object) => Promise<T>

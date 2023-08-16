@@ -22,7 +22,7 @@ async function getAuthorList(data: Array<number>, cb?: (info: AuthorListCbInfo) 
             promiseList.push({
                 key: bangumiId,
                 promise: api.getProducerList({}, {
-                    subject_id: bangumiId
+                    subject_id: bangumiId,
                 }).then(res => {
                     if (!res.length) {
                         return [{
@@ -41,7 +41,7 @@ async function getAuthorList(data: Array<number>, cb?: (info: AuthorListCbInfo) 
                         author_images: JSON.stringify(item.images),
                     }))
                     return bangumiAuthorList
-                })
+                }),
             })
         }
     }
@@ -51,7 +51,7 @@ async function getAuthorList(data: Array<number>, cb?: (info: AuthorListCbInfo) 
         cb && cb({
             total: data.length,
             finish_new: i,
-            finish_old: bangumiSet.size
+            finish_old: bangumiSet.size,
         })
     })
     let listNoStore: Array<BangumiAuthor> = []
@@ -66,8 +66,8 @@ async function getAuthorList(data: Array<number>, cb?: (info: AuthorListCbInfo) 
         },
         info: (error?: any) => ({
             errno: 'illegal',
-            errmsg: '疑似违规信息'
-        })
+            errmsg: '疑似违规信息',
+        }),
     }, {
         test: (error: any) => {
             return  error?.errno !== undefined && error?.code
@@ -75,7 +75,7 @@ async function getAuthorList(data: Array<number>, cb?: (info: AuthorListCbInfo) 
         info: (error: any) => ({
             errno: error?.errno || '',
             errmsg: error?.code || '',
-        })
+        }),
     }]
     const failList: FailList = resBangumiAuthorList.failResults.map(item => {
         for(const strategy of errorStrategy) {
@@ -117,7 +117,7 @@ function formatAuthorList(authorList: Array<BangumiAuthor>, collectionList: Coll
     authorList.forEach(item => {
         let data: Array<Partial<AuthorData>> = [{
             ...item,
-            ...collectionMap.get(item.bangumi_id)
+            ...collectionMap.get(item.bangumi_id),
         }]
         if (authorMap.has(item.author_id)) {
             const _data = authorMap.get(item.author_id)

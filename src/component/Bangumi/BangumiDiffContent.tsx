@@ -22,16 +22,16 @@ const BangumiDiffContent: FC<{ bangumiContent: BangumiContent }> = ({ bangumiCon
                         <div className='staff-label'>{ item.relation }</div>
                         <div className='staff-author'>
                             { item.authorList.map(author => {
-                                    let style = {}
-                                    if (author.diffType) {
-                                        style = {
-                                            backgroundColor: diffColor[author.diffType]
-                                        }
+                                let style = {}
+                                if (author.diffType) {
+                                    style = {
+                                        backgroundColor: diffColor[author.diffType],
                                     }
-                                    return author.id
-                                        ? <AuthorLink key={author.name} author={author} className="auhor-name" style={style}></AuthorLink>
-                                        : <span style={{ color: '#000' }}>{ author.name }</span>
                                 }
+                                return author.id
+                                    ? <AuthorLink key={author.name} author={author} className="auhor-name" style={style}></AuthorLink>
+                                    : <span style={{ color: '#000' }}>{ author.name }</span>
+                            },
                             )} </div>
                     </div>
                 )) }

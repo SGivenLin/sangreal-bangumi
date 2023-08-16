@@ -21,5 +21,5 @@ interface Images {
 }
 
 export type {
-    Images
+    Images,
 }

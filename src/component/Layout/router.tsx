@@ -2,14 +2,14 @@ import CollectionView from 'src/views/CollectionView/CollectionView'
 import AuthorView from 'src/views/AuthorView/AuthorView'
 import BangumiDIffView from 'src/views/BangumiDiffView/BangumiDIffView'
 import CollectionChartView from 'src/views/CollectionChartView/CollectionChartView'
-import Home from 'src/views/Home/Home';
+import Home from 'src/views/Home/Home'
 import {
     AppstoreOutlined,
     TeamOutlined,
     DiffOutlined,
     HomeOutlined,
     PieChartOutlined,
-} from '@ant-design/icons';
+} from '@ant-design/icons'
 
 interface DisabledInfo {
     depCollection: boolean,
@@ -32,8 +32,8 @@ const router: RouterItem[] = [{
     path: '/',
     sider: {
         label: '主 页',
-        icon: <HomeOutlined />
-    }
+        icon: <HomeOutlined />,
+    },
 },
 {
     element: <CollectionView></CollectionView>,
@@ -43,7 +43,7 @@ const router: RouterItem[] = [{
     sider: {
         label: '收 藏',
         icon: <AppstoreOutlined />,
-    }
+    },
 }, {
     element: <AuthorView></AuthorView>,
     path: '/author',
@@ -55,8 +55,8 @@ const router: RouterItem[] = [{
         disabledInfo: {
             depCollection: true,
             message: '请先执行【收藏】查询',
-        }
-    }
+        },
+    },
 }, {
     element: <CollectionChartView></CollectionChartView>,
     path: '/collection-chart',
@@ -68,8 +68,8 @@ const router: RouterItem[] = [{
         disabledInfo: {
             depCollection: true,
             message: '请先执行【收藏】查询',
-        }
-    }
+        },
+    },
 }, {
     element: <BangumiDIffView></BangumiDIffView>,
     path: '/bangumi-diff',
@@ -78,7 +78,7 @@ const router: RouterItem[] = [{
     sider: {
         label: '动画制作组对比',
         icon: <DiffOutlined />,
-    }
+    },
 }]
 
 export default router

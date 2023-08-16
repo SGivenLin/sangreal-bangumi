@@ -5,12 +5,12 @@ export function rewriteWindow(win: IBrowserWindow | null) {
     win && win.webContents.setWindowOpenHandler(details => {
         if (exclude.some(item => details.url.includes(item))) {
             return {
-                action: 'allow'
+                action: 'allow',
             }
         }
         shell.openExternal(details.url)
         return {
-            action: 'deny'
+            action: 'deny',
         }
     })
 }

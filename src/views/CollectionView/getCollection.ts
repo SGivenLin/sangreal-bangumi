@@ -3,7 +3,7 @@ import Store from 'electron-store'
 import api from 'src/service'
 
 const store = new Store<Record<string, CollectionRes['data']>>({
-    name: 'collection'
+    name: 'collection',
 })
 
 async function setCollectionListCache(username: string, collection: CollectionRes['data']) {

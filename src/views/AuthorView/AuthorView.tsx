@@ -30,19 +30,19 @@ function AuthorView() {
     const [ curAuthorList, setCurAuthorList ] = useState(allAuthorList.slice(0, pageSize))
     const dispatch = useAppDispatch()
     useEffect(() => {
-        setCurAuthorList(allAuthorList.slice(0, pageSize));
-      }, [allAuthorList]);
+        setCurAuthorList(allAuthorList.slice(0, pageSize))
+    }, [allAuthorList])
 
     const handle = useCallback((event: Electron.IpcRendererEvent, info: AuthorListCbInfo) => {
         dispatch(setLoading({
             loading: true,
-            text: `正在获取信息 ${info.finish_old + info.finish_new}/${info.total}`
+            text: `正在获取信息 ${info.finish_old + info.finish_new}/${info.total}`,
         }))
     }, [ dispatch ])
     useEffect(() => {
         dispatch(setLoading({
             loading: true,
-            text: '正在查询'
+            text: '正在查询',
         }))
         ipcRenderer.invoke(getAuthorResult, collectionList).then((res: AuthorRes) => {
             if (res && res.authorData) {

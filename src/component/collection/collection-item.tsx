@@ -1,8 +1,8 @@
 import './collection-item.styl'
 import type { UserSubjectCollection } from './type'
-import { Rate } from 'antd';
-import { decodeSubjectName } from 'src/lib/utils';
-import { BangumiLink } from 'src/component/common/link';
+import { Rate } from 'antd'
+import { decodeSubjectName } from 'src/lib/utils'
+import { BangumiLink } from 'src/component/common/link'
 
 export default function CollectionItem({ collection }: { collection: UserSubjectCollection }) {
     const subject = decodeSubjectName(collection.subject)

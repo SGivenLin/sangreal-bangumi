@@ -55,25 +55,25 @@ export default class AppUpdater {
         autoUpdater.on(updateAvailable, (info) => {
             log.info(updateAvailable, info)
             this.win.webContents.send(updateAvailable, info)
-        });
+        })
           
         autoUpdater.on(updateNotAvailable, (info) => {
             log.info(updateNotAvailable, info)
             this.win.webContents.send(updateNotAvailable, info)
-        });
+        })
           
         autoUpdater.on('error', (err) => {
             log.error(updateError, err)
             this.win.webContents.send(updateError, err.toString(), fs.existsSync(downloadDir))
-        });
+        })
           
         autoUpdater.on(updateDownloaded, (info) => {
             log.info(updateDownloaded, info)
             this.win.webContents.send(updateDownloaded)
             setTimeout(() => {
-                autoUpdater.quitAndInstall(false, true);
+                autoUpdater.quitAndInstall(false, true)
             })
-        });
+        })
 
         autoUpdater.on(downloadProgress, (progressObj) => {
             this.win.webContents.send(downloadProgress, progressObj)
@@ -104,4 +104,4 @@ export default class AppUpdater {
             shell.openPath(downloadDir).catch(log.error)
         })
     }
-  }
+}

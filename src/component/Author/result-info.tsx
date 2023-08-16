@@ -15,7 +15,7 @@ function ResultInfo() {
             <li key={item.subject_id}>
                 <BangumiLink className="title" bangumi={item.subject}></BangumiLink>
                 <span>（{item.errmsg || '-'}）</span>
-            </li>
+            </li>,
         )}
     </ul>
     return (

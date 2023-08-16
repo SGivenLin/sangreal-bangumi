@@ -9,8 +9,8 @@ interface InitialState{
 
 const initialState: InitialState = {
     searchUserInfo: {
-        username: ''
-    }
+        username: '',
+    },
 }
 
 export const slice = createSlice({

@@ -8,7 +8,7 @@ interface InitialState{
 
 const initialState: InitialState = {
     loading: false,
-    text: ''
+    text: '',
 }
 
 export const slice = createSlice({
@@ -18,7 +18,7 @@ export const slice = createSlice({
         setLoading: (state, action: PayloadAction<Partial<InitialState>>) => {
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
             }
         },
     },

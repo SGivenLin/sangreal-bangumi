@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, type LinkProps } from 'react-router-dom'
 import { baseUrl } from 'src/lib/const'
 import { decodeHtml, decodeSubjectName } from 'src/lib/utils'
 import {type  RouterItem } from '../Layout/router'
@@ -95,8 +95,8 @@ const CommonRouterLink: FC<commonLinkProps & Partial<LinkProps> & React.RefAttri
     const disbaled =  useRouterDisabled()
     if (disbaled && route.sider?.disabledInfo?.depCollection) {
         return <Tooltip title={route.sider.disabledInfo.message}>
-                <div style={{ cursor: 'not-allowed' }}><Link to={route.path} style={{ pointerEvents: 'none' }} {...attts}>{ children }</Link></div>
-            </Tooltip>
+            <div style={{ cursor: 'not-allowed' }}><Link to={route.path} style={{ pointerEvents: 'none' }} {...attts}>{ children }</Link></div>
+        </Tooltip>
     } else {
         return <Link to={route.path}>{ children }</Link>
     }

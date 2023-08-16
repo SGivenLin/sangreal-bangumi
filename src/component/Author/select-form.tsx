@@ -1,13 +1,13 @@
-import { Form, Radio, InputNumber, Switch, Tooltip, Checkbox, Button, Card } from 'antd';
+import { Form, Radio, InputNumber, Switch, Tooltip, Checkbox, Button, Card } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'src/store';
+import React, { useState } from 'react'
+import { useAppDispatch, useAppSelector } from 'src/store'
 import { sortByForm } from 'src/store/author'
 import { jobMap, allRelation } from 'src/lib/const'
-import { useLoading } from 'src/lib/hooks';
+import { useLoading } from 'src/lib/hooks'
 
-const CheckboxGroup = Checkbox.Group;
+const CheckboxGroup = Checkbox.Group
 
 enum weightType {
     relation,
@@ -25,7 +25,7 @@ const plainOptions = Object.keys(jobMap) as JobMapKey[]
 const initialValues: SortType = { relation: plainOptions, subjectCount: 2, weight: weightType.subject, useRate: true }
 const AuthorForm: React.FC = () => {
     const [ resetDisabled, setResetDisabled ] = useState(true)
-    const [form] = Form.useForm<SortType>();
+    const [form] = Form.useForm<SortType>()
     const dispatch = useAppDispatch()
 
     const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 12 } }
@@ -36,7 +36,7 @@ const AuthorForm: React.FC = () => {
             // @ts-ignore
             if (JSON.stringify(allVal[key]) !== JSON.stringify(initialValues[key])) {
                 disabled = false
-                break;
+                break
             }
         }
         setResetDisabled(disabled)
@@ -79,53 +79,53 @@ const AuthorForm: React.FC = () => {
         if (relation) {
             return {
                 label: <Tooltip title={relation.join('，')}>{key}</Tooltip>,
-                value: key
+                value: key,
             }
         } else {
             return {
                 label: <Tooltip title={extraRelationList.join('，')} open={extraRelationList.length === 0 ? false : undefined}>{key}</Tooltip>,
-                value: key
+                value: key,
             }
         }
         
     })
     return (
         <Card>
-        <Form
-            className='author-form'
-            {...formItemLayout}
-            form={form}
-            initialValues={initialValues}
-            onValuesChange={onFormChange}
-        >
-            <Form.Item label="优先级" name="weight">
-                <Radio.Group value={initialValues} >
-                    <Radio.Button value={weightType.subject}>创作者/作品</Radio.Button>
-                    <Radio.Button value={weightType.relation}>创作者*职位/作品</Radio.Button>
-                </Radio.Group>
-            </Form.Item>
-            <Form.Item label={rateNode} name="useRate" valuePropName='checked'>
-                <Switch />
-            </Form.Item>
-            <Form.Item label="参与至少" name="subjectCount">
-                <InputNumber addonAfter='部作品' min={1} max={100} style={{ width: '120px' }}/>
-            </Form.Item>
-            <Form.Item label={relationNode} name="relation">
-                <CheckboxGroup options={jobList} />
-            </Form.Item>
-            <Form.Item { ...formBtnLayout }>
-                <Button type="primary" htmlType="submit" onClick={onSubmit} style={{ marginRight: '12px' }} loading={loading} icon={<SearchOutlined />}> 
+            <Form
+                className='author-form'
+                {...formItemLayout}
+                form={form}
+                initialValues={initialValues}
+                onValuesChange={onFormChange}
+            >
+                <Form.Item label="优先级" name="weight">
+                    <Radio.Group value={initialValues} >
+                        <Radio.Button value={weightType.subject}>创作者/作品</Radio.Button>
+                        <Radio.Button value={weightType.relation}>创作者*职位/作品</Radio.Button>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item label={rateNode} name="useRate" valuePropName='checked'>
+                    <Switch />
+                </Form.Item>
+                <Form.Item label="参与至少" name="subjectCount">
+                    <InputNumber addonAfter='部作品' min={1} max={100} style={{ width: '120px' }}/>
+                </Form.Item>
+                <Form.Item label={relationNode} name="relation">
+                    <CheckboxGroup options={jobList} />
+                </Form.Item>
+                <Form.Item { ...formBtnLayout }>
+                    <Button type="primary" htmlType="submit" onClick={onSubmit} style={{ marginRight: '12px' }} loading={loading} icon={<SearchOutlined />}> 
                 查询
-                </Button>
-                <Button htmlType="button" onClick={onReset} disabled={resetDisabled}>
+                    </Button>
+                    <Button htmlType="button" onClick={onReset} disabled={resetDisabled}>
                 重置
-                </Button>
-            </Form.Item>
-        </Form>
+                    </Button>
+                </Form.Item>
+            </Form>
         </Card>
-    );
-};
+    )
+}
 
-export default AuthorForm;
+export default AuthorForm
 export { weightType, initialValues }
 export type { SortType }

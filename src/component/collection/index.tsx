@@ -20,7 +20,7 @@ function getItems(list: IGroupList): CollapseProps['items'] {
         label: <GroupTitle subject={item}></GroupTitle>,
         children: <List key={item.title}>
             { item.collectionList.map(collection => <Collection.Item collection={collection} key={collection.subject_id}></Collection.Item>) }
-        </List>
+        </List>,
     }))
 }
 
@@ -32,7 +32,7 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
             const title = CollectionData.groupRate2Str(rate)
             collectionList.length && list.push({
                 title,
-                collectionList: collectionList
+                collectionList: collectionList,
             })
         }
         return list
@@ -51,7 +51,7 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
                 fontWeight: 'bold',
                 padding: '8px 20px 0',
                 display: 'flex',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
             }}>
                 <span>
                     <UserOutlined style={{paddingRight: 4}}></UserOutlined>

@@ -55,15 +55,15 @@ type ReducerType = SliceCaseReducers<InitialState>[string]
 const _sortBySubject: ReducerType = (state, action: PayloadAction<weightType>) => {
     const authorList = [ ...state.authorList ]
     switch(action.payload) {
-        case weightType.subject:
-            authorList.sort((a, b) => {
-                return getLengthUnique(b) - getLengthUnique(a)
-            })
-            break;
-        default:
-            authorList.sort((a, b) => {
-                return getLength(b) - getLength(a)
-            })  
+    case weightType.subject:
+        authorList.sort((a, b) => {
+            return getLengthUnique(b) - getLengthUnique(a)
+        })
+        break
+    default:
+        authorList.sort((a, b) => {
+            return getLength(b) - getLength(a)
+        })  
     }
     return {
         ...state,
@@ -77,7 +77,7 @@ const _filterSubjectCount: ReducerType = (state, action: PayloadAction<number | 
         ...state,
         authorList: authorList.filter(item => {
             return getLengthUnique(item) >= (action.payload || 1)
-        })
+        }),
     }
 }
 
@@ -115,11 +115,11 @@ export const slice = createSlice({
                 weight: slice.caseReducers.sortBySubject,
                 subjectCount: slice.caseReducers.filterSubjectCount,
                 useRate: slice.caseReducers.sortByRate,
-                relation: slice.caseReducers.filterSubjectByRelation
+                relation: slice.caseReducers.filterSubjectByRelation,
             }
             let cur = {
                 ...state,
-                authorList: state._authorList
+                authorList: state._authorList,
             }
 
             let key: (keyof typeof action.payload)
@@ -142,7 +142,7 @@ export const slice = createSlice({
             })
             return {
                 ...state,
-                authorList: authorList
+                authorList: authorList,
             }
         },
         filterSubjectByRelation(state, action: PayloadAction<Array<keyof typeof jobMap>>) {
@@ -169,7 +169,7 @@ export const slice = createSlice({
                 ...state,
                 authorList,
             }
-        }
+        },
     },
 })
 

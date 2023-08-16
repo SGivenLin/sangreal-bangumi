@@ -34,7 +34,7 @@ function resetUserAgent(config: InternalAxiosRequestConfig<any>) {
     if (isNode()) {
         config.headers = {
             ...config.headers,
-            'User-Agent': 'lin.hayashi@foxmail.com/sangreal-bangumi 0.0.1'
+            'User-Agent': 'lin.hayashi@foxmail.com/sangreal-bangumi 0.0.1',
         } as AxiosRequestHeaders
     }
     return config

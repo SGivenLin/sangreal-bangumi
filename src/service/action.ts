@@ -10,7 +10,7 @@ async function getAllCollection(params: object, option: object, cb?: (list: Coll
         const curOffset = list.length
         const res = await api.getCollectionList({
             ...params,
-            offset: curOffset
+            offset: curOffset,
         }, option)
         if (total === Infinity) {
             total = res.total
@@ -24,5 +24,5 @@ async function getAllCollection(params: object, option: object, cb?: (list: Coll
 
 
 export {
-    getAllCollection
+    getAllCollection,
 }

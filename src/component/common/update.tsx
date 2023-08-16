@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react"
 import { ipcRenderer } from 'electron'
 import { type ProgressInfo, type UpdateInfo } from "electron-updater"
 import {
@@ -14,12 +14,12 @@ import {
     updateCheck,
 } from 'src/electron/ipcMain/const'
 import { Button, Space, notification, Progress } from 'antd'
-import { useDispatch } from "react-redux";
-import { setAppInfo } from "src/store/appInfo";
-import { NotificationInstance } from "antd/es/notification/interface";
-import Store from "electron-store";
+import { useDispatch } from "react-redux"
+import { setAppInfo } from "src/store/appInfo"
+import { NotificationInstance } from "antd/es/notification/interface"
+import Store from "electron-store"
 import { debounce } from 'lodash-es'
-import log from "electron-log";
+import log from "electron-log"
 
 const updaterStore = new Store<{
     ignoreVersion: string[]
@@ -44,7 +44,7 @@ let isInit = false
 let isForce = false
 
 const useUpdaterAndNotify = () => {
-    const [ api, contextHolder ] = notification.useNotification();
+    const [ api, contextHolder ] = notification.useNotification()
     const { initUpdater } = _useUpdaterAndNotify(api)
     const checkUpdate = useMemo(() => debounce((_isForce: boolean = false) => {
         isForce = _isForce
@@ -77,7 +77,7 @@ function _useUpdaterAndNotify(api: NotificationInstance) {
                 }}>取消下载</Button>,
                 key: notifyKey,
                 closeIcon: null,
-                duration: null
+                duration: null,
             })
         }
 
@@ -99,13 +99,13 @@ function _useUpdaterAndNotify(api: NotificationInstance) {
 
             const btn =
                  <Space>
-                    <Button type="link" size="small" onClick={ignoreUpdate}>
+                     <Button type="link" size="small" onClick={ignoreUpdate}>
                     忽略此版本
-                    </Button>
-                    <Button type="primary" size="small" onClick={updateDownloadHandle}>
+                     </Button>
+                     <Button type="primary" size="small" onClick={updateDownloadHandle}>
                     下载更新
-                    </Button>
-                </Space>
+                     </Button>
+                 </Space>
 
             api.warning({
                 message: '更新提示',
@@ -139,7 +139,7 @@ function _useUpdaterAndNotify(api: NotificationInstance) {
                         marginTop: 4,
                     }}>
                         <code style={{
-                            whiteSpace: 'pre-wrap'
+                            whiteSpace: 'pre-wrap',
                         }}>{ err }</code>
                     </div>
                 </div>,

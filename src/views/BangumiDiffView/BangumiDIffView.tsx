@@ -1,13 +1,13 @@
 import './BangumiDIffView.styl'
 import { Card, Input,  Divider, Button, Col, Row, Alert, Checkbox, Tooltip } from 'antd'
-import { SearchOutlined } from '@ant-design/icons';
-import { useRef, useState } from 'react';
-import api from 'src/service';
+import { SearchOutlined } from '@ant-design/icons'
+import { useRef, useState } from 'react'
+import api from 'src/service'
 import BangumiDiffContent from 'src/component/Bangumi/BangumiDiffContent'
 import BangumiSearchPanel from 'src/component/Bangumi/BangumiSearchPanel'
 import { type BangumiContent, type Bangumi, type BangumiBySearch } from 'src/component/Bangumi/type'
-import { Author } from 'src/component/Author/type';
-import { useFullLoading } from 'src/lib/hooks';
+import { Author } from 'src/component/Author/type'
+import { useFullLoading } from 'src/lib/hooks'
 import { addDiff, addDiffAll, getDiffText } from './getDiffRes'
 
 const SearchBtn = ({ onClick }: { onClick?: React.DOMAttributes<HTMLSpanElement>['onClick'] }) => {
@@ -68,46 +68,46 @@ const BangumiDIffView = () => {
     }
 
     return (
-    <Card className='bangumi-diff'>
-        <div className='bangumi-diff-header'>
-            <div className="bangumi-diff-search">
-                <div className='bangumi-left'>
-                    <Input placeholder='bangumi id' value={input1Val} onChange={e => setInput1Value(e.target.value)}></Input>
-                    <SearchBtn onClick={() => searchBtnClick(setInput1Value)}></SearchBtn>
-                </div>
-                <div>
-                    <Button className='diff-btn' shape="circle" size='large' type='primary' ghost={true} icon={<SearchOutlined />} onClick={onClick} />
+        <Card className='bangumi-diff'>
+            <div className='bangumi-diff-header'>
+                <div className="bangumi-diff-search">
+                    <div className='bangumi-left'>
+                        <Input placeholder='bangumi id' value={input1Val} onChange={e => setInput1Value(e.target.value)}></Input>
+                        <SearchBtn onClick={() => searchBtnClick(setInput1Value)}></SearchBtn>
+                    </div>
                     <div>
-                        <Checkbox className='diff-check' checked={isDiffAll} onChange={(e) => setIsDiffAll(e.target.checked)}>
-                            <Tooltip title="冷门动画，尝试查询全部被记录的制作方(未被bangumi.tv的人物收录，存在误判)">全部信息比对</Tooltip>
-                        </Checkbox>
+                        <Button className='diff-btn' shape="circle" size='large' type='primary' ghost={true} icon={<SearchOutlined />} onClick={onClick} />
+                        <div>
+                            <Checkbox className='diff-check' checked={isDiffAll} onChange={(e) => setIsDiffAll(e.target.checked)}>
+                                <Tooltip title="冷门动画，尝试查询全部被记录的制作方(未被bangumi.tv的人物收录，存在误判)">全部信息比对</Tooltip>
+                            </Checkbox>
+                        </div>
+                    </div>
+                    <div className='bangumi-right'>
+                        <Input placeholder='bangumi id' value={input2Val} onChange={e => setInput2Value(e.target.value)}></Input>
+                        <SearchBtn onClick={() => searchBtnClick(setInput2Value)}></SearchBtn>
                     </div>
                 </div>
-                <div className='bangumi-right'>
-                <Input placeholder='bangumi id' value={input2Val} onChange={e => setInput2Value(e.target.value)}></Input>
-                    <SearchBtn onClick={() => searchBtnClick(setInput2Value)}></SearchBtn>
-                </div>
+                <Alert
+                    message={diffText ? <span className="diff-text">对比结果：{<span className='diff-text-res'>{diffText}</span>}</span> : '输入动画id后查询，进行对比'}
+                    style={{ textAlign: 'center' }}
+                ></Alert>
             </div>
-            <Alert
-                message={diffText ? <span className="diff-text">对比结果：{<span className='diff-text-res'>{diffText}</span>}</span> : '输入动画id后查询，进行对比'}
-                style={{ textAlign: 'center' }}
-            ></Alert>
-        </div>
-        {
-            bangumiContent1 && bangumiContent2 &&
+            {
+                bangumiContent1 && bangumiContent2 &&
             <Row>
                 { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent1}></BangumiDiffContent></Col>}
                 <Col span={2} style={{ textAlign: 'center' }}><Divider type="vertical" style={{ height: '100%' }} /></Col>
                 { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent2}></BangumiDiffContent></Col>}
             </Row>
-        }
+            }
 
-        <BangumiSearchPanel
-            open={searchPanelOpen}
-            onCancel={() => setSearchPanelOpen(false)}
-            onSelect={onSelectBangumi}
-        ></BangumiSearchPanel>
-    </Card>)
+            <BangumiSearchPanel
+                open={searchPanelOpen}
+                onCancel={() => setSearchPanelOpen(false)}
+                onSelect={onSelectBangumi}
+            ></BangumiSearchPanel>
+        </Card>)
 }
 
 function groupAuthorList(authorList: Author[], bangumiInfo: Bangumi) {

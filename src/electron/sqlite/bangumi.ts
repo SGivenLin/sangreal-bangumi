@@ -66,7 +66,7 @@ function setBangumiAuthor(data: Array<BangumiAuthor>) {
                     }
                     resolve()
                 })
-            })
+            }),
         }
     })
     return executePromisesWithLimit<void>(taskList, 10)
@@ -80,18 +80,18 @@ function setBangumi(data: Bangumi[]) {
     const sql = 'INSERT INTO bangumi (bangumi_id, name, bangumi_legal_type) VALUES (?, ?, ?)'
     return new Promise<void>((resolve, reject) => {
         db.serialize(() => {
-            const stmt = db.prepare(sql);
+            const stmt = db.prepare(sql)
             data.forEach(item => {
-              stmt.run(item.bangumi_id, item.name, item.bangumi_legal_type);
-            });
+                stmt.run(item.bangumi_id, item.name, item.bangumi_legal_type)
+            })
             stmt.finalize((err) => {
                 if (err) {
                     reject(err)
                 } else {
                     resolve()
                 }
-              });
-          });
+            })
+        })
     })
 }
 
@@ -120,14 +120,14 @@ function getAllRelation(): Promise<string[]>{
 }
  
 function groupArray<T>(arr: Array<T>, n: number) {
-    const len = arr.length;
-    const result = [];
-    let i = 0;
+    const len = arr.length
+    const result = []
+    let i = 0
     while (i < len) {
-      result.push(arr.slice(i, i + n));
-      i += n;
+        result.push(arr.slice(i, i + n))
+        i += n
     }
-    return result;
+    return result
 }
   
 

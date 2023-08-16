@@ -3,5 +3,5 @@ import Sider from './Sider'
 
 export {
     Content,
-    Sider
+    Sider,
 }

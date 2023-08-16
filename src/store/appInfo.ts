@@ -13,7 +13,7 @@ const initialState: InitialState = {
     app: {
         appName: '',
         version: '',
-        isLatest: null
+        isLatest: null,
     },
 }
 

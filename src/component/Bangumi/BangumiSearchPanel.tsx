@@ -23,7 +23,7 @@ const BangumiSearchPanel = (props: ModalFuncProps & { onSelect: OnSelect }) => {
                 start: 0,
                 max_results: 25,
             }, {
-                keywords: encodeURIComponent(val)
+                keywords: encodeURIComponent(val),
             })
             setBangumiList(res.list)
         } catch (e: any){
