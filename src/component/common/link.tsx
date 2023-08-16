@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import { Link, type LinkProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { baseUrl } from 'src/lib/const'
 import { decodeHtml, decodeSubjectName } from 'src/lib/utils'
 import {type  RouterItem } from '../Layout/router'

@@ -3,14 +3,14 @@ import { rewriteWindow } from './windowInterceptor'
 import { setIpcMain, removeIpcMain } from './ipcMain'
 import { isMac } from './env'
 import { initDB } from './sqlite'
-const url = require('url');
-const path = require('path');
+import AppUpdater from './updater'
+import url  from 'url'
+import path from 'path'
 
 const isDev = process.env.NODE_ENV === 'development';
-let win: null | IBrowserWindow  = null;
 
 function createWindow() {
-  win = new BrowserWindow({
+  const win = new BrowserWindow({
     width: 1000,
     height: 600,
     title: 'Sangreal',
@@ -43,8 +43,9 @@ function createWindow() {
   win.on('closed', () => {
     removeIpcMain()
     globalShortcut.unregisterAll()
-    win = null;
   });
+
+  return win
 }
 
 function setMenu(): void {
@@ -88,12 +89,13 @@ async function main() {
     })
 
     createWin()
+    setIpcMain()
 }
 
 function createWin() {
-  createWindow()
+  const win = createWindow()
+  new AppUpdater(win as IBrowserWindow).initRenderer()
   rewriteWindow(win)
-  setIpcMain()
 }
 
 main()

@@ -2,6 +2,11 @@ import { useCallback, useState, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/store'
 import { setLoading } from 'src/store/loading'
 import { throttle } from 'lodash-es'
+import { ipcRenderer } from 'electron';
+import { getAppInfo } from 'src/electron/ipcMain/const';
+import { useDispatch } from 'react-redux';
+import { setAppInfo } from 'src/store/appInfo';
+
 
 type LoadingCb<T extends any[]> = (...args: T) => void
 
@@ -72,9 +77,19 @@ function useRouterDisabled() {
     return !collectionList.length
 }
 
+function useAppInfo() {
+    const dispatch = useDispatch()
+    useEffect(() => {
+      ipcRenderer.invoke(getAppInfo).then((res) => {
+        dispatch(setAppInfo(res))
+      })
+    })
+}
+
 export {
     useLoading,
     useFullLoading,
     useScrollToBottom,
     useRouterDisabled,
+    useAppInfo,
 }

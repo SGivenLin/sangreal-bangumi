@@ -80,9 +80,12 @@
     "start:main": "webpack --config ./webpack/webpack.dev.js && electron ./tmp/electron/electron.js",
     "start": "concurrently \"npm run start:html\" \"npm run nodemon\"",
     "start:html": "node scripts/start.js",
-    "build": "node scripts/build.js && webpack --config ./webpack/webpack.prod.js",
+    "build:html": "node scripts/build.js",
+    "build:e": "webpack --config ./webpack/webpack.prod.js",
+    "build": "npm run build:html && npm run build:e",
     "dist": "npm run build && electron-builder --config builder.json",
-    "release": "electron-builder --config builder.json --publish always"
+    "dist:e": "npm run build:e && electron-builder --config builder.json",
+    "release": "npm run build:html && electron-builder --config builder.json --publish always"
   },
   "main": "main.js",
   "browserslist": {

@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import router,{ type DisabledInfo } from './router'
-import { Layout, Menu, type MenuProps, Popover } from 'antd'
+import { Button, Layout, Menu, type MenuProps, notification } from 'antd'
 import { NavLink, useLocation } from 'react-router-dom'
-import { useRouterDisabled } from 'src/lib/hooks'
+import { useLoading, useRouterDisabled } from 'src/lib/hooks'
 import { CommonRouterLink } from 'src/component/common/link'
+import useUpdaterAndNotify from 'src/component/common/update'
+import { useAppSelector } from 'src/store'
+import log from 'electron-log'
+import './Sider.styl'
 type MenuItem = Required<MenuProps>['items'][number];
 const { Sider } = Layout
 
@@ -67,18 +71,41 @@ function AppSider() {
     setItems(getMenuItems())
   }, [ getMenuItems ])
 
+  const appInfo = useAppSelector(state => state.app)
+
+  const version = useAppSelector(state => state.app.app.version)
+
+  const { checkUpdate: _checkUpdate } = useUpdaterAndNotify()
+  const [ loading, checkUpdate ] = useLoading(async () => {
+    return _checkUpdate && _checkUpdate(true).then(res => {
+      if (!res) {
+        notification.success({
+          message: '更新提示',
+          description: `当前版本 ${version} 已是最新，无需更新`,
+          key: 'version:latest',
+          duration: 2
+        })
+      }
+    }).catch(log.error)
+  })
   
-    return (
-        <Sider style={siderStyle}>
-            <Menu
-                defaultSelectedKeys={[router[0].path]}
-                selectedKeys={selectedKeys}
-                mode="inline"
-                theme="light"
-                items={items}
-            />
-        </Sider>
-    )
+  return (
+    <Sider style={siderStyle} className="app-sider">
+        <Menu
+            defaultSelectedKeys={[router[0].path]}
+            selectedKeys={selectedKeys}
+            mode="inline"
+            theme="light"
+            items={items}
+        />
+        <div className='app-info'>
+          <div>{ appInfo.app.appName }</div>
+          <Button type='text' size='small' style={{color: '#666'}} loading={loading} onClick={checkUpdate}>
+            { appInfo.app.version }
+          </Button>
+        </div>
+    </Sider>
+  )
 }
 
 export default AppSider;

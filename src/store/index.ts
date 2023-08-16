@@ -4,6 +4,7 @@ import collectionReducer from './collection'
 import authorReducer from './author'
 import userInfoReducer from './userInfo'
 import loadingReducer from 'src/store/loading'
+import appInfoReducer from 'src/store/appInfo'
 
 const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
         author: authorReducer,
         userInfo: userInfoReducer,
         loading: loadingReducer,
+        app: appInfoReducer,
     },
 })
 

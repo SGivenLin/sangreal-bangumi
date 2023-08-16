@@ -1,9 +1,9 @@
 import { app, dialog } from 'electron'
 import { isDev } from '../env'
 import sqlite3 from 'sqlite3'
+import path from 'path'
+import fs from 'fs'
 
-const path = require('path')
-const fs = require('fs')
 const dbFile = path.resolve(isDev ? '' : app.getPath('userData'), './bangumi.db')
 const exists = fs.existsSync(dbFile);
 
