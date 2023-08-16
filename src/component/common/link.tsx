@@ -90,12 +90,12 @@ interface commonLinkProps {
     children: ReactNode,
 }
 
-const CommonRouterLink: FC<commonLinkProps & React.RefAttributes<HTMLAnchorElement>> = (props) => {
-    const { children, route } = props
+const CommonRouterLink: FC<commonLinkProps & Partial<LinkProps> & React.RefAttributes<HTMLAnchorElement>> = (props) => {
+    const { children, route, ...attts } = props
     const disbaled =  useRouterDisabled()
     if (disbaled && route.sider?.disabledInfo?.depCollection) {
         return <Tooltip title={route.sider.disabledInfo.message}>
-                <div style={{ cursor: 'not-allowed' }}><Link to={route.path} style={{ pointerEvents: 'none' }}>{ children }</Link></div>
+                <div style={{ cursor: 'not-allowed' }}><Link to={route.path} style={{ pointerEvents: 'none' }} {...attts}>{ children }</Link></div>
             </Tooltip>
     } else {
         return <Link to={route.path}>{ children }</Link>
