@@ -1,7 +1,7 @@
 import type { CollectionRes, IGroupRange, IGroup } from './type'
 
 class CollectionData {
-    static groupRateList: IGroupRange[] = [10, 9, 8, 7, [6, 1], 0]
+    static groupRateList: IGroupRange[] = [0, [1, 6], 7, 8, 9, 10]
     static groupDateList: IGroupRange[] = [ -Infinity ,[0, 1979], [1980, 1989], [1990, 1999], [2000, 2009], [2010, 2019], [2020, Infinity]]
     collectionList: CollectionRes['data']
     constructor(collectionList: CollectionRes['data']) {
@@ -34,12 +34,12 @@ class CollectionData {
             return '未知'
         } else if (Array.isArray(date)) {
             if (date[1] === Infinity) {
-                return `${date[0]}至今`
+                return `${date[0]} 至今`
             } else {
-                return `${date[0]}-${date[1]}`
+                return `${date[0]} - ${date[1]}`
             }
         } else {
-            return date
+            return String(date)
         }
     }
 

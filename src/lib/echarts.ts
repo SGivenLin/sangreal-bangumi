@@ -57,18 +57,19 @@ echarts.use([
     LegendComponent,
 ])
 
-function useEcharts(option: ECOption) {
+function useEcharts(option: ECOption, cb?: (echart: echarts.ECharts) => void) {
     const domRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         const myChart = echarts.init(domRef.current)
         myChart.setOption(option)
+        cb && cb(myChart)
         const resize = () => myChart.resize()
         window.addEventListener('resize', resize)
         return () => {
             window.removeEventListener('resize', resize)
         }
-    }, [option])
+    }, [cb, option])
 
     return domRef
 }

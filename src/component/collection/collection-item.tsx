@@ -16,7 +16,7 @@ export default function CollectionItem({ collection }: { collection: UserSubject
                 </div>
                 <div className='info'>
                     <span>{ subject.eps + '话' }</span>
-                    <span>{ ' / ' + subject.date }</span>
+                    <span>{ ' / ' + (subject.date || '-') }</span>
                 </div>
                 <div className='rate'>
                     <Rate value={subject.score / 2} disabled allowHalf style={{ fontSize: '15px' }}/>

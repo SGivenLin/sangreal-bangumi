@@ -16,7 +16,7 @@ interface Bangumi {
     name: string,
     name_cn: string,
     summary: string,
-    date: string,
+    date: string | null,
     images?: Images,
     volumes: number,
     eps: number,
