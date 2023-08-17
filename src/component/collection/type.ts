@@ -27,14 +27,14 @@ interface UserSubjectCollection {
     subject: SlimSubject,
 }
 
-type IGroupRate = number | [number, number]
-type IGroup = Map<IGroupRate, CollectionRes['data']>
+type IGroupRange = number | [number, number]
+type IGroup = Map<IGroupRange, CollectionRes['data']>
 type Collection = CollectionRes['data'][number]
 
 export type {
     UserSubjectCollection,
     CollectionRes,
     Collection,
-    IGroupRate,
+    IGroupRange,
     IGroup,
 }

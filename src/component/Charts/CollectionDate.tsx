@@ -36,7 +36,7 @@ const CollectionDateChartPie: FC<Partial<ECOption>> = (props) =>{
             top: '0',
             left: 'center',
             selected: {
-                未评分: false,
+                未知: false,
             },
         },
         ...props,
@@ -49,18 +49,19 @@ const CollectionDateChartPie: FC<Partial<ECOption>> = (props) =>{
 
 const CollectionDateChart: FC = () => {
     const collectionList = useAppSelector(state => state.collection.collectionList)
-    const collectionData = new CollectionData(collectionList).groupByRate()
+    const collectionData = new CollectionData(collectionList).groupByDate()
+    console.log(collectionData)
 
-    const xAxisBar = { data: CollectionData.groupRateList.map(CollectionData.groupRate2Str) }
+    const xAxisBar = { data: CollectionData.groupDateList.map(CollectionData.groupDate2Str), axisLabel: { rotate: 40 } }
     const seriesBar: ECOption['series'] = [
         {
             type: 'bar',
-            data: collectionData.map(([ rate, list ]) => list.length),
+            data: collectionData.map(([ date, list ]) => list.length),
         },
     ]
 
-    const pieData =  collectionData.map(([ rate, list ]) => ({
-        name: CollectionData.groupRate2Str(rate),
+    const pieData =  collectionData.map(([ date, list ]) => ({
+        name: CollectionData.groupDate2Str(date),
         value: list.length,
     }))
 

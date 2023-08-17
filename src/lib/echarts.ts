@@ -73,6 +73,14 @@ function useEcharts(option: ECOption) {
     return domRef
 }
 
+type MyOption = ECOption & {
+  xAxis: {
+    data: string[]
+  }
+}
+
+type XAxisData = MyOption['xAxis']['data'] 
+
 export default echarts
 export { useEcharts }
-export type { ECOption }
+export type { ECOption, XAxisData }

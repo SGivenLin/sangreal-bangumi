@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react'
 import Item from './collection-item'
 import List from './collection-list'
-import type { CollectionRes, IGroup } from './type'
+import type { CollectionRes, IGroupRange, UserSubjectCollection } from './type'
 import CollectionData from './CollectionData'
 import { Collapse, type CollapseProps, Card, Divider } from 'antd'
 import { DatabaseOutlined, UserOutlined } from '@ant-design/icons'
@@ -26,7 +26,7 @@ function getItems(list: IGroupList): CollapseProps['items'] {
 
 function Collection( { collectionList } : { collectionList: CollectionRes['data'] }) {
     
-    const [ groupList, dispatch ] = useReducer((state: IGroupList, group: IGroup )=> {
+    const [ groupList, dispatch ] = useReducer((state: IGroupList, group: [IGroupRange, UserSubjectCollection[]][])=> {
         let list: IGroupList = []
         for(const [rate, collectionList] of group) {
             const title = CollectionData.groupRate2Str(rate)
@@ -39,7 +39,7 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
     }, [])
     useEffect(() => {
         const collectionData = new CollectionData(collectionList)
-        dispatch(collectionData.groupCollectionByRate())
+        dispatch(collectionData.groupByRate())
     }, [collectionList])
 
     const username = useAppSelector(state => state.userInfo.searchUserInfo.username)
