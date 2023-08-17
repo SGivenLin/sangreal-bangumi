@@ -26,10 +26,10 @@ section {
 }
 
 .ant-card {
-  background: #ffffffdd !important;
+  background: #ffffffdd;
 }
 .ant-card .ant-card {
-  background: #ffffff99 !important;
+  background: #ffffff99;
 }
 
 .ant-layout {

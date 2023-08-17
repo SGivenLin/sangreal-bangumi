@@ -20,7 +20,7 @@ const siderStyle: React.CSSProperties = {
     borderRadius: '0 8px 8px 0',
     overflow: 'hidden',
     position: 'sticky',
-    top: 0,
+    top: 12,
 }
 interface MenuItemProps {
   label: string;

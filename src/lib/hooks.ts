@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect, useRef, type RefObject } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/store'
 import { setLoading } from 'src/store/loading'
 import { throttle } from 'lodash-es'
@@ -72,6 +72,28 @@ function useScrollToBottom(callback: () => void, option: { throttleTime: number,
     }, [callback, option.offset, option.throttleTime])
 }
 
+function useScrollToTop(offset: number = 0): [ boolean, RefObject<HTMLDivElement> ] {
+    const containerRef = useRef<HTMLDivElement>(null)
+    const [ reachTop, setReachTop ] = useState(false)
+  
+    useEffect(() => {
+        const handleScroll = throttle(() => {
+            if (containerRef.current) {
+                const top = containerRef.current.getBoundingClientRect().top
+                setReachTop(top - offset <= 0)
+            }
+        }, 100)
+  
+        window.document.addEventListener('scroll', handleScroll)
+  
+        return () => {
+            window.document.removeEventListener('scroll', handleScroll)
+        }
+    }, [offset])
+  
+    return [ reachTop, containerRef ]
+}
+
 function useRouterDisabled() {
     const collectionList = useAppSelector(state => state.collection.collectionList)
     return !collectionList.length
@@ -90,6 +112,7 @@ export {
     useLoading,
     useFullLoading,
     useScrollToBottom,
+    useScrollToTop,
     useRouterDisabled,
     useAppInfo,
 }

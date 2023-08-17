@@ -1,11 +1,12 @@
 import { Form, Radio, InputNumber, Switch, Tooltip, Checkbox, Button, Card } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/store'
 import { sortByForm } from 'src/store/author'
 import { jobMap, allRelation } from 'src/lib/const'
-import { useLoading } from 'src/lib/hooks'
+import { useLoading, useScrollToTop } from 'src/lib/hooks'
+import './select-form.styl'
 
 const CheckboxGroup = Checkbox.Group
 
@@ -28,7 +29,7 @@ const AuthorForm: React.FC = () => {
     const [form] = Form.useForm<SortType>()
     const dispatch = useAppDispatch()
 
-    const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 12 } }
+    const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } }
     const formBtnLayout = { wrapperCol: { offset: formItemLayout.labelCol.span, span: formItemLayout.wrapperCol.span } }
     const onFormChange = (val: Partial<SortType>, allVal: SortType) => {
         let disabled = true
@@ -89,10 +90,39 @@ const AuthorForm: React.FC = () => {
         }
         
     })
+
+    const [ isTop, containerRef ] = useScrollToTop(0)
+    const [ showTopAnime, setShowTopAnime ] = useState(false)
+
+    // dom是否在 transitions 动画。可考虑抽离成独立hook
+    useEffect(() => {
+        let isAnime = false
+        const handleTransitionStart = (e: TransitionEvent | Event) => {
+            isAnime = true
+        }
+        const handleTransitionEnd = (e: TransitionEvent | Event) => {
+            isAnime = false
+        }
+        const domList = [ ...window.document.querySelectorAll('.ant-form-item'), containerRef.current ]
+        domList.forEach(dom => {
+            dom?.addEventListener('transitionstart', handleTransitionStart)
+            dom?.addEventListener('transitionend', handleTransitionEnd)
+        })
+
+        setShowTopAnime(isAnime ? false : isTop)
+
+        return () => {
+            domList.forEach(dom => {
+                dom?.removeEventListener('transitionstart', handleTransitionStart)
+                dom?.removeEventListener('transitionend', handleTransitionEnd)
+            })
+        }
+    }, [containerRef, isTop])
+
     return (
-        <Card>
+        <Card ref={containerRef} className={`form-card ${ showTopAnime && 'form-card--sticky' }`} bodyStyle={{ padding: 0 }}>
             <Form
-                className='author-form'
+                className='select-form'
                 {...formItemLayout}
                 form={form}
                 initialValues={initialValues}
