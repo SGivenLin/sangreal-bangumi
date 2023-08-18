@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.app {
+  min-height: 100vh;
+  padding-top: 12px;
+  box-sizing: border-box;
+  background-image: url('static/bg_eva.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+section {
+  background: #f5f5f533 !important;
+}
+
+.ant-card {
+  background: #ffffffdd;
+}
+.ant-card .ant-card {
+  background: #ffffff99;
+}
+
+.ant-layout {
+  background: inherit;
+}
+

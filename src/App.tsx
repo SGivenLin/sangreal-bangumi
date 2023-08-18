@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Layout, Spin } from 'antd'
+import { Sider, Content } from 'src/component/Layout'
+import { useAppSelector } from 'src/store'
+import useUpdaterAndNotify from 'src/component/common/update'
+import { useAppInfo } from 'src/lib/hooks'
+import { useEffect } from 'react'
+import log from 'electron-log'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const loading = useAppSelector(state => state.loading)
+    useAppInfo()
+    const { checkUpdate, contextHolder } = useUpdaterAndNotify()
+    useEffect(() => {
+        checkUpdate().catch(log.error)
+    }, [ checkUpdate ])
+
+    return (
+        <Spin tip={<span style={{ fontWeight: 'bold' }}>{loading.text}</span>} spinning={loading.loading} size="large">
+            { contextHolder }
+            <div className='app'>
+                <Layout>
+                    <Sider></Sider>
+                    <Layout>
+                        <Content></Content>
+                    </Layout>
+                </Layout>
+            </div>
+        </Spin>
+    )
 }
 
-export default App;
+export default App

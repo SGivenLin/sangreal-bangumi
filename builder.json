@@ -1,0 +1,39 @@
+{
+    "appId": "com.sangreal.bangumi.app",
+    "productName": "Sangreal-bangumi",
+    "extraMetadata": {
+      "main": "dist/electron/electron.js"
+    },
+    "directories": {
+      "output": "dist_electron"
+    },
+    "linux": {
+      "target": "deb",
+      "icon": "dist/html/logo256.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "dist/html/logo512.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "dist/html/logo256.png"
+    },
+    "files": [
+      "dist"
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": false,
+      "perMachine": true,"unicode": true
+    },
+    "publish": [{
+      "provider": "github",
+      "owner": "SGivenLin",
+      "repo": "sangreal-bangumi",
+      "private": true
+    }]
+  }
