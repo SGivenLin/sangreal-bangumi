@@ -60,7 +60,7 @@ const router: RouterItem[] = [{
 }, {
     element: <CollectionChartView></CollectionChartView>,
     path: '/collection-chart',
-    homeImg: require('src/static/author.png'),
+    homeImg: require('src/static/chart.jpeg'),
     desc: '对已查询到的收藏动画的分类并以图表展示',
     sider: {
         label: '收藏-图表分析',
