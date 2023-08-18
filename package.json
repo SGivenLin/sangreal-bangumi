@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "author": "lin.hayashi@foxmail.com",
   "description": "An app of bangumi info based bangumi.tv",
+  "keywords": [ "bangumi", "bangumi.tv", "react", "electron", "typescript" ],
   "private": true,
   "homepage": "./",
   "dependencies": {
@@ -164,10 +165,5 @@
       "jest-watch-typeahead/testname"
     ],
     "resetMocks": true
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
   }
 }
