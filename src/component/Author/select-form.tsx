@@ -96,12 +96,12 @@ const AuthorForm: React.FC = () => {
 
     // dom是否在 transitions 动画。可考虑抽离成独立hook
     useEffect(() => {
-        let isAnime = false
+        let isAnimeCount = 0
         const handleTransitionStart = (e: TransitionEvent | Event) => {
-            isAnime = true
+            isAnimeCount ++
         }
         const handleTransitionEnd = (e: TransitionEvent | Event) => {
-            isAnime = false
+            isAnimeCount --
         }
         const domList = [ ...window.document.querySelectorAll('.ant-form-item'), containerRef.current ]
         domList.forEach(dom => {
@@ -109,7 +109,7 @@ const AuthorForm: React.FC = () => {
             dom?.addEventListener('transitionend', handleTransitionEnd)
         })
 
-        setShowTopAnime(isAnime ? false : isTop)
+        setShowTopAnime(isAnimeCount !== 0 ? false : isTop)
 
         return () => {
             domList.forEach(dom => {
