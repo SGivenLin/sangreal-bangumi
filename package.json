@@ -1,9 +1,15 @@
 {
   "name": "sangreal-bangumi",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "lin.hayashi@foxmail.com",
   "description": "An app of bangumi info based bangumi.tv",
-  "keywords": [ "bangumi", "bangumi.tv", "react", "electron", "typescript" ],
+  "keywords": [
+    "bangumi",
+    "bangumi.tv",
+    "react",
+    "electron",
+    "typescript"
+  ],
   "private": true,
   "homepage": "./",
   "dependencies": {
