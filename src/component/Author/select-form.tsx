@@ -120,7 +120,7 @@ const AuthorForm: React.FC = () => {
     }, [containerRef, isTop])
 
     return (
-        <Card ref={containerRef} className={`form-card ${ showTopAnime && 'form-card--sticky' }`} bodyStyle={{ padding: 0 }}>
+        <Card ref={containerRef} className={`form-card ${ showTopAnime && 'is-sticky' }`} bodyStyle={{ padding: 0 }}>
             <Form
                 className='select-form'
                 {...formItemLayout}

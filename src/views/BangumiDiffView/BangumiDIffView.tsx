@@ -7,7 +7,7 @@ import BangumiDiffContent from 'src/component/Bangumi/BangumiDiffContent'
 import BangumiSearchPanel from 'src/component/Bangumi/BangumiSearchPanel'
 import { type BangumiContent, type Bangumi, type BangumiBySearch } from 'src/component/Bangumi/type'
 import { Author } from 'src/component/Author/type'
-import { useFullLoading } from 'src/lib/hooks'
+import { useFullLoading, useScrollToTop } from 'src/lib/hooks'
 import { addDiff, addDiffAll, getDiffText } from './getDiffRes'
 
 const SearchBtn = ({ onClick }: { onClick?: React.DOMAttributes<HTMLSpanElement>['onClick'] }) => {
@@ -66,10 +66,11 @@ const BangumiDIffView = () => {
         curSearchCbRef.current(String(item.id))
         setSearchPanelOpen(false)
     }
+    const [ isTop, containerRef ] = useScrollToTop()
 
     return (
-        <Card className='bangumi-diff'>
-            <div className='bangumi-diff-header'>
+        <Card className='bangumi-diff' bodyStyle={{ padding: 0 }}>
+            <div className={`bangumi-diff-header ${isTop && 'is-sticky' }`} ref={containerRef}>
                 <div className="bangumi-diff-search">
                     <div className='bangumi-left'>
                         <Input placeholder='bangumi id' value={input1Val} onChange={e => setInput1Value(e.target.value)}></Input>
@@ -95,13 +96,12 @@ const BangumiDIffView = () => {
             </div>
             {
                 bangumiContent1 && bangumiContent2 &&
-            <Row>
+            <Row style={{ padding: 24 }}>
                 { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent1}></BangumiDiffContent></Col>}
                 <Col span={2} style={{ textAlign: 'center' }}><Divider type="vertical" style={{ height: '100%' }} /></Col>
                 { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent2}></BangumiDiffContent></Col>}
             </Row>
             }
-
             <BangumiSearchPanel
                 open={searchPanelOpen}
                 onCancel={() => setSearchPanelOpen(false)}

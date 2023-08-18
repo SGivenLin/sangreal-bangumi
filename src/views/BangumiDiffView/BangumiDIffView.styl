@@ -1,35 +1,42 @@
-.bangumi-diff-header
-    position: sticky
-    top 0
-    z-index 2
-    padding-bottom: 24px
-    padding-top 2px
-    .diff-btn
-        margin: 0 20px
-        height: 52px !important
-        width: 52px !important
-        .anticon
-            font-size: 26px !important;
-    .diff-check
-        margin-top 8px
-        font-size: 12px
-.bangumi-diff-search
-    display: flex
-    justify-content: space-around
-    align-items: center
-    margin-bottom: 12px
-    .search-btn
-        padding-left 8px
-    .search-btn-text
-        opacity .8
-        font-size: 12px
-        &:hover
-            text-decoration: underline
-.bangumi-diff-content
-    display: flex
-.diff-text
-    font-weight: bold
-    font-size: 20px
-    .diff-text-res
-        font-size: 24px
-        font-family: KaiTi, STKaiti
+.bangumi-diff
+    .bangumi-diff-header
+        position: sticky
+        top 0
+        z-index 2
+        padding-top 2px
+        transition: background .6s, margin .6s
+        padding 24px
+        border-bottom-left-radius: 8px
+        border-bottom-right-radius: 8px
+        .diff-btn
+            margin: 0 20px
+            height: 52px !important
+            width: 52px !important
+            .anticon
+                font-size: 26px !important;
+        .diff-check
+            margin-top 8px
+            font-size: 12px
+        &.is-sticky
+            background #fff
+            box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+    .bangumi-diff-search
+        display: flex
+        justify-content: space-around
+        align-items: center
+        margin-bottom: 12px
+        .search-btn
+            padding-left 8px
+        .search-btn-text
+            opacity .8
+            font-size: 12px
+            &:hover
+                text-decoration: underline
+    .bangumi-diff-content
+        display: flex
+    .diff-text
+        font-weight: bold
+        font-size: 20px
+        .diff-text-res
+            font-size: 24px
+            font-family: KaiTi, STKaiti
