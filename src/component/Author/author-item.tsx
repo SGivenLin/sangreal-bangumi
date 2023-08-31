@@ -59,7 +59,6 @@ function SubjectSide({ authorData }: { authorData: AuthorData[] }) {
                     <span>/</span>
                     <span className='subject-score'>{ subject.subject.score })</span>
                 </span>
-
             </div>
             <div>
                 {
