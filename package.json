@@ -94,7 +94,7 @@
     "build": "npm run build:html && npm run build:e",
     "dist": "npm run build && electron-builder --config builder.json",
     "dist:e": "npm run build:e && electron-builder --config builder.json",
-    "release": "npm run build:html && electron-builder --config builder.json --publish always",
+    "release": "npm run build:html && electron-builder --config builder.json",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix"
   },

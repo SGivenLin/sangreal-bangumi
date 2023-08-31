@@ -7,14 +7,11 @@ import Item from './collection-item'
 const CollectionList: FC<{ list: UserSubjectCollection[] }> = ({ list }) => {
     const pageSize = 20
     const [data, setData] = useState<UserSubjectCollection[]>(list.slice(0, pageSize))
-    const loadMoreData = () => {
-        setData(list.slice(0, data.length + pageSize))
-    }
     return (
         <Card bodyStyle={{ padding: '12px  0 0 0' }} style={{ marginBottom: '16px' }}>
             <InfiniteScroll
                 dataLength={data.length}
-                next={loadMoreData}
+                next={() => setData(list.slice(0, data.length + pageSize))}
                 hasMore={data.length < list.length}
                 loader={null}
             >

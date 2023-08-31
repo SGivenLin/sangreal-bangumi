@@ -55,22 +55,22 @@ function useFullLoading<T extends any[], R>(fn: (...args: T) => R, loadingMessag
     return loadingFn
 }
 
-function useScrollToBottom(callback: () => void, option: { throttleTime: number, offset: number } = { throttleTime: 100, offset: 100 }) {
-    useEffect(() => {
-        const handleScroll = throttle(() => {
-            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-            const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-            const clientHeight = document.documentElement.clientHeight || window.innerHeight
-            if (scrollTop + clientHeight + option.offset >= scrollHeight) {
-                callback()
-            }
-        }, option.throttleTime)
-        window.document.addEventListener('scroll', handleScroll)
-        return () => {
-            window.document.removeEventListener('scroll', handleScroll)
-        }
-    }, [callback, option.offset, option.throttleTime])
-}
+// function useScrollToBottom(callback: () => void, option: { throttleTime: number, offset: number } = { throttleTime: 100, offset: 100 }) {
+//     useEffect(() => {
+//         const handleScroll = throttle(() => {
+//             const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+//             const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+//             const clientHeight = document.documentElement.clientHeight || window.innerHeight
+//             if (scrollTop + clientHeight + option.offset >= scrollHeight) {
+//                 callback()
+//             }
+//         }, option.throttleTime)
+//         window.document.addEventListener('scroll', handleScroll)
+//         return () => {
+//             window.document.removeEventListener('scroll', handleScroll)
+//         }
+//     }, [callback, option.offset, option.throttleTime])
+// }
 
 function useScrollToTop(offset: number = 0): [ boolean, RefObject<HTMLDivElement> ] {
     const containerRef = useRef<HTMLDivElement>(null)
@@ -111,7 +111,6 @@ function useAppInfo() {
 export {
     useLoading,
     useFullLoading,
-    useScrollToBottom,
     useScrollToTop,
     useRouterDisabled,
     useAppInfo,

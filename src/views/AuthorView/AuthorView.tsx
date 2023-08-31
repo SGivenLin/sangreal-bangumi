@@ -6,10 +6,10 @@ import type { AuthorData } from 'src/component/Author/type'
 import Author from 'src/component/Author'
 import AuthorForm from 'src/component/Author/select-form'
 import ResultInfo from 'src/component/Author/result-info'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import { setAuthorList, getRelationList } from 'src/store/author'
 import { setFailList } from 'src/store/collection'
 import { setLoading } from 'src/store/loading'
-import { useScrollToBottom } from 'src/lib/hooks'
 import './AuthorView.styl'
 
 declare global {
@@ -66,24 +66,24 @@ function AuthorView() {
             ipcRenderer.removeListener(authorResultProcess, handle)
         }
     }, [ collectionList, dispatch, handle ])
-
-    const [ hasMore, setHasMore ] = useState(false)
-    useScrollToBottom(() => {
-        const _authorList = allAuthorList.slice(0, curAuthorList.length + pageSize)
-        if (_authorList.length === allAuthorList.length) {
-            setHasMore(true)
-            return
-        }
-        setCurAuthorList(_authorList)
-    })
     
     return (<>
         <AuthorForm></AuthorForm>
         <Author.List>
             <ResultInfo></ResultInfo>
-            { curAuthorList.map((item, index) => <Author.Item index={index} authorData={item} key={item[0].author_id}></Author.Item>) }
-            { hasMore && allAuthorList.length !== 0 && <div className='list-bottom'>—— 已经到底了 ——</div> }
-            { curAuthorList.length === 0 && <div className='list-bottom'>—— 此处什么都没有 ——</div> }
+            {
+                curAuthorList.length === 0
+                    ? <div className='list-bottom'>—— 此处什么都没有 ——</div>
+                    : <InfiniteScroll
+                        dataLength={curAuthorList.length}
+                        next={() => setCurAuthorList(allAuthorList.slice(0, curAuthorList.length + pageSize))}
+                        hasMore={curAuthorList.length < allAuthorList.length}
+                        loader={null}
+                        endMessage={<div className='list-bottom'>—— 已经到底了 ——</div>}
+                    >
+                        { curAuthorList.map((item, index) => <Author.Item index={index} authorData={item} key={item[0].author_id}></Author.Item>) }
+                    </InfiniteScroll>
+            }
         </Author.List>
     </>)
 }
