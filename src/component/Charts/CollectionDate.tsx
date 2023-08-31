@@ -28,7 +28,7 @@ const CollectionDateChartBar: FC<Partial<ECOption>> = (props) =>{
     const navigate = useNavigate()
     const domRef = useEcharts(option, echart => {
         echart.on('click', (params) => {
-            navigate(build('/collection', { name: params.name, group: TYPE }))
+            navigate(build('/collection', { group_name: params.name, group: TYPE }))
         })
     })
 
@@ -53,7 +53,7 @@ const CollectionDateChartPie: FC<Partial<ECOption>> = (props) =>{
     const navigate = useNavigate()
     const domRef = useEcharts(option, echart => {
         echart.on('click', (params) => {
-            navigate(build('/collection', { name: params.name, group: TYPE }))
+            navigate(build('/collection', { group_name: params.name, group: TYPE }))
         })
     })
 

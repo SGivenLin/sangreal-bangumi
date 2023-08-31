@@ -1,8 +1,8 @@
 import { type RefObject, useEffect, useReducer, useRef, type FC } from 'react'
 import List from './collection-list'
-import type { CollectionRes, IGroupRange, UserSubjectCollection } from './type'
+import type { CollectionRes } from './type'
 import CollectionData from './CollectionData'
-import { Collapse, type CollapseProps, Card, Divider } from 'antd'
+import { Collapse, type CollapseProps, Card, Divider, Select } from 'antd'
 import { DatabaseOutlined, UserOutlined } from '@ant-design/icons'
 import './index.styl'
 import { useAppSelector } from 'src/store'
@@ -34,25 +34,39 @@ function getItems(list: IGroupList, name: string | undefined, ref: RefObject<HTM
     })
 }
 
+type CollectionGroup = 'rate' | 'date'
 interface CollectionParams {
-    group?: 'rate' | 'date',
-    name?: string
+    group?: CollectionGroup
+    group_name?: string
 }
+const collectionSelectOptions = [{
+    label: '按评分',
+    value: 'rate',
+}, {
+    label: '按播出年份',
+    value: 'date',
+}].map(item => ({ ...item, label: <span  style={{ color: '#808080' }}>{item.label}</span> }))
+
 function Collection( { collectionList } : { collectionList: CollectionRes['data'] }) {
     const ref = useRef<HTMLDivElement>(null)
-    const { group = 'rate', name } = useQuery<CollectionParams>()
+    const { group = 'rate', group_name } = useQuery<CollectionParams>()
+
     const groupListMap = {
-        rate: useCollectionListByRate,
-        date: useCollectionListByDate,
+        rate: getCollectionListByRate,
+        date: getCollectionListByDate,
     }
-
-    const groupList = groupListMap[group](collectionList)
-    const items = getItems(groupList, name, ref)
-    const username = useAppSelector(state => state.userInfo.searchUserInfo.username)
-
+    const [ items, dispatch ] = useReducer(( state: CollapseProps['items'], group: CollectionGroup) => {
+        const groupList = groupListMap[group](collectionList)
+        return getItems(groupList, group_name, ref)
+    }, [])
     useEffect(() => {
-        name && ref.current?.scrollIntoView({ behavior: 'smooth' })
-    })
+        dispatch(group)
+    }, [ group ])
+
+    const username = useAppSelector(state => state.userInfo.searchUserInfo.username)
+    useEffect(() => {
+        group_name && ref.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [ group_name, items ])
 
     return (
         <Card bodyStyle={{padding: 0}}>
@@ -64,22 +78,30 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
                 display: 'flex',
                 justifyContent: 'space-between',
             }}>
-                <span>
-                    <UserOutlined style={{paddingRight: 4}}></UserOutlined>
-                    <UserNameLink username={username} disabled={!username}>{ username || '-' }</UserNameLink>
-                </span>
-                <span>
-                    <DatabaseOutlined style={{paddingRight: 4}}></DatabaseOutlined>
-                    <CollectionLink username={username} disabled={!collectionList.length}>收藏：{ collectionList.length }</CollectionLink>
-                </span>
-            
+                <div>
+                    <span style={{ marginRight: 12 }}>
+                        <UserOutlined style={{paddingRight: 4}}></UserOutlined>
+                        <UserNameLink username={username} disabled={!username}>{ username || '-' }</UserNameLink>
+                    </span>
+                    <span>
+                        <DatabaseOutlined style={{paddingRight: 4}}></DatabaseOutlined>
+                        <CollectionLink username={username} disabled={!collectionList.length}>收藏：{ collectionList.length }</CollectionLink>
+                    </span>
+                </div>
+                <Select
+                    defaultValue={group}
+                    options={collectionSelectOptions}
+                    bordered={false}
+                    onSelect={dispatch}
+                    style={{ width: 140, textAlign: 'right' }}
+                ></Select>
             </div>
             <Divider style={{ margin:'8px 0 0 0' }}></Divider>
             <Collapse
                 bordered={false}
                 ghost
                 size='large'
-                defaultActiveKey={name || undefined}
+                defaultActiveKey={group_name || undefined}
                 items={items}
             />
         </Card>
@@ -87,45 +109,30 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
     )
 }
 
-function useCollectionListByRate(collectionList: CollectionRes['data']) {
-    const [ groupList, dispatch ] = useReducer((state: IGroupList, group: [IGroupRange, UserSubjectCollection[]][])=> {
-        let list: IGroupList = []
-        for(const [rate, collectionList] of group) {
-            const title = CollectionData.groupRate2Str(rate)
-            collectionList.length && list.push({
-                title,
-                collectionList: collectionList,
-            })
-        }
-        return list
-    }, [])
-    useEffect(() => {
-        const collectionData = new CollectionData(collectionList)
-        dispatch(collectionData.groupByRate())
-    }, [collectionList])
-
-    return groupList.reverse()
+function getCollectionListByRate(collectionList: CollectionRes['data']) {
+    const group = new CollectionData(collectionList).groupByRate()
+    let list: IGroupList = []
+    for(const [rate, collectionList] of group) {
+        const title = CollectionData.groupRate2Str(rate)
+        collectionList.length && list.push({
+            title,
+            collectionList: collectionList,
+        })
+    }
+    return list.reverse()
 }
 
-
-function useCollectionListByDate(collectionList: CollectionRes['data']) {
-    const [ groupList, dispatch ] = useReducer((state: IGroupList, group: [IGroupRange, UserSubjectCollection[]][])=> {
-        let list: IGroupList = []
-        for(const [date, collectionList] of group) {
-            const title = CollectionData.groupDate2Str(date)
-            collectionList.length && list.push({
-                title,
-                collectionList: collectionList,
-            })
-        }
-        return list
-    }, [])
-    useEffect(() => {
-        const collectionData = new CollectionData(collectionList)
-        dispatch(collectionData.groupByDate())
-    }, [collectionList])
-
-    return groupList.reverse()
+function getCollectionListByDate(collectionList: CollectionRes['data']) {
+    const group = new CollectionData(collectionList).groupByDate()
+    let list: IGroupList = []
+    for(const [date, collectionList] of group) {
+        const title = CollectionData.groupDate2Str(date)
+        collectionList.length && list.push({
+            title,
+            collectionList: collectionList,
+        })
+    }
+    return list.reverse()
 }
 
 export default Collection
