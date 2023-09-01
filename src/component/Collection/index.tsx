@@ -61,12 +61,17 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
     }, [])
     useEffect(() => {
         dispatch(group)
-    }, [ group ])
+    }, [ group, collectionList ])
+    
+    const isMounted = useRef(false)
+    useEffect(() => {
+        if (ref.current && group_name && !isMounted.current) {
+            isMounted.current = true
+            ref.current.scrollIntoView({ behavior: 'smooth' })
+        }
+    }, [ group_name, items ])
 
     const username = useAppSelector(state => state.userInfo.searchUserInfo.username)
-    useEffect(() => {
-        group_name && ref.current?.scrollIntoView({ behavior: 'smooth' })
-    }, [ group_name, items ])
 
     return (
         <Card bodyStyle={{padding: 0}}>
