@@ -1,4 +1,4 @@
-import { type RefObject, useEffect, useReducer, useRef, type FC } from 'react'
+import { type RefObject, useEffect, useReducer, useRef, type FC, useState } from 'react'
 import List from './collection-list'
 import type { CollectionRes } from './type'
 import CollectionData from './CollectionData'
@@ -50,6 +50,7 @@ const collectionSelectOptions = [{
 function Collection( { collectionList } : { collectionList: CollectionRes['data'] }) {
     const ref = useRef<HTMLDivElement>(null)
     const { group = 'rate', group_name } = useQuery<CollectionParams>()
+    const [ curGroup, setCurGroup ] = useState(group) 
 
     const groupListMap = {
         rate: getCollectionListByRate,
@@ -60,8 +61,8 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
         return getItems(groupList, group_name, ref)
     }, [])
     useEffect(() => {
-        dispatch(group)
-    }, [ group, collectionList ])
+        dispatch(curGroup)
+    }, [ curGroup, collectionList ])
     
     const isMounted = useRef(false)
     useEffect(() => {
@@ -97,7 +98,7 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
                     defaultValue={group}
                     options={collectionSelectOptions}
                     bordered={false}
-                    onSelect={dispatch}
+                    onSelect={setCurGroup}
                     style={{ width: 140, textAlign: 'right' }}
                 ></Select>
             </div>
