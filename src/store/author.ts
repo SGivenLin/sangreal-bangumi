@@ -157,7 +157,10 @@ export const slice = createSlice({
             const authorList = state.authorList.map(_ => {
                 let _relation = relation
                 if (needJudgeIsPerson) {
-                    const isCompany = _.map(item => item.relation).every(item => jobMap.动画公司.includes(item))
+                    const relationList = _.map(item => item.relation)
+                    const isAnimeCompany = relationList.includes(jobMap.动画公司[0])
+                    const isAnimeOrPerson = (relationList.every(item => jobMap.动画公司.includes(item)) && relationList.some(item => item !== jobMap.动画公司[1] && item !== jobMap.动画公司[2]))
+                    const isCompany = isAnimeCompany || isAnimeOrPerson
                     if (!isCompany) {
                         _relation = _relation.filter(item => !jobMap.动画公司.includes(item))
                     }
