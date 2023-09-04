@@ -21,13 +21,14 @@ function CollectionView() {
     const searchHistory = new SearchHistory("user_collection_search_history")
     const history = searchHistory.getHistory()
 
+    const [ cacheUpdateDate, setCacheUpdateDate ] = useState('')
   
     type SearchEvent = React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLInputElement> | undefined
     const onSearch =  useFullLoading(async (val: string, e?: SearchEvent, useCache = true) => {
         const username = val.trim()
         if (!username) return
 
-        const dispatchCollectionList = (list: CollectionListCacheResult['collection']) => {
+        const dispatchCollectionList = (list: CollectionListCacheResult['result']['collection']) => {
             dispatch(setCollectionList(list))
             dispatch(setSearchUserInfo({ username }))
             searchHistory.addEntry(username)
@@ -36,9 +37,10 @@ function CollectionView() {
         try {
             if (useCache) {
                 dispatch(setLoading({ text: '正在查询缓存' }))
-                const cacheCollection = await diffCollectionCache(username)
-                if (cacheCollection.useCache) {
-                    dispatchCollectionList(cacheCollection.collection)
+                const res = await diffCollectionCache(username)
+                if (res.useCache) {
+                    setCacheUpdateDate(new Date(res.result.updateDate).toLocaleString())
+                    dispatchCollectionList(res.result.collection)
                     return
                 }
             }
@@ -55,6 +57,7 @@ function CollectionView() {
             })
             dispatchCollectionList(list)
             setCollectionListCache(username, list)
+            setCacheUpdateDate(new Date().toLocaleString())
         } catch(e: any) {
             console.error(e)
             message.error(e?.response?.status === 404 ? 'bangumi账号id错误' : e?.message || '未知错误')
@@ -80,7 +83,7 @@ function CollectionView() {
                         onSearch={onSearch}
                     />
                 </AutoComplete>
-                <Tooltip title="不使用缓存查询最新收藏">
+                <Tooltip title={`不使用缓存查询最新收藏（上次更新时间 ${cacheUpdateDate}）`}>
                     <Button
                         type="text"
                         icon={<ReloadOutlined style={{ fontSize: '1.2em', color: '#fff' }} />}
