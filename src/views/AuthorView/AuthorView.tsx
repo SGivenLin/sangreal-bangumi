@@ -4,10 +4,10 @@ import { ipcRenderer } from 'electron'
 import { getAuthorResult, authorResultProcess, type AuthorListCbInfo, type FailList } from '../../electron/ipcMain/const'
 import type { AuthorData } from 'src/component/Author/type'
 import Author from 'src/component/Author'
-import AuthorForm from 'src/component/Author/select-form'
+import AuthorForm, { initialValues } from 'src/component/Author/select-form'
 import ResultInfo from 'src/component/Author/result-info'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { setAuthorList, getRelationList } from 'src/store/author'
+import { setAuthorList, getRelationList, sortByForm } from 'src/store/author'
 import { setFailList } from 'src/store/collection'
 import { setLoading } from 'src/store/loading'
 import './AuthorView.styl'
@@ -51,6 +51,7 @@ function AuthorView() {
                     text: '正在努力分析',
                 }))
                 dispatch(setAuthorList(res.authorData))
+                dispatch(sortByForm(initialValues))
                 dispatch(setFailList(res.failList))
                 dispatch(getRelationList())
                 setTimeout(() => {

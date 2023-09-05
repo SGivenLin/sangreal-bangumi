@@ -1,11 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit'
 import type { AuthorData } from 'src/component/Author/type'
-import { weightType, type SortType } from 'src/component/Author/select-form'
-import { initialValues } from 'src/component/Author/select-form'
 import { jobMap, allRelation } from 'src/lib/const'
 import { getRelationList as getRelationListCount } from 'src/electron/ipcMain/const'
 import { ipcRenderer } from 'electron'
+
+interface SortType {
+    weight: weightType,
+    useRate: boolean,
+    subjectCount: number,
+    relation: string[],
+}
+
+interface AuthorName {
+    authorName: string,
+}
+
+enum weightType {
+    relation,
+    subject
+}
 
 interface InitialState{
     relationList: string[],
@@ -99,13 +113,12 @@ export const slice = createSlice({
                     relationList.add(item.relation)
                 })
             })
-            state = slice.caseReducers.sortByForm({
+            return {
                 ...state,
                 relationList:  [ ...relationList ],
                 _authorList: [ ...action.payload ],
                 authorList: [ ...action.payload ],
-            }, { type: '', payload: { ...initialValues } })
-            return state
+            }
         },
         setRelationListByDB: (state, action: PayloadAction<string[]>) => {
             state.relationListByDB = [ ...action.payload ]
@@ -173,10 +186,16 @@ export const slice = createSlice({
                 authorList,
             }
         },
+        searchByFormAuthorName(state, action: PayloadAction<AuthorName>) {
+            const authorName = action.payload.authorName
+            const reg = new RegExp(authorName, 'i')
+            state.authorList = state._authorList.filter(item => reg.test(item[0].author_name))
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setAuthorList, sortByForm, setRelationListByDB } = slice.actions
-export { getRelationList }
+export const { setAuthorList, sortByForm, setRelationListByDB, searchByFormAuthorName } = slice.actions
+export { getRelationList, weightType }
 export default slice.reducer
+export type { SortType, AuthorName }
