@@ -73,6 +73,7 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
     }, [ group_name, items ])
 
     const username = useAppSelector(state => state.userInfo.searchUserInfo.username)
+    const hasRequestCollection = useAppSelector(state => state.collection.hasRequest)
 
     return (
         <Card bodyStyle={{padding: 0}}>
@@ -103,15 +104,20 @@ function Collection( { collectionList } : { collectionList: CollectionRes['data'
                 ></Select>
             </div>
             <Divider style={{ margin:'8px 0 0 0' }}></Divider>
-            <Collapse
-                bordered={false}
-                ghost
-                size='large'
-                defaultActiveKey={group_name || undefined}
-                items={items}
-            />
+            {
+                !hasRequestCollection
+                    ?  <div className='collection-empty'>- 这里现在什么都没有 -</div>
+                    :  collectionList.length
+                        ? <Collapse
+                            bordered={false}
+                            ghost
+                            size='large'
+                            defaultActiveKey={group_name || undefined}
+                            items={items}
+                        />
+                        : <div className='collection-empty'>- 这个账号什么都没有 -</div>
+            }
         </Card>
-
     )
 }
 

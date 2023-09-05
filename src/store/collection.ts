@@ -6,11 +6,13 @@ import { type FailList } from 'src/electron/ipcMain/const'
 type failCollection = Collection & Partial<FailList[number]>
 
 interface InitialState{
+    hasRequest: boolean,
     collectionList: CollectionRes['data'],
     failList: failCollection[]
 }
 
 const initialState: InitialState = {
+    hasRequest: false,
     collectionList: [],
     failList: [],
 }
@@ -20,6 +22,7 @@ export const slice = createSlice({
     initialState,
     reducers: {
         setCollectionList: (state, action: PayloadAction<CollectionRes['data']>) => {
+            state.hasRequest = true
             state.collectionList = action.payload
         },
         setFailList: (state, action: PayloadAction<FailList>) => {

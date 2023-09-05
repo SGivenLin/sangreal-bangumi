@@ -1,6 +1,6 @@
 // import React, { useEffect, useRef, useState } from 'react';
 import { getAllCollection } from 'src/service/action'
-import { Input, Space, message, AutoComplete, Button, Tooltip } from 'antd'
+import { Space, message, Button, Tooltip } from 'antd'
 import { ReloadOutlined } from '@ant-design/icons'
 import Collection from 'src/component/Collection'
 import { useAppSelector, useAppDispatch } from 'src/store'
@@ -13,6 +13,7 @@ import './CollectionView.styl'
 import { SubjectType } from 'src/component/Bangumi/type'
 import { useState } from 'react'
 import { setCollectionListCache, diffCollectionCache, type CollectionListCacheResult } from './getCollection'
+import SearchButton from './searchButton'
 
 function CollectionView() {
     const collectionList = useAppSelector(state => state.collection.collectionList)
@@ -23,8 +24,7 @@ function CollectionView() {
 
     const [ cacheUpdateDate, setCacheUpdateDate ] = useState('')
   
-    type SearchEvent = React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLInputElement> | undefined
-    const onSearch =  useFullLoading(async (val: string, e?: SearchEvent, useCache = true) => {
+    const onSearch =  useFullLoading(async (val: string, useCache = true) => {
         const username = val.trim()
         if (!username) return
 
@@ -68,29 +68,21 @@ function CollectionView() {
     return (
         <Space className="collection-view" direction='vertical' size="middle">
             <div className='search'>
-                <AutoComplete
-                    className='search-input'
+                <SearchButton
                     options={history.map(item => ({ value: item }))}
-                    autoFocus={true}
                     onChange={setCurValue}
-                    getPopupContainer={() => document.querySelector('.app') || document.body}
-                >
-                    <Input.Search
-                        placeholder="Bangumi账号名称"
-                        allowClear
-                        enterButton="查询"
-                        size="large"
-                        onSearch={onSearch}
-                    />
-                </AutoComplete>
+                    onSearch={value => onSearch(value)}
+                />
                 <Tooltip title={`不使用缓存查询最新收藏（上次更新时间 ${cacheUpdateDate}）`}>
                     <Button
                         type="text"
+                        style={{ marginLeft: 12 }}
                         icon={<ReloadOutlined style={{ fontSize: '1.2em', color: '#fff' }} />}
-                        onClick={() => onSearch(curValue, undefined, false)}
+                        onClick={() => onSearch(curValue, false)}
                     />
                 </Tooltip>
             </div>
+
             <Collection collectionList={collectionList}></Collection>
         </Space>
     )
