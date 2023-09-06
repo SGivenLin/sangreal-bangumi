@@ -1,5 +1,5 @@
-import { useRef, type FC } from 'react'
-import { Input, AutoComplete, Button, type InputRef } from 'antd'
+import { useRef, type FC, useState } from 'react'
+import { Input, AutoComplete, Button, type InputRef, type RefSelectProps } from 'antd'
 
 interface SearchButtonProps {
     options?: { value: string }[]
@@ -9,9 +9,26 @@ interface SearchButtonProps {
 
 const SearchButton: FC<SearchButtonProps> = ({ options, onSearch, onChange }) => {
     const inputRef = useRef<InputRef>(null)
+    const autoCompleteRef = useRef<RefSelectProps>(null)
+    const [ isOpen, setIsOpen ] = useState<boolean | undefined>(undefined)
 
     const onClick = () => {
         onSearch && onSearch(inputRef.current?.input?.value || '')
+    }
+
+    const handleKeyPress = (e?:  React.KeyboardEvent<HTMLInputElement>) => {
+        if (e?.key === 'Enter') {
+            if (inputRef.current?.input?.value) {
+                // 防止在首次补全回车搜索时，触发再次弹出
+                setIsOpen(false)
+                e.stopPropagation()
+                autoCompleteRef.current?.blur()
+                onSearch && onSearch(inputRef.current?.input?.value || '')
+                setTimeout(() => {
+                    setIsOpen(undefined)
+                }, 300)
+            }
+        }
     }
     
     return (
@@ -20,6 +37,8 @@ const SearchButton: FC<SearchButtonProps> = ({ options, onSearch, onChange }) =>
             flex: 1,
         }}>
             <AutoComplete
+                open={isOpen}
+                ref={autoCompleteRef}
                 options={options}
                 autoFocus={true}
                 onChange={onChange}
@@ -31,6 +50,7 @@ const SearchButton: FC<SearchButtonProps> = ({ options, onSearch, onChange }) =>
                     ref={inputRef}
                     placeholder="Bangumi账号名称"
                     size="large"
+                    onPressEnter={handleKeyPress}
                     style={{
                         borderTopRightRadius: 0,
                         borderBottomRightRadius: 0,
