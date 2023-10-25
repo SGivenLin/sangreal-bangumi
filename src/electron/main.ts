@@ -81,21 +81,28 @@ async function main() {
     initDB()
     await app.whenReady()
     setMenu()
+    const cancel = createWin()
     app.on('window-all-closed', () => {
-        if (process.platform !== 'darwin') app.quit()
+        if (process.platform !== 'darwin') {
+            app.quit()
+        }
+        cancel()
     })
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWin()
     })
-
-    createWin()
     setIpcMain()
 }
 
 function createWin() {
     const win = createWindow()
-    new AppUpdater(win as IBrowserWindow).initRenderer()
+    const appUpdater =  new AppUpdater(win as IBrowserWindow)
+    appUpdater.initRenderer()
     rewriteWindow(win)
+
+    return () => {
+        appUpdater.removeRenderer()
+    }
 }
 
 main()

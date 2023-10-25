@@ -51,6 +51,10 @@ export default class AppUpdater {
         })
     }
 
+    removeRenderer() {
+        ipcMain.removeHandler(updateCheck)
+    }
+
     setUpdaterEvent() {
         autoUpdater.on(updateAvailable, (info) => {
             log.info(updateAvailable, info)
