@@ -15,7 +15,6 @@ const SearchBtn = ({ onClick }: { onClick?: React.DOMAttributes<HTMLSpanElement>
 }
 
 const BangumiDIffView = () => {
-
     const [bangumiContent1, setBangumiContent1] = useState<BangumiContent>()
     const [bangumiContent2, setBangumiContent2] = useState<BangumiContent>()
 
@@ -96,11 +95,11 @@ const BangumiDIffView = () => {
             </div>
             {
                 bangumiContent1 && bangumiContent2 &&
-            <Row style={{ padding: 24 }}>
-                { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent1}></BangumiDiffContent></Col>}
-                <Col span={2} style={{ textAlign: 'center' }}><Divider type="vertical" style={{ height: '100%' }} /></Col>
-                { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent2}></BangumiDiffContent></Col>}
-            </Row>
+                <Row style={{ padding: 24 }}>
+                    { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent1}></BangumiDiffContent></Col>}
+                    <Col span={2} style={{ textAlign: 'center' }}><Divider type="vertical" style={{ height: '100%' }} /></Col>
+                    { <Col span={11}><BangumiDiffContent bangumiContent={bangumiContent2}></BangumiDiffContent></Col>}
+                </Row>
             }
             <BangumiSearchPanel
                 open={searchPanelOpen}

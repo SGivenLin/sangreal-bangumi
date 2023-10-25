@@ -1,4 +1,4 @@
-import { Input, Modal, type ModalFuncProps, List, message, InputRef } from "antd"
+import { Input, Modal, type ModalFuncProps, List, message, type InputRef } from "antd"
 import './BangumiSearchPanel.styl'
 import api from 'src/service'
 import { SubjectType, BangumiSearchResult, BangumiBySearch } from './type'

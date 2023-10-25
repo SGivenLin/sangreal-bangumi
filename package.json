@@ -22,7 +22,7 @@
     "@types/node": "^16.18.25",
     "@types/react": "^18.2.5",
     "@types/react-dom": "^18.2.3",
-    "antd": "^5.8.2",
+    "antd": "^5.8.5",
     "axios": "^1.4.0",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
@@ -94,7 +94,7 @@
     "build": "npm run build:html && npm run build:e",
     "dist": "npm run build && electron-builder --config builder.json",
     "dist:e": "npm run build:e && electron-builder --config builder.json",
-    "release": "npm run build:html && electron-builder --config builder.json --publish always",
+    "release": "npm run build:html && electron-builder --config builder.json",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix"
   },

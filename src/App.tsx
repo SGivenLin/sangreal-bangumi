@@ -1,4 +1,4 @@
-import { Layout, Spin } from 'antd'
+import { Layout, Spin, FloatButton } from 'antd'
 import { Sider, Content } from 'src/component/Layout'
 import { useAppSelector } from 'src/store'
 import useUpdaterAndNotify from 'src/component/common/update'
@@ -22,6 +22,7 @@ function App() {
                     <Sider></Sider>
                     <Layout>
                         <Content></Content>
+                        <FloatButton.BackTop style={{ right: 20 }}></FloatButton.BackTop>
                     </Layout>
                 </Layout>
             </div>
